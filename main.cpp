@@ -4,22 +4,34 @@
 #include<node.h>
 #include<text.h>
 #include<string>
+#include"gameManager.h"
+#include"guiAppState.h"
+#include"stateManager.h"
+#include"button.h"
+#include<iostream>
 
 using namespace vb01;
 using namespace std;
+using namespace fsim;
 
 int main(){
-	string basePath="/home/dominykas/c++/FSim/";
+	class B : public Button{
+		public:
+			B(GameManager *gm) : Button(gm,Vector2(100,100),Vector2(100,100),"Play"){
+				
+			}
+			void onClick(){
+				cout<<"KEK\n";
+			}
+		private:
+	};
+	GameManager *gm=new GameManager();
+	GuiAppState *guiState=new GuiAppState(gm);
+	B *b=new B(gm);
+	guiState->addButton(b);
+	gm->getStateManager()->attachState(guiState);
 
-	Root *r=Root::getSingleton();
-	r->start(800,600);
-	Node *guiNode=r->getGuiNode(),*rootNode=r->getRootNode();
-
-	Camera *cam=r->getCamera();
-	//cam->lookAt(Vector3(1,0,1).norm());
-
-	while(true){;
-		r->update();
-	}
+	while(true)
+		gm->update();
 	return 0;
 }

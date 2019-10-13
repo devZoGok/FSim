@@ -5,4 +5,122 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	0.0.0	/3fdf28bc/
+ABSTRACT_APP_STATE_H	abstractAppState.h	/^#define ABSTRACT_APP_STATE_H$/;"	d
+AbstractAppState	abstractAppState.cpp	/^	AbstractAppState::AbstractAppState(){}$/;"	f	class:fsim::AbstractAppState
+AbstractAppState	abstractAppState.h	/^	class AbstractAppState{$/;"	c	namespace:fsim
+B	main.cpp	/^			B(GameManager *gm) : Button(gm,Vector2(100,100),Vector2(100,100),"Play"){$/;"	f	class:main::B	file:
+B	main.cpp	/^	class B : public Button{$/;"	c	function:main	file:
+BUTTON_H	button.h	/^#define BUTTON_H$/;"	d
+Bind	mapping.h	/^		enum Bind{MOUSE_CLICK};$/;"	g	struct:fsim::Mapping
+Button	button.cpp	/^	Button::Button(GameManager *gm, Vector2 pos, Vector2 size,string name,string imagePath){$/;"	f	class:fsim::Button
+Button	button.h	/^	class Button{$/;"	c	namespace:fsim
+DEFCONFIGS_H	defConfigs.h	/^#define DEFCONFIGS_H$/;"	d
+GAME_MANAGER_H	gameManager.h	/^#define GAME_MANAGER_H$/;"	d
+GUI_APP_STATE_H	guiAppState.h	/^#define GUI_APP_STATE_H$/;"	d
+GUI_STATE	abstractAppState.h	/^			enum Type{GUI_STATE,IN_GAME_STATE};$/;"	e	enum:fsim::AbstractAppState::Type
+GameManager	gameManager.cpp	/^	GameManager::GameManager(){$/;"	f	class:fsim::GameManager
+GameManager	gameManager.h	/^	class GameManager{$/;"	c	namespace:fsim
+GuiAppState	guiAppState.cpp	/^	GuiAppState::GuiAppState(GameManager *gm){$/;"	f	class:fsim::GuiAppState
+GuiAppState	guiAppState.h	/^	class GuiAppState : public AbstractAppState{$/;"	c	namespace:fsim
+INPUT_MANAGER_H	inputManager.h	/^#define INPUT_MANAGER_H$/;"	d
+IN_GAME_STATE	abstractAppState.h	/^			enum Type{GUI_STATE,IN_GAME_STATE};$/;"	e	enum:fsim::AbstractAppState::Type
+InputManager	inputManager.cpp	/^	InputManager::InputManager(StateManager *stateManager,GLFWwindow *window){$/;"	f	class:fsim::InputManager
+InputManager	inputManager.h	/^	class InputManager{$/;"	c	namespace:fsim
+JOYSTICK	mapping.h	/^		enum Type{KEYBOARD,MOUSE,JOYSTICK};$/;"	e	enum:fsim::Mapping::Type
+KEYBOARD	mapping.h	/^		enum Type{KEYBOARD,MOUSE,JOYSTICK};$/;"	e	enum:fsim::Mapping::Type
+MAPPING_H	mapping.h	/^#define MAPPING_H$/;"	d
+MOUSE	mapping.h	/^		enum Type{KEYBOARD,MOUSE,JOYSTICK};$/;"	e	enum:fsim::Mapping::Type
+MOUSE_CLICK	mapping.h	/^		enum Bind{MOUSE_CLICK};$/;"	e	enum:fsim::Mapping::Bind
+Mapping	mapping.h	/^	struct Mapping{$/;"	s	namespace:fsim
+PATH	defConfigs.h	/^	std::string PATH="\/home\/dominykas\/c++\/FSim\/";$/;"	v	namespace:fsim	typeref:typename:std::string
+STATE_MANAGER_H	stateManager.h	/^#define STATE_MANAGER_H$/;"	d
+StateManager	stateManager.cpp	/^	StateManager::StateManager(){}$/;"	f	class:fsim::StateManager
+StateManager	stateManager.h	/^	class StateManager{$/;"	c	namespace:fsim
+Type	abstractAppState.h	/^			enum Type{GUI_STATE,IN_GAME_STATE};$/;"	g	class:fsim::AbstractAppState
+Type	mapping.h	/^		enum Type{KEYBOARD,MOUSE,JOYSTICK};$/;"	g	struct:fsim::Mapping
+action	mapping.h	/^		bool action,pressed=false;$/;"	m	struct:fsim::Mapping	typeref:typename:bool
+addButton	guiAppState.cpp	/^	void GuiAppState::addButton(Button *b){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
+appStates	stateManager.h	/^			std::vector<AbstractAppState*> appStates;$/;"	m	class:fsim::StateManager	typeref:typename:std::vector<AbstractAppState * >
+attachState	stateManager.cpp	/^	void StateManager::attachState(AbstractAppState *a){$/;"	f	class:fsim::StateManager	typeref:typename:void
+attached	abstractAppState.h	/^			bool attached=false;$/;"	m	class:fsim::AbstractAppState	typeref:typename:bool
+bind	mapping.h	/^		Bind bind;$/;"	m	struct:fsim::Mapping	typeref:typename:Bind
+buttons	guiAppState.h	/^			std::vector<Button*> buttons;$/;"	m	class:fsim::GuiAppState	typeref:typename:std::vector<Button * >
+color	button.h	/^			vb01::Vector4 color=vb01::Vector4(.6,.6,.6,1);$/;"	m	class:fsim::Button	typeref:typename:vb01::Vector4
+dettachState	stateManager.cpp	/^	void StateManager::dettachState(AbstractAppState *a){$/;"	f	class:fsim::StateManager	typeref:typename:void
+dettachState	stateManager.cpp	/^	void StateManager::dettachState(AbstractAppState::Type type){$/;"	f	class:fsim::StateManager	typeref:typename:void
+dettachState	stateManager.h	/^			inline void dettachState(int id){appStates.erase(appStates.begin()+id);}$/;"	f	class:fsim::StateManager	typeref:typename:void
+fsim	abstractAppState.cpp	/^namespace fsim{$/;"	n	file:
+fsim	abstractAppState.h	/^namespace fsim{$/;"	n
+fsim	button.cpp	/^namespace fsim{$/;"	n	file:
+fsim	button.h	/^namespace fsim{$/;"	n
+fsim	defConfigs.h	/^namespace fsim{$/;"	n
+fsim	gameManager.cpp	/^namespace fsim{$/;"	n	file:
+fsim	gameManager.h	/^namespace fsim{$/;"	n
+fsim	guiAppState.cpp	/^namespace fsim{$/;"	n	file:
+fsim	guiAppState.h	/^namespace fsim{$/;"	n
+fsim	inputManager.cpp	/^namespace fsim{$/;"	n	file:
+fsim	inputManager.h	/^namespace fsim{$/;"	n
+fsim	mapping.h	/^namespace fsim{$/;"	n
+fsim	stateManager.cpp	/^namespace fsim{$/;"	n	file:
+fsim	stateManager.h	/^namespace fsim{$/;"	n
+getAppStates	stateManager.h	/^			inline std::vector<AbstractAppState*> getAppStates(){return appStates;}$/;"	f	class:fsim::StateManager	typeref:typename:std::vector<AbstractAppState * >
+getMapping	abstractAppState.h	/^			inline Mapping* getMapping(int id){return mappings[id];}$/;"	f	class:fsim::AbstractAppState	typeref:typename:Mapping *
+getMappings	abstractAppState.h	/^			inline std::vector<Mapping*>& getMappings(){return mappings;}$/;"	f	class:fsim::AbstractAppState	typeref:typename:std::vector<Mapping * > &
+getNumAppStates	stateManager.h	/^			inline int getNumAppStates(){return appStates.size();}$/;"	f	class:fsim::StateManager	typeref:typename:int
+getNumMappings	abstractAppState.h	/^			inline int getNumMappings(){return mappings.size();}$/;"	f	class:fsim::AbstractAppState	typeref:typename:int
+getPos	button.h	/^			inline vb01::Vector2 getPos(){return pos;}$/;"	f	class:fsim::Button	typeref:typename:vb01::Vector2
+getRoot	gameManager.h	/^			inline vb01::Root* getRoot(){return root;}$/;"	f	class:fsim::GameManager	typeref:typename:vb01::Root *
+getSize	button.h	/^			inline vb01::Vector2 getSize(){return size;}$/;"	f	class:fsim::Button	typeref:typename:vb01::Vector2
+getState	stateManager.cpp	/^	AbstractAppState* StateManager::getState(AbstractAppState::Type type){$/;"	f	class:fsim::StateManager	typeref:typename:AbstractAppState *
+getState	stateManager.h	/^			inline AbstractAppState* getState(int i){return appStates[i];}$/;"	f	class:fsim::StateManager	typeref:typename:AbstractAppState *
+getStateManager	gameManager.h	/^			inline StateManager* getStateManager(){return stateManager;}$/;"	f	class:fsim::GameManager	typeref:typename:StateManager *
+getType	abstractAppState.h	/^			inline Type getType(){return type;}$/;"	f	class:fsim::AbstractAppState	typeref:typename:Type
+gm	button.h	/^			GameManager *gm;$/;"	m	class:fsim::Button	typeref:typename:GameManager *
+gm	guiAppState.h	/^			GameManager *gm;$/;"	m	class:fsim::GuiAppState	typeref:typename:GameManager *
+guiNode	button.h	/^			vb01::Node *rectNode,*textNode,*guiNode;$/;"	m	class:fsim::Button	typeref:typename:vb01::Node ***
+height	gameManager.h	/^			int width,height;$/;"	m	class:fsim::GameManager	typeref:typename:int
+inputManager	gameManager.h	/^			InputManager *inputManager=nullptr;$/;"	m	class:fsim::GameManager	typeref:typename:InputManager *
+isAttached	abstractAppState.h	/^			inline bool isAttached(){return attached;}$/;"	f	class:fsim::AbstractAppState	typeref:typename:bool
 main	main.cpp	/^int main(){$/;"	f	typeref:typename:int
+mappings	abstractAppState.h	/^			std::vector<Mapping*> mappings;$/;"	m	class:fsim::AbstractAppState	typeref:typename:std::vector<Mapping * >
+name	button.h	/^			std::string name;$/;"	m	class:fsim::Button	typeref:typename:std::string
+onAction	abstractAppState.h	/^			virtual void onAction(Mapping::Bind,bool){}$/;"	f	class:fsim::AbstractAppState	typeref:typename:void
+onAction	guiAppState.cpp	/^	void GuiAppState::onAction(Mapping::Bind bind, bool isPressed){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
+onAnalog	abstractAppState.h	/^			virtual void onAnalog(Mapping::Bind,float){}$/;"	f	class:fsim::AbstractAppState	typeref:typename:void
+onAttached	abstractAppState.h	/^			virtual void onAttached(){attached=true;}$/;"	f	class:fsim::AbstractAppState	typeref:typename:void
+onAttached	guiAppState.cpp	/^	void GuiAppState::onAttached(){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
+onClick	button.h	/^			virtual void onClick(){}$/;"	f	class:fsim::Button	typeref:typename:void
+onClick	main.cpp	/^			void onClick(){$/;"	f	class:main::B	typeref:typename:void	file:
+onDettached	abstractAppState.h	/^			virtual void onDettached(){attached=false;}$/;"	f	class:fsim::AbstractAppState	typeref:typename:void
+onDettached	guiAppState.cpp	/^	void GuiAppState::onDettached(){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
+onMouseOver	button.h	/^			virtual void onMouseOver(){}$/;"	f	class:fsim::Button	typeref:typename:void
+pos	button.h	/^			vb01::Vector2 pos,size;$/;"	m	class:fsim::Button	typeref:typename:vb01::Vector2
+pressed	mapping.h	/^		bool action,pressed=false;$/;"	m	struct:fsim::Mapping	typeref:typename:bool
+rect	button.h	/^			vb01::Quad *rect;$/;"	m	class:fsim::Button	typeref:typename:vb01::Quad *
+rectNode	button.h	/^			vb01::Node *rectNode,*textNode,*guiNode;$/;"	m	class:fsim::Button	typeref:typename:vb01::Node *
+removeButton	guiAppState.cpp	/^	void GuiAppState::removeButton(Button *b){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
+root	gameManager.h	/^			vb01::Root *root;$/;"	m	class:fsim::GameManager	typeref:typename:vb01::Root *
+size	button.h	/^			vb01::Vector2 pos,size;$/;"	m	class:fsim::Button	typeref:typename:vb01::Vector2
+stateManager	gameManager.h	/^			StateManager *stateManager=nullptr;$/;"	m	class:fsim::GameManager	typeref:typename:StateManager *
+stateManager	inputManager.h	/^			StateManager *stateManager;$/;"	m	class:fsim::InputManager	typeref:typename:StateManager *
+text	button.h	/^			vb01::Text *text;$/;"	m	class:fsim::Button	typeref:typename:vb01::Text *
+textNode	button.h	/^			vb01::Node *rectNode,*textNode,*guiNode;$/;"	m	class:fsim::Button	typeref:typename:vb01::Node **
+trigger	mapping.h	/^		int trigger;$/;"	m	struct:fsim::Mapping	typeref:typename:int
+type	abstractAppState.h	/^			Type type;$/;"	m	class:fsim::AbstractAppState	typeref:typename:Type
+type	mapping.h	/^		Type type;$/;"	m	struct:fsim::Mapping	typeref:typename:Type
+update	abstractAppState.cpp	/^	void AbstractAppState::update(){}$/;"	f	class:fsim::AbstractAppState	typeref:typename:void
+update	button.cpp	/^	void Button::update(){}$/;"	f	class:fsim::Button	typeref:typename:void
+update	gameManager.cpp	/^	void GameManager::update(){$/;"	f	class:fsim::GameManager	typeref:typename:void
+update	guiAppState.cpp	/^	void GuiAppState::update(){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
+update	inputManager.cpp	/^	void InputManager::update(){$/;"	f	class:fsim::InputManager	typeref:typename:void
+update	stateManager.cpp	/^	void StateManager::update(){$/;"	f	class:fsim::StateManager	typeref:typename:void
+vb01	button.h	/^namespace vb01{$/;"	n
+vb01	gameManager.h	/^namespace vb01{$/;"	n
+width	gameManager.h	/^			int width,height;$/;"	m	class:fsim::GameManager	typeref:typename:int
+window	inputManager.h	/^			GLFWwindow *window;$/;"	m	class:fsim::InputManager	typeref:typename:GLFWwindow *
+~AbstractAppState	abstractAppState.cpp	/^	AbstractAppState::~AbstractAppState(){}$/;"	f	class:fsim::AbstractAppState
+~Button	button.cpp	/^	Button::~Button(){}$/;"	f	class:fsim::Button
+~GameManager	gameManager.cpp	/^	GameManager::~GameManager(){}$/;"	f	class:fsim::GameManager
+~GuiAppState	guiAppState.cpp	/^	GuiAppState::~GuiAppState(){}$/;"	f	class:fsim::GuiAppState
+~InputManager	inputManager.cpp	/^	InputManager::~InputManager(){}$/;"	f	class:fsim::InputManager
+~StateManager	stateManager.cpp	/^	StateManager::~StateManager(){}$/;"	f	class:fsim::StateManager
