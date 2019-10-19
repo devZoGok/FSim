@@ -9,6 +9,7 @@ namespace fsim{
 	GameManager::GameManager(){
 		root = Root::getSingleton();
 		width=800,height=600;
+		running=true;
 
 		root->start(width,height);
 

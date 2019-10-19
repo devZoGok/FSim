@@ -13,22 +13,30 @@ namespace fsim{
 	void InputManager::update(){
 		for(AbstractAppState *a : stateManager->getAppStates()){
 			for(Mapping *m : a->getMappings()){
-				switch(m->type){
-					case Mapping::KEYBOARD:
-						break;
-					case Mapping::MOUSE:
-						if(m->action){
-							bool pressed=glfwGetMouseButton(window,m->trigger);
-							if((pressed&&!m->pressed)||(!pressed&&m->pressed)){
-								m->pressed=pressed;	
-								a->onAction(m->bind,pressed);
-							}
-						}
-						break;
-					case Mapping::JOYSTICK:
-						break;
-				}	
-			}	
-		}	
+				if(m->action){
+					bool pressed;
+					switch(m->type){
+						case Mapping::KEYBOARD:
+							pressed=glfwGetKey(window,m->trigger);
+							break;
+						case Mapping::MOUSE:
+							pressed=glfwGetMouseButton(window,m->trigger);
+							break;
+						case Mapping::JOYSTICK:
+							break;
+					}
+					if((pressed&&!m->pressed)||(!pressed&&m->pressed)){
+						m->pressed=pressed;	
+						a->onAction(m->bind,pressed);
+					}
+				}
+			}
+			for(int i=0;i<260;i++){
+				if(glfwGetKey(window,i))
+					a->onRawKeyButton(i);
+				else if(glfwGetMouseButton(window,i))
+					a->onRawMouseButton(i);
+			}
+		}
 	}
 }

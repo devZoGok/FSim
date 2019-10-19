@@ -4,7 +4,9 @@
 #include<string>
 
 namespace fsim{
-	std::string PATH="/home/dominykas/c++/FSim/";
+	const static std::string PATH="/home/dominykas/c++/FSim/Assets/";
+
+	const static int numStates=2,numBinds[numStates]{0,2};
 }
 
 #endif

@@ -7,7 +7,10 @@
 #include"gameManager.h"
 #include"guiAppState.h"
 #include"stateManager.h"
-#include"button.h"
+#include"exitButton.h"
+#include"optionsButton.h"
+#include"playButton.h"
+#include"loadButton.h"
 #include<iostream>
 
 using namespace vb01;
@@ -15,23 +18,19 @@ using namespace std;
 using namespace fsim;
 
 int main(){
-	class B : public Button{
-		public:
-			B(GameManager *gm) : Button(gm,Vector2(100,100),Vector2(100,100),"Play"){
-				
-			}
-			void onClick(){
-				cout<<"KEK\n";
-			}
-		private:
-	};
 	GameManager *gm=new GameManager();
 	GuiAppState *guiState=new GuiAppState(gm);
-	B *b=new B(gm);
-	guiState->addButton(b);
+	PlayButton *playButton=new PlayButton(gm,Vector2(100,100),Vector2(100,50));
+	LoadButton *loadButton=new LoadButton(gm,Vector2(100,160),Vector2(100,50));
+	OptionsButton *optionsButton=new OptionsButton(gm,Vector2(100,220),Vector2(100,50));
+	ExitButton *exitButton=new ExitButton(gm,Vector2(100,280),Vector2(100,50));
+	guiState->addButton(playButton);
+	guiState->addButton(loadButton);
+	guiState->addButton(exitButton);
+	guiState->addButton(optionsButton);
 	gm->getStateManager()->attachState(guiState);
 
-	while(true)
+	while(gm->isRunning())
 		gm->update();
 	return 0;
 }

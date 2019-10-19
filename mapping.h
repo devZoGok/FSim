@@ -3,7 +3,11 @@
 
 namespace fsim{
 	struct Mapping{
-		enum Bind{MOUSE_CLICK};
+		enum Bind{
+			MOUSE_CLICK,
+			SHIFT,
+			BACKSPACE
+		};
 		enum Type{KEYBOARD,MOUSE,JOYSTICK};
 
 		Bind bind;
