@@ -23,7 +23,7 @@ namespace fsim{
 			Button* getButton(std::string);
 			void removeButton(Button*);
 			void removeButton(std::string);
-			void removeAllButtons(Button**);
+			void removeAllButtons(Button**,int=0);
 			void addListbox(Listbox*);
 			void removeListbox(Listbox*);
 			void addTextbox(Textbox*);

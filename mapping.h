@@ -6,7 +6,11 @@ namespace fsim{
 		enum Bind{
 			MOUSE_CLICK,
 			SHIFT,
-			BACKSPACE
+			BACKSPACE,
+			RISE,
+			LAND,
+			ACCELERATE,
+			DECELERATE
 		};
 		enum Type{KEYBOARD,MOUSE,JOYSTICK};
 

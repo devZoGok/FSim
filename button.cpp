@@ -44,9 +44,12 @@ namespace fsim{
 	}
 
 	Button::~Button(){
-		if(textNode)
+		if(textNode){
 			guiNode->dettachChild(textNode);
+			delete textNode;
+		}
 		guiNode->dettachChild(rectNode);
+		delete rectNode;
 	}
 
 	void Button::update(){}

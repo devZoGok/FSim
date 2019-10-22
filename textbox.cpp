@@ -36,7 +36,7 @@ namespace fsim{
 		guiNode->attachChild(textNode);
 
 		cursorPosOffset=entry.length();
-		cursorRect=new Quad(Vector3(cursorWidth,size.y,0));
+		cursorRect=new Quad(Vector3(cursorWidth,size.y,0),false);
 		cursorNode=new Node(Vector3(pos.x+text->getLength(),pos.y,-.2));
 		Material *mat=new Material(Material::MATERIAL_GUI);
 		mat->setTexturingEnabled(false);
@@ -48,7 +48,10 @@ namespace fsim{
 	}
 	
 	Textbox::~Textbox(){
-		
+		guiNode->dettachChild(textNode);
+		guiNode->dettachChild(cursorNode);
+		delete textNode;	
+		delete cursorNode;
 	}
 
 	void Textbox::update(){

@@ -5,6 +5,8 @@
 #include"textbox.h"
 #include"defConfigs.h"
 #include"inGameAppState.h"
+#include"activeGameAppState.h"
+#include"aircraft.h"
 #include<root.h>
 #include<node.h>
 
@@ -56,28 +58,72 @@ namespace fsim{
 									Node *textNode=new Node(Vector3(50,300+i*50,.5));
 									textNode->addText(upgradeText);
 									guiNode->attachChild(textNode);
+									textNodes[i]=textNode;
 
 									for(int j=0;j<4;j++)
 										guiState->addButton(new UpgradeButton(gm,Vector2(50+j*50,300+i*50),Vector2(40,40)));
 								}
 							}
+							Node* getTextNode(int i){return textNodes[i];}
 						private:
 							string upgrades[5];
+							Node *textNodes[5]{0,0,0,0,0};
 					};
 					class StartButton : public Button{
 						public:
-							StartButton(GameManager *gm,Vector2 pos, Vector2 size,int faction) : Button(gm,pos,size,"Start"){this->faction=faction;}
+							StartButton(GameManager *gm, Vector2 pos, Vector2 size, AircraftTabButton *tabs[3], int faction) : Button(gm,pos,size,"Start"){
+								this->faction=faction;
+								for(int i=0;i<3;i++)
+									this->tabs[i]=tabs[i];
+							}
 							void onClick(){
-								GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
+								class AircraftSelectionButton : public Button{
+									public:
+										AircraftSelectionButton(GameManager *gm, Vector2 pos, Vector2 size, string name,int aircraftId) : Button(gm,pos,size,name){this->aircraftId=aircraftId;}
+										void onClick(){
+											StateManager *stateManager=gm->getStateManager();
+											GuiAppState *guiState=(GuiAppState*)stateManager->getState(AbstractAppState::GUI_STATE);
+											InGameAppState *inGameState=(InGameAppState*)stateManager->getState(AbstractAppState::IN_GAME_STATE);
+											int playerId=inGameState->getNumStructures();
+											inGameState->setPlayerId(playerId);
+											inGameState->addStructure(new Aircraft(gm,aircraftId,Vector3(0,20,0),Quaternion(1,0,0,0)));
+											ActiveGameAppState *activeGameState=new ActiveGameAppState(playerId);	
 
-								InGameAppState *inGameState=new InGameAppState(faction);	
+											stateManager->attachState(activeGameState);
+											guiState->removeAllButtons(nullptr);
+										}
+									private:
+										int aircraftId;
+								};
 
-								Button *exceptions[]={this};
-								guiState->removeAllButtons(exceptions);
+								StateManager *stateManager=gm->getStateManager();
+								GuiAppState *guiState=(GuiAppState*)stateManager->getState(AbstractAppState::GUI_STATE);
+								Node *guiNode=gm->getRoot()->getGuiNode();
+
+								int width=60;
+								AircraftSelectionButton *selectionButtons[3];
+								string aircraft[]={"Fighter","Fighter-bomber","Helicopter"};
+								for(int i=0;i<3;i++){
+									selectionButtons[i]=new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),aircraft[i],i);
+									guiState->addButton(selectionButtons[i]);
+								}
+
+								stateManager->attachState(new InGameAppState(gm,faction));	
+								for(int i=0;i<5;i++){
+									guiNode->dettachChild(tabs[faction]->getTextNode(i));
+									delete tabs[faction]->getTextNode(i);
+								}
+
+								Button *exceptions[4];
+								exceptions[0]=this;
+								for(int i=1;i<4;i++)
+									exceptions[i]=selectionButtons[i-1];
+								guiState->removeAllButtons(exceptions,4);
 								guiState->removeButton(this);
 							}
 						private:
 							int faction;
+							AircraftTabButton *tabs[3];
 					};
 
 					GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
@@ -98,10 +144,14 @@ namespace fsim{
 						{"Airframe","Fuel tank","Machinegun","ASMs","Countermeasures"}
 					};
 					int width=60;
-					for(int i=0;i<3;i++)
-						guiState->addButton(new AircraftTabButton(gm,Vector2(100+i*(width+10),300),Vector2(width,20),tabNames[i],upgrades[i]));
+					AircraftTabButton *tabs[3];
+					for(int i=0;i<3;i++){
+						AircraftTabButton *tab=new AircraftTabButton(gm,Vector2(100+i*(width+10),300),Vector2(width,20),tabNames[i],upgrades[i]);
+						guiState->addButton(tab);
+						tabs[i]=tab;
+					}
 					guiState->getButton("Fighter")->onClick();
-					guiState->addButton(new StartButton(gm,Vector2(500,500),Vector2(100,50),faction));
+					guiState->addButton(new StartButton(gm,Vector2(500,500),Vector2(100,50),tabs,faction));
 
 					for(int i=0;i<3;i++)
 						guiState->removeButton(to_string(i));

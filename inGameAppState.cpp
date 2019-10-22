@@ -1,25 +1,31 @@
 #include"inGameAppState.h"
+#include"gameManager.h"
 #include"map.h"
 #include"defConfigs.h"
+#include"structure.h"
+#include"unit.h"
 
 using namespace std;
 
 namespace fsim{
-	InGameAppState::InGameAppState(int faction){
+	InGameAppState::InGameAppState(GameManager *gm,int faction){
+		type=AbstractAppState::IN_GAME_STATE;
 		this->faction=(Faction)faction;
+		this->gm=gm;
+
 		string factionSuffix;
 		switch(this->faction){
 			case CHINA:
-				factionSuffix="Ch/lvl01.cfg";
+				factionSuffix="Ch/Level01/";
 				break;
 			case JAPAN:
-				factionSuffix="Jp/lvl01.cfg";
+				factionSuffix="Jp/Level01/";
 				break;
 			case KOREA:
-				factionSuffix="Kr/lvl01.cfg";
+				factionSuffix="Kr/Level01/";
 				break;
 		}
-		map=new Map(PATH+"Models/Levels/"+factionSuffix);
+		map=new Map(gm,PATH+"Models/Levels/"+factionSuffix);
 	}
 
 	InGameAppState::~InGameAppState(){}
@@ -28,7 +34,11 @@ namespace fsim{
 
 	void InGameAppState::onDettached(){}
 
-	void InGameAppState::update(){}
+	void InGameAppState::update(){
+		map->update();
+		for(Structure *s : structures)
+			s->update();
+	}
 
 	void InGameAppState::onAction(Mapping::Bind bind, bool isPressed){
 		switch(bind){

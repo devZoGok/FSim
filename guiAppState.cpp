@@ -106,14 +106,13 @@ namespace fsim{
 		}
 	}
 
-	void GuiAppState::removeAllButtons(Button **exceptions){
-		int numExceptions=sizeof(exceptions)/sizeof(Button**);
+	void GuiAppState::removeAllButtons(Button **exceptions,int numExceptions){
 		for(int i=0;i<buttons.size();i++){
 			for(int j=0;j<numExceptions;j++)
 				if(buttons[i]==exceptions[j])
 					swap(buttons[i],buttons[j]);
 		}
-		while(buttons.size()>2){
+		while(buttons.size()>numExceptions){
 			delete buttons[buttons.size()-1];
 			buttons.pop_back();
 		}

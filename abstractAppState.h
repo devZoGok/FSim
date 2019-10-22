@@ -7,7 +7,7 @@
 namespace fsim{
 	class AbstractAppState{
 		public:
-			enum Type{GUI_STATE,IN_GAME_STATE};
+			enum Type{GUI_STATE,IN_GAME_STATE,ACTIVE_GAME_STATE};
 
 			virtual void update();
 			virtual void onAttached();

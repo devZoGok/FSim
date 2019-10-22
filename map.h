@@ -6,16 +6,23 @@
 
 namespace vb01{
 	class Model;
+	class Node;
+	class Light;
 }
 
 namespace fsim{
+	class GameManager;
+
 	class Map{
 		public:
-			Map(std::string);
+			Map(GameManager*,std::string);
 			~Map();
 			void update();
 		private:
-			std::vector<vb01::Model*> models;
+			GameManager *gm;
+			vb01::Model* mapModel;
+			vb01::Node *rootNode;
+			std::vector<vb01::Light*> lights;
 	};
 }
 
