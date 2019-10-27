@@ -26,19 +26,19 @@ namespace fsim{
 			void setSize(vb01::Vector2);
 			inline std::string getName(){return name;}
 			inline bool isSeparate(){return separate;}
+			inline bool isActive(){return active;}
 			inline vb01::Vector4 getColor(){return color;}
 			void setColor(vb01::Vector4);
 			void setZOrder(float);
-		private:
-			bool separate;
+		protected:
+			GameManager *gm;
+			bool separate,active=true;
 			vb01::Quad *rect;
 			vb01::Node *rectNode,*textNode=nullptr,*guiNode;
 			vb01::Vector2 pos,size;
 			vb01::Text *text=nullptr;
 			std::string name;
 			vb01::Vector4 color=vb01::Vector4(.6,.6,.6,1);
-		protected:
-			GameManager *gm;
 	};
 }
 

@@ -13,10 +13,11 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
-	Listbox::ListboxButton::ListboxButton(Listbox *l, GameManager *gm,Vector2 pos, Vector2 size, string name, bool separate) : Button(gm, pos, size, name, separate){listbox = l;}
+	Listbox::ListboxButton::ListboxButton(Listbox *l, GameManager *gm,Vector2 pos, Vector2 size, string name) : Button(gm, pos, size, name, false){listbox = l;}
 
 	void Listbox::ListboxButton::onClick(){
-		if(!listbox->isOpen())
+		ListboxType type=listbox->getType();
+		if(type!=CONTROLS&&!listbox->isOpen())
 			listbox->openUp();
 		else{
 			double x=*listbox->getMousePosX(),y=*listbox->getMousePosY();
@@ -31,20 +32,22 @@ namespace fsim{
 						listbox->scrollUp();
 				listbox->getScrollingButton()->setPos(Vector2(pos.x+size.x-20,y));
 			}
-			else
+			else if(type==STOCK&&listbox->isOpen())
 				listbox->close();
 		}
 	}
 
-	Listbox::ScrollingButton::ScrollingButton(GameManager *gm, Vector2 pos, Vector2 size, string name, bool separate) : Button(gm,pos,size,name,separate){}
+	Listbox::ScrollingButton::ScrollingButton(GameManager *gm, Vector2 pos, Vector2 size, string name) : Button(gm,pos,size,name,false){}
 
 	void Listbox::ScrollingButton::onClick(){}
 
-	Listbox::Listbox(GameManager *gm,Vector2 pos, Vector2 size, std::vector<string> &lines, int maxDisplay){
+	Listbox::Listbox(GameManager *gm,Vector2 pos, Vector2 size, std::vector<string> &lines, int maxDisplay, ListboxType type){
 		this->pos = pos;
 		this->size = size; 
 		this->maxDisplay = maxDisplay;
 		this->gm=gm;
+		this->type=type;
+
 		mousePosX=new double,mousePosY=new double;
 		glfwGetCursorPos(gm->getRoot()->getWindow(),mousePosX,mousePosY);
 		guiNode=gm->getRoot()->getGuiNode();
@@ -59,8 +62,8 @@ namespace fsim{
 			this->lines.push_back(text);
 		}
 		this->lines[0]->getNode()->setVisible(true);
-		listboxButton = new ListboxButton(this, gm, pos, size, "ListboxButton", false);
-		scrollingButton = new ScrollingButton(gm,Vector2(pos.x + size.x - 20, pos.y + 20), Vector2(20, 20.0 * (maxDisplay - 2) / (lines.size() - maxDisplay)), "scrollingButton", false);
+		listboxButton = new ListboxButton(this, gm, pos, size, "ListboxButton");
+		scrollingButton = new ScrollingButton(gm,Vector2(pos.x + size.x - 20, pos.y + 20), Vector2(20, 20.0 * (maxDisplay - 2) / (lines.size() - maxDisplay)), "scrollingButton");
 		scrollingButton->setColor(Vector4(.2,.2,.2,1));
 		scrollingButton->setZOrder(-.05);
 
@@ -73,9 +76,21 @@ namespace fsim{
 		selRectNode->attachMesh(selRect);
 		selRectNode->setVisible(false);
 		guiNode->attachChild(selRectNode);
+
+		if(type==CONTROLS)
+			openUp();
 	}
 
 	Listbox::~Listbox(){
+		while(!lines.empty()){
+			int id=lines.size()-1;
+			Node *textNode=lines[id]->getNode();
+			guiNode->dettachChild(textNode);
+			delete textNode;
+			lines.pop_back();
+		}
+		guiNode->dettachChild(selRectNode);
+		delete selRectNode;
 		delete mousePosX,mousePosY;
 	}
 
@@ -164,6 +179,10 @@ namespace fsim{
 		}
 	}
 
+	void Listbox::changeLine(int id, string change){
+		lines[id]->setText(change);	
+	}
+
 	std::vector<string> Listbox::getContents(){
 		std::vector<string> lines;
 		for(Text *t: this->lines)
@@ -177,5 +196,9 @@ namespace fsim{
 		node->addText(t);
 		guiNode->attachChild(node);
 		lines.push_back(t);
+	}
+
+	string Listbox::convert(string str){
+		return str;
 	}
 }

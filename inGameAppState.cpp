@@ -30,9 +30,13 @@ namespace fsim{
 
 	InGameAppState::~InGameAppState(){}
 
-	void InGameAppState::onAttached(){}
+	void InGameAppState::onAttached(){
+		AbstractAppState::onAttached();
+	}
 
-	void InGameAppState::onDettached(){}
+	void InGameAppState::onDettached(){
+		AbstractAppState::onDettached();
+	}
 
 	void InGameAppState::update(){
 		map->update();

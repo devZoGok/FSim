@@ -41,8 +41,8 @@ namespace fsim{
 			GLFW_MOUSE_BUTTON_1,
 			GLFW_KEY_LEFT_SHIFT
 		};
-		Mapping::Type types[numMappings]{
-			Mapping::MOUSE,
+		Mapping::BindType types[numMappings]{
+			Mapping::MOUSE_KEY,
 			Mapping::KEYBOARD
 		};
 		for(int i=0;i<numMappings;i++){
@@ -79,6 +79,18 @@ namespace fsim{
 			if(listboxes[i]==l)
 				id=i;
 		if(id!=-1){
+			removeButton(listboxes[id]->getScrollingButton());
+			removeButton(listboxes[id]->getListboxButton());
+			delete listboxes[id];
+			listboxes.erase(listboxes.begin()+id);
+		}
+	}
+
+	void GuiAppState::removeAllListboxes(){
+		while(!listboxes.empty()){
+			int id=listboxes.size()-1;		
+			removeButton(listboxes[id]->getScrollingButton());
+			removeButton(listboxes[id]->getListboxButton());
 			delete listboxes[id];
 			listboxes.erase(listboxes.begin()+id);
 		}
@@ -135,6 +147,24 @@ namespace fsim{
 		}
 	}
 
+	void GuiAppState::removeAllTextboxes(){
+		while(!textboxes.empty()){
+			int id=textboxes.size()-1;		
+			removeButton(textboxes[id]->getTextboxButton());
+			delete textboxes[id];
+			textboxes.erase(textboxes.begin()+id);
+		}
+	}
+
+	void GuiAppState::removeAllGUIElements(bool removeButtons,bool removeListboxes,bool removeTextboxes){
+		if(removeListboxes)
+			removeAllListboxes();
+		if(removeTextboxes)
+			removeAllTextboxes();
+		if(removeButtons)
+			removeAllButtons(nullptr);
+	}
+
 	void GuiAppState::onAction(Mapping::Bind bind, bool isPressed){
 		double *x=new double,*y=new double;
 		glfwGetCursorPos(gm->getRoot()->getWindow(),x,y);
@@ -146,7 +176,7 @@ namespace fsim{
 					for(Button *b : buttons){
 						if(!clicked){
 							Vector2 pos=b->getPos(),size=b->getSize();
-							if((pos.x<=*x&&*x<=pos.x+size.x)&&(pos.y<=*y&&*y<=pos.y+size.y)){
+							if(b->isActive()&&(pos.x<=*x&&*x<=pos.x+size.x)&&(pos.y<=*y&&*y<=pos.y+size.y)){
 								clicked=true;
 								b->onClick();
 							}
@@ -162,7 +192,7 @@ namespace fsim{
 		delete x,y;
 	}
 
-	void GuiAppState::onRawKeyButton(char ch){
+	void GuiAppState::onRawKeyButton(short ch){
 		Textbox *t=nullptr;
 		for(int i=0;i<textboxes.size()&&!t;i++)
 			if(textboxes[i]->isEnabled())
@@ -233,11 +263,43 @@ namespace fsim{
 					if(shiftPressed)ch=')';
 					break;
 			}
-			if(ch!=3)
+			if(ch!=GLFW_KEY_BACKSPACE)
 				t->type(ch,shiftPressed);
 			else 
 				t->deleteCharacter();
 			lastTypeTime=getTime();
+		}
+		updateControlsListbox(Mapping::KEYBOARD,true,ch);
+	}
+
+	void GuiAppState::onRawMouseButton(short s){
+		updateControlsListbox(Mapping::MOUSE_KEY,1,s);	
+	}
+
+	void GuiAppState::onRawJoystickButton(short s){
+		updateControlsListbox(Mapping::JOYSTICK_KEY,1,s);	
+	}
+
+	void GuiAppState::onRawJoystickAxis(short axis, float str){
+		updateControlsListbox(Mapping::JOYSTICK_AXIS,str>0,axis);	
+	}
+
+	void GuiAppState::updateControlsListbox(Mapping::BindType bt, bool action, short trigger){
+		Listbox *listbox=nullptr;
+		for(Listbox *l : listboxes)
+			if(l->getType()==Listbox::CONTROLS){
+				listbox=l;
+				break;
+			}
+		if(listbox){
+			int i[]{(int)bt,action,trigger},selectedOption=listbox->getSelectedOption();
+			string line=listbox->getContents()[selectedOption];
+			int colonId;
+			for(int i=0;i<line.length();i++)
+				if(line.c_str()[i]==':')
+					colonId=i;
+			string key=fromIntToString(i),bind=line.substr(0,colonId+1);
+			listbox->changeLine(selectedOption,bind+fromIntToString(i));
 		}
 	}
 }

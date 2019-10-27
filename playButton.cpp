@@ -41,15 +41,7 @@ namespace fsim{
 									this->upgrades[i]=upgrades[i];
 							}
 							void onClick(){
-								class UpgradeButton : public Button{
-									public:
-										UpgradeButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size,"",true,PATH+"Icons/upgrade.jpg"){}
-										void onClick(){
-								
-										}
-									private:
-								};
-
+								active=false;
 								GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
 								Node *guiNode=gm->getRoot()->getGuiNode();
 								for(int i=0;i<5;i++){
@@ -60,14 +52,25 @@ namespace fsim{
 									guiNode->attachChild(textNode);
 									textNodes[i]=textNode;
 
-									for(int j=0;j<4;j++)
-										guiState->addButton(new UpgradeButton(gm,Vector2(50+j*50,300+i*50),Vector2(40,40)));
+									for(int j=0;j<4;j++){
+										upgradeButtons[4*i+j]=new UpgradeButton(gm,Vector2(50+j*50,300+i*50),Vector2(40,40));
+										guiState->addButton(upgradeButtons[4*i+j]);
+									}
 								}
 							}
 							Node* getTextNode(int i){return textNodes[i];}
 						private:
+							class UpgradeButton : public Button{
+								public:
+									UpgradeButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size,"",true,PATH+"Icons/upgrade.jpg"){}
+									void onClick(){
+								
+									}
+								private:
+							};
 							string upgrades[5];
 							Node *textNodes[5]{0,0,0,0,0};
+							UpgradeButton *upgradeButtons[20]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 					};
 					class StartButton : public Button{
 						public:

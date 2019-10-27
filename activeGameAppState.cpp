@@ -1,4 +1,5 @@
 #include"activeGameAppState.h"
+#include<glfw3.h>
 
 namespace fsim{
 	ActiveGameAppState::ActiveGameAppState(int playerId){
@@ -6,9 +7,13 @@ namespace fsim{
 		this->playerId=playerId;
 	}
 
-	void ActiveGameAppState::onAttached(){}
+	void ActiveGameAppState::onAttached(){
+		AbstractAppState::onAttached();
+	}
 
-	void ActiveGameAppState::onDettached(){}
+	void ActiveGameAppState::onDettached(){
+		AbstractAppState::onDettached();
+	}
 
 	void ActiveGameAppState::update(){}
 

@@ -13,7 +13,16 @@ namespace vb01{
 namespace fsim{
 	class Listbox{
 		public: 
-			Listbox(GameManager*,vb01::Vector2, vb01::Vector2, std::vector<std::string>&, int);
+			enum ListboxType{STOCK,CONTROLS};
+			class ListboxButton : public Button{
+				public:
+					ListboxButton(Listbox*, GameManager*, vb01::Vector2, vb01::Vector2, std::string);
+					void onClick();
+				private:
+					Listbox *listbox = nullptr;
+			};
+
+			Listbox(GameManager*,vb01::Vector2, vb01::Vector2, std::vector<std::string>&, int, ListboxType=STOCK);
 			~Listbox();
 			void update();
 			void openUp();
@@ -22,6 +31,7 @@ namespace fsim{
 			void scrollDown();
 			void addLine(std::string);
 			void changeLine(int, std::string);
+			inline ListboxType getType(){return type;}
 			inline bool isOpen(){return open;}
 			void appendLines(std::vector<std::string>&);
 			inline int getSelectedOption(){return selectedOption;}
@@ -33,19 +43,15 @@ namespace fsim{
 			inline double* getMousePosX(){return mousePosX;}
 			inline double* getMousePosY(){return mousePosY;}
 		private: 
-			class ListboxButton : public Button{
-				public:
-					ListboxButton(Listbox*, GameManager*, vb01::Vector2, vb01::Vector2, std::string, bool);
-					void onClick();
-				private:
-					Listbox *listbox = nullptr;
-			};
 			class ScrollingButton : public Button{
 				public:
-					ScrollingButton(GameManager*,vb01::Vector2,vb01::Vector2,std::string,bool);
+					ScrollingButton(GameManager*,vb01::Vector2,vb01::Vector2,std::string);
 					void onClick();
 				private:
 			};
+
+			std::string convert(std::string);
+
 			GameManager *gm;
 			double *mousePosX,*mousePosY;
 			int maxDisplay, scrollOffset = 0, selectedOption = 0;
@@ -55,6 +61,7 @@ namespace fsim{
 			ListboxButton *listboxButton;
 			ScrollingButton *scrollingButton;
 			vb01::Node *selRectNode,*guiNode;
+			ListboxType type;
 		public: 
 			inline ListboxButton* getListboxButton(){return listboxButton;}
 			inline ScrollingButton* getScrollingButton(){return scrollingButton;}

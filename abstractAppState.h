@@ -1,6 +1,7 @@
 #ifndef ABSTRACT_APP_STATE_H
 #define ABSTRACT_APP_STATE_H
 
+#include"defConfigs.h"
 #include"mapping.h"
 #include<vector>
 
@@ -19,8 +20,10 @@ namespace fsim{
 			inline bool isAttached(){return attached;}
 			virtual void onAction(Mapping::Bind,bool){}
 			virtual void onAnalog(Mapping::Bind,float){}
-			virtual void onRawKeyButton(char){}
-			virtual void onRawMouseButton(char){}
+			virtual void onRawKeyButton(short){}
+			virtual void onRawMouseButton(short){}
+			virtual void onRawJoystickAxis(short,float){}
+			virtual void onRawJoystickButton(short){}
 		protected:
 			AbstractAppState();
 			~AbstractAppState();

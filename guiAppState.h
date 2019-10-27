@@ -26,12 +26,19 @@ namespace fsim{
 			void removeAllButtons(Button**,int=0);
 			void addListbox(Listbox*);
 			void removeListbox(Listbox*);
+			void removeAllListboxes();
 			void addTextbox(Textbox*);
 			void removeTextbox(Textbox*);
+			void removeAllTextboxes();
+			void removeAllGUIElements(bool=true,bool=true,bool=true);
 			void onAction(Mapping::Bind,bool);
-			void onRawKeyButton(char);
+			void onRawKeyButton(short);
+			void onRawMouseButton(short);
+			void onRawJoystickAxis(short,float);
+			void onRawJoystickButton(short);
 		private:
 			bool canType(){return getTime()-lastTypeTime>100;}
+			void updateControlsListbox(Mapping::BindType,bool,short);
 
 			s64 lastTypeTime=0;
 			bool shiftPressed=false;

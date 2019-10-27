@@ -12,7 +12,7 @@ link_directories(/usr/lib)
 set(CMAKE_BUILD_TYPE Debug)
 set(core gameManager.cpp stateManager.cpp inputManager.cpp)
 set(states abstractAppState.cpp guiAppState.cpp inGameAppState.cpp activeGameAppState.cpp)
-set(gui button.cpp exitButton.cpp optionsButton.cpp playButton.cpp loadButton.cpp textbox.cpp listbox.cpp)
+set(gui button.cpp mainMenuButton.cpp exitButton.cpp optionsButton.cpp playButton.cpp loadButton.cpp textbox.cpp listbox.cpp)
 set(content map.cpp playerData.h structure.cpp building.cpp unit.cpp aircraft.cpp jet.cpp helicopter.cpp)
 set(utils defConfigs.h util.cpp)
 
