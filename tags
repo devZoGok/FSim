@@ -108,7 +108,7 @@ OkButton	playButton.cpp	/^		class OkButton : public Button{$/;"	c	function:fsim:
 Options	optionsButton.cpp	/^		struct Options{$/;"	s	function:fsim::OptionsButton::onClick	file:
 OptionsButton	optionsButton.cpp	/^	OptionsButton::OptionsButton(GameManager *gm,Vector2 pos, Vector2 size) : Button(gm,pos,size,"O/;"	f	class:fsim::OptionsButton
 OptionsButton	optionsButton.h	/^	class OptionsButton : public Button{$/;"	c	namespace:fsim
-PATH	defConfigs.h	/^	const static std::string PATH="\/home\/dominykas\/c++\/FSim\/Assets\/",defaultTexture=PATH+"Tex/;"	v	namespace:fsim	typeref:typename:const std::string
+PATH	defConfigs.h	/^	const static std::string PATH="..\/Assets\/",defaultTexture=PATH+"Textures\/defaultTexture.jpg"/;"	v	namespace:fsim	typeref:typename:const std::string
 PLAYER_DATA_H	playerData.h	/^#define PLAYER_DATA_H$/;"	d
 PLAY_BUTTON_H	playButton.h	/^#define PLAY_BUTTON_H$/;"	d
 PlayButton	playButton.cpp	/^	PlayButton::PlayButton(GameManager *gm,Vector2 pos, Vector2 size):Button(gm,pos,size,"Play",tru/;"	f	class:fsim::PlayButton
@@ -168,7 +168,7 @@ cursorNode	textbox.h	/^			vb01::Node *guiNode,*textNode,*cursorNode;$/;"	m	class
 cursorPosOffset	textbox.h	/^			s64 lastBlinkTime, cursorPosOffset=0;$/;"	m	class:fsim::Textbox	typeref:typename:s64
 cursorRect	textbox.h	/^			vb01::Quad *cursorRect;$/;"	m	class:fsim::Textbox	typeref:typename:vb01::Quad *
 cursorWidth	textbox.h	/^			const int cursorWidth=5;$/;"	m	class:fsim::Textbox	typeref:typename:const int
-defaultTexture	defConfigs.h	/^	const static std::string PATH="\/home\/dominykas\/c++\/FSim\/Assets\/",defaultTexture=PATH+"Tex/;"	v	namespace:fsim	typeref:typename:const std::string
+defaultTexture	defConfigs.h	/^	const static std::string PATH="..\/Assets\/",defaultTexture=PATH+"Textures\/defaultTexture.jpg"/;"	v	namespace:fsim	typeref:typename:const std::string
 defaultsButton	optionsButton.cpp	/^				DefaultsButton *defaultsButton;$/;"	m	class:fsim::OptionsButton::onClick::TabButton	typeref:typename:DefaultsButton *	file:
 deleteCharacter	textbox.cpp	/^	void Textbox::deleteCharacter(){$/;"	f	class:fsim::Textbox	typeref:typename:void
 dettachState	stateManager.cpp	/^	void StateManager::dettachState(AbstractAppState *a){$/;"	f	class:fsim::StateManager	typeref:typename:void

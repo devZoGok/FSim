@@ -1,15 +1,17 @@
 cmake_minimum_required(VERSION 2.6)
 project(fsim)
 
+set(CMAKE_BUILD_TYPE Debug)
+cmake_policy(SET CMP0015 NEW)
+
 include_directories(/home/dominykas/c++/vb01)
 include_directories(/usr/include/freetype2)
 include_directories(/usr/include/GLFW)
 include_directories(/usr/include/boost)
 
-link_directories(/home/dominykas/c++/vb01/build)
+link_directories(../vb01/build)
 link_directories(/usr/lib)
 
-set(CMAKE_BUILD_TYPE Debug)
 set(core gameManager.cpp stateManager.cpp inputManager.cpp)
 set(states abstractAppState.cpp guiAppState.cpp inGameAppState.cpp activeGameAppState.cpp)
 set(gui button.cpp mainMenuButton.cpp exitButton.cpp optionsButton.cpp playButton.cpp loadButton.cpp textbox.cpp listbox.cpp)
