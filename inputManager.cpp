@@ -6,21 +6,31 @@
 #include<iostream>
 
 namespace fsim{
-	double *x,*y;
+	double *posX,*posY,strX,strY;
 	
-	void foo(GLFWwindow *window,double X,double Y){}
+	void foo(GLFWwindow *window,double newPosX,double newPosY){
+		strX=(*posX-newPosX)/800,strY=(newPosY-*posY)/600;
+	}
 
 	InputManager::InputManager(StateManager *stateManager,GLFWwindow *window){
 		this->stateManager=stateManager;
 		this->window=window;
-		x=new double,y=new double;
+		posX=new double,posY=new double;
 	}
 
 	InputManager::~InputManager(){}
 
 	void InputManager::update(){
-		glfwGetCursorPos(window,x,y);
-				int numAxis=3,numButtons=6;
+		glfwGetCursorPos(window,posX,posY);
+		int joystick;
+		int numAxis=3,numButtons=6;
+		const u8 *buttons;
+		const float *axis;
+		if(glfwJoystickPresent(GLFW_JOYSTICK_1)){
+			joystick=GLFW_JOYSTICK_1;
+			axis=glfwGetJoystickAxes(joystick,&numAxis);
+			buttons=glfwGetJoystickButtons(joystick,&numButtons);
+		}
 		for(AbstractAppState *a : stateManager->getAppStates()){
 			for(Mapping *m : a->getMappings()){
 				if(m->action){
@@ -33,12 +43,37 @@ namespace fsim{
 							pressed=glfwGetMouseButton(window,m->trigger);
 							break;
 						case Mapping::JOYSTICK_KEY:
-							if(glfwJoystickPresent(GLFW_JOYSTICK_1)){}
+							if(glfwJoystickPresent(GLFW_JOYSTICK_1)){
+								pressed=buttons[m->trigger];
+							}
 							break;
 					}
 					if((pressed&&!m->pressed)||(!pressed&&m->pressed)){
 						m->pressed=pressed;	
 						a->onAction(m->bind,pressed);
+					}
+				}
+				else{
+					switch(m->type){
+						case Mapping::MOUSE_AXIS:
+							{
+								float str;
+								switch(m->trigger){
+									case Mapping::MOUSE_AXIS_LEFT:
+									case Mapping::MOUSE_AXIS_RIGHT:
+										str=strX;
+										break;
+									case Mapping::MOUSE_AXIS_UP:
+									case Mapping::MOUSE_AXIS_DOWN:
+										str=strY;
+										break;
+								}
+								a->onAnalog(m->bind,str);
+								break;
+							}
+						case Mapping::JOYSTICK_AXIS:
+							a->onAnalog(m->bind,axis[m->trigger]);
+							break;
 					}
 				}
 			}
@@ -52,9 +87,6 @@ namespace fsim{
 			glfwSetCursorPosCallback(window,foo);
 
 			if(glfwJoystickPresent(GLFW_JOYSTICK_1)){
-				int joystick=GLFW_JOYSTICK_1;
-				const float *axis=glfwGetJoystickAxes(joystick,&numAxis);
-				const u8 *buttons=glfwGetJoystickButtons(joystick,&numButtons);
 				for(int i=0;i<numAxis;i++)
 					if(abs(axis[i])==1)
 						a->onRawJoystickAxis(i,axis[i]);

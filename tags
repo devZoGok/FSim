@@ -184,7 +184,7 @@ faction	playButton.cpp	/^							int faction;$/;"	m	class:fsim::PlayButton::onCli
 faction	playButton.cpp	/^				int faction;$/;"	m	class:fsim::PlayButton::onClick::OkButton	typeref:typename:int	file:
 faction	playButton.cpp	/^				int factionId,faction;$/;"	m	class:fsim::PlayButton::onClick::FactionButton	typeref:typename:int	file:
 factionId	playButton.cpp	/^				int factionId,faction;$/;"	m	class:fsim::PlayButton::onClick::FactionButton	typeref:typename:int	file:
-foo	inputManager.cpp	/^	void foo(GLFWwindow *window,double X,double Y){}$/;"	f	namespace:fsim	typeref:typename:void
+foo	inputManager.cpp	/^	void foo(GLFWwindow *window,double newPosX,double newPosY){$/;"	f	namespace:fsim	typeref:typename:void
 fromIntToString	util.cpp	/^	string fromIntToString(int data[3]){$/;"	f	namespace:fsim	typeref:typename:string
 fromStringToInt	util.cpp	/^	int* fromStringToInt(string data){$/;"	f	namespace:fsim	typeref:typename:int *
 fsim	abstractAppState.cpp	/^namespace fsim{$/;"	n	file:
@@ -373,6 +373,8 @@ pos	button.h	/^			vb01::Vector2 pos,size;$/;"	m	class:fsim::Button	typeref:typen
 pos	listbox.h	/^			vb01::Vector2 pos, size;$/;"	m	class:fsim::Listbox	typeref:typename:vb01::Vector2
 pos	structure.h	/^			vb01::Vector3 pos,dir=vb01::Vector3(0,0,1),left=vb01::Vector3(1,0,0),up=vb01::Vector3(0,1,0);$/;"	m	class:fsim::Structure	typeref:typename:vb01::Vector3
 pos	textbox.h	/^			vb01::Vector2 pos, size;$/;"	m	class:fsim::Textbox	typeref:typename:vb01::Vector2
+posX	inputManager.cpp	/^	double *posX,*posY,strX,strY;$/;"	v	namespace:fsim	typeref:typename:double *
+posY	inputManager.cpp	/^	double *posX,*posY,strX,strY;$/;"	v	namespace:fsim	typeref:typename:double **
 pressed	mapping.h	/^		bool action,pressed=false;$/;"	m	struct:fsim::Mapping	typeref:typename:bool
 readFile	util.cpp	/^	void readFile(string path,std::vector<string> &lines,int firstLine,int lastLine){$/;"	f	namespace:fsim	typeref:typename:void
 rect	button.h	/^			vb01::Quad *rect;$/;"	m	class:fsim::Button	typeref:typename:vb01::Quad *
@@ -416,6 +418,8 @@ size	listbox.h	/^			vb01::Vector2 pos, size;$/;"	m	class:fsim::Listbox	typeref:t
 size	textbox.h	/^			vb01::Vector2 pos, size;$/;"	m	class:fsim::Textbox	typeref:typename:vb01::Vector2
 stateManager	gameManager.h	/^			StateManager *stateManager=nullptr;$/;"	m	class:fsim::GameManager	typeref:typename:StateManager *
 stateManager	inputManager.h	/^			StateManager *stateManager;$/;"	m	class:fsim::InputManager	typeref:typename:StateManager *
+strX	inputManager.cpp	/^	double *posX,*posY,strX,strY;$/;"	v	namespace:fsim	typeref:typename:double **
+strY	inputManager.cpp	/^	double *posX,*posY,strX,strY;$/;"	v	namespace:fsim	typeref:typename:double **
 structures	inGameAppState.h	/^			std::vector<Structure*> structures;$/;"	m	class:fsim::InGameAppState	typeref:typename:std::vector<Structure * >
 tabs	playButton.cpp	/^							AircraftTabButton *tabs[3];$/;"	m	class:fsim::PlayButton::onClick::OkButton::onClick::StartButton	typeref:typename:AircraftTabButton * [3]	file:
 text	button.h	/^			vb01::Text *text=nullptr;$/;"	m	class:fsim::Button	typeref:typename:vb01::Text *
@@ -469,8 +473,6 @@ vb01	textbox.h	/^namespace vb01{$/;"	n
 width	gameManager.h	/^			int width,height;$/;"	m	class:fsim::GameManager	typeref:typename:int
 window	inputManager.h	/^			GLFWwindow *window;$/;"	m	class:fsim::InputManager	typeref:typename:GLFWwindow *
 writeFile	util.cpp	/^	void writeFile(string path,std::vector<string> &lines){$/;"	f	namespace:fsim	typeref:typename:void
-x	inputManager.cpp	/^	double *x,*y;$/;"	v	namespace:fsim	typeref:typename:double *
-y	inputManager.cpp	/^	double *x,*y;$/;"	v	namespace:fsim	typeref:typename:double **
 ~AbstractAppState	abstractAppState.cpp	/^	AbstractAppState::~AbstractAppState(){}$/;"	f	class:fsim::AbstractAppState
 ~Aircraft	aircraft.cpp	/^	Aircraft::~Aircraft(){}$/;"	f	class:fsim::Aircraft
 ~Building	building.cpp	/^	Building::~Building(){}$/;"	f	class:fsim::Building

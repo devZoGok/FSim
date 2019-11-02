@@ -12,6 +12,7 @@ namespace fsim{
 			~InputManager();
 			void update();
 		private:
+
 			StateManager *stateManager;
 			GLFWwindow *window;
 	};
