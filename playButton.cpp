@@ -1,3 +1,5 @@
+#define MYSQLPP_MYSQL_HEADERS_BURIED
+
 #include"playButton.h"
 #include"guiAppState.h"
 #include"gameManager.h"
@@ -9,8 +11,11 @@
 #include"aircraft.h"
 #include<root.h>
 #include<node.h>
+#include<mysql++.h>
+#include<cstdlib>
 
 using namespace vb01;
+using namespace mysqlpp;
 using namespace std;
 
 namespace fsim{
@@ -130,22 +135,28 @@ namespace fsim{
 					};
 
 					GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
-					string playerInfo=textbox->getText()+":";
-					for(int i=0;i<4*15;i++){
-						playerInfo+="0,";
-					}
-					playerInfo+="0";
-					std::vector<string> lines;
-					readFile(PATH+"../playerList.cfg",lines);
-					lines.push_back(playerInfo);
-					writeFile(PATH+"../playerList.cfg",lines);
 
-					string tabNames[]={"Fighter","Fighter-bomber","Helicopter"};
-					string upgrades[][5]={
-						{"Airframe","Fuel tank","Machinegun","AAMs","Countermeasures"},
-						{"Airframe","Fuel tank","Machinegun","Bombs","Countermeasures"},
-						{"Airframe","Fuel tank","Machinegun","ASMs","Countermeasures"}
+					const int numUpgrades=5;
+					string tabNames[]={"Fighter","Fighter_bomber","Helicopter"};
+					string upgrades[][numUpgrades]={
+						{"Airframe","Fuel_tank","Machinegun","AAMs","Countermeasures"},
+						{"Airframe","Fuel_tank","Machinegun","Bombs","Countermeasures"},
+						{"Airframe","Fuel_tank","Machinegun","ASMs","Countermeasures"}
 					};
+
+					Connection conn(false);					
+					conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
+					int numPilots=(int)conn.query("select count(*) from pilots;").store()[0][0];
+					string playerName=textbox->getText(),queryText="insert into pilots values("+to_string(numPilots)+","+to_string(faction)+",'"+playerName+"'";
+					for(int i=0;i<3;i++){
+						queryText+=",'";
+						for(int j=0;j<numUpgrades;j++)
+							queryText+="0";
+						queryText+="'";
+					}
+					queryText+=");";
+					conn.query(queryText).store();
+
 					int width=60;
 					AircraftTabButton *tabs[3];
 					for(int i=0;i<3;i++){

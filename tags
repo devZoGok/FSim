@@ -65,7 +65,7 @@ IN_GAME_APP_STATE_H	inGameAppState.h	/^#define IN_GAME_APP_STATE_H$/;"	d
 IN_GAME_STATE	abstractAppState.h	/^			enum Type{GUI_STATE,IN_GAME_STATE,ACTIVE_GAME_STATE};$/;"	e	enum:fsim::AbstractAppState::Type
 InGameAppState	inGameAppState.cpp	/^	InGameAppState::InGameAppState(GameManager *gm,int faction){$/;"	f	class:fsim::InGameAppState
 InGameAppState	inGameAppState.h	/^	class InGameAppState : public AbstractAppState{$/;"	c	namespace:fsim
-InputManager	inputManager.cpp	/^	InputManager::InputManager(StateManager *stateManager,GLFWwindow *window){$/;"	f	class:fsim::InputManager
+InputManager	inputManager.cpp	/^	InputManager::InputManager(GameManager *gm,GLFWwindow *window){$/;"	f	class:fsim::InputManager
 InputManager	inputManager.h	/^	class InputManager{$/;"	c	namespace:fsim
 JAPAN	playerData.h	/^	enum Faction{CHINA,JAPAN,KOREA};$/;"	e	enum:fsim::Faction
 JET_H	jet.h	/^#define JET_H$/;"	d
@@ -95,6 +95,8 @@ MOUSE_AXIS_RIGHT	mapping.h	/^		enum AuxTriggers{MOUSE_AXIS_LEFT=310,MOUSE_AXIS_R
 MOUSE_AXIS_UP	mapping.h	/^		enum AuxTriggers{MOUSE_AXIS_LEFT=310,MOUSE_AXIS_RIGHT=311,MOUSE_AXIS_UP=312,MOUSE_AXIS_DOWN=31/;"	e	enum:fsim::Mapping::AuxTriggers
 MOUSE_CLICK	mapping.h	/^			MOUSE_CLICK,$/;"	e	enum:fsim::Mapping::Bind
 MOUSE_KEY	mapping.h	/^		enum BindType{KEYBOARD,MOUSE_KEY,MOUSE_AXIS,JOYSTICK_KEY,JOYSTICK_AXIS};$/;"	e	enum:fsim::Mapping::BindType
+MYSQLPP_MYSQL_HEADERS_BURIED	gameManager.cpp	/^#define MYSQLPP_MYSQL_HEADERS_BURIED$/;"	d	file:
+MYSQLPP_MYSQL_HEADERS_BURIED	playButton.cpp	/^#define MYSQLPP_MYSQL_HEADERS_BURIED$/;"	d	file:
 MainMenuButton	mainMenuButton.cpp	/^	MainMenuButton::MainMenuButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size/;"	f	class:fsim::MainMenuButton
 MainMenuButton	mainMenuButton.h	/^	class MainMenuButton : public Button{$/;"	c	namespace:fsim
 Map	map.cpp	/^	Map::Map(GameManager *gm,string path){$/;"	f	class:fsim::Map
@@ -105,6 +107,7 @@ OkButton	optionsButton.cpp	/^				OkButton(GameManager *gm, Vector2 pos, Vector2 
 OkButton	optionsButton.cpp	/^		class OkButton : public Button{$/;"	c	function:fsim::OptionsButton::onClick	file:
 OkButton	playButton.cpp	/^				OkButton(GameManager *gm,Vector2 pos, Vector2 size,Textbox *textbox,int &faction) : Button(g/;"	f	class:fsim::PlayButton::onClick::OkButton	file:
 OkButton	playButton.cpp	/^		class OkButton : public Button{$/;"	c	function:fsim::PlayButton::onClick	file:
+Options	gameManager.h	/^			struct Options{$/;"	s	class:fsim::GameManager
 Options	optionsButton.cpp	/^		struct Options{$/;"	s	function:fsim::OptionsButton::onClick	file:
 OptionsButton	optionsButton.cpp	/^	OptionsButton::OptionsButton(GameManager *gm,Vector2 pos, Vector2 size) : Button(gm,pos,size,"O/;"	f	class:fsim::OptionsButton
 OptionsButton	optionsButton.h	/^	class OptionsButton : public Button{$/;"	c	namespace:fsim
@@ -168,6 +171,7 @@ cursorNode	textbox.h	/^			vb01::Node *guiNode,*textNode,*cursorNode;$/;"	m	class
 cursorPosOffset	textbox.h	/^			s64 lastBlinkTime, cursorPosOffset=0;$/;"	m	class:fsim::Textbox	typeref:typename:s64
 cursorRect	textbox.h	/^			vb01::Quad *cursorRect;$/;"	m	class:fsim::Textbox	typeref:typename:vb01::Quad *
 cursorWidth	textbox.h	/^			const int cursorWidth=5;$/;"	m	class:fsim::Textbox	typeref:typename:const int
+databaseUser	gameManager.h	/^				std::string databaseUser;$/;"	m	struct:fsim::GameManager::Options	typeref:typename:std::string
 defaultTexture	defConfigs.h	/^	const static std::string PATH="..\/Assets\/",defaultTexture=PATH+"Textures\/defaultTexture.jpg"/;"	v	namespace:fsim	typeref:typename:const std::string
 defaultsButton	optionsButton.cpp	/^				DefaultsButton *defaultsButton;$/;"	m	class:fsim::OptionsButton::onClick::TabButton	typeref:typename:DefaultsButton *	file:
 deleteCharacter	textbox.cpp	/^	void Textbox::deleteCharacter(){$/;"	f	class:fsim::Textbox	typeref:typename:void
@@ -242,6 +246,7 @@ getAppStates	stateManager.h	/^			inline std::vector<AbstractAppState*> getAppSta
 getButton	guiAppState.cpp	/^	Button* GuiAppState::getButton(string name){$/;"	f	class:fsim::GuiAppState	typeref:typename:Button *
 getColor	button.h	/^			inline vb01::Vector4 getColor(){return color;}$/;"	f	class:fsim::Button	typeref:typename:vb01::Vector4
 getContents	listbox.cpp	/^	std::vector<string> Listbox::getContents(){$/;"	f	class:fsim::Listbox	typeref:typename:std::vector<string>
+getHeight	gameManager.h	/^			inline int getHeight(){return height;}$/;"	f	class:fsim::GameManager	typeref:typename:int
 getListboxButton	listbox.h	/^			inline ListboxButton* getListboxButton(){return listboxButton;}$/;"	f	class:fsim::Listbox	typeref:typename:ListboxButton *
 getMapping	abstractAppState.h	/^			inline Mapping* getMapping(int id){return mappings[id];}$/;"	f	class:fsim::AbstractAppState	typeref:typename:Mapping *
 getMappings	abstractAppState.h	/^			inline std::vector<Mapping*>& getMappings(){return mappings;}$/;"	f	class:fsim::AbstractAppState	typeref:typename:std::vector<Mapping * > &
@@ -253,6 +258,7 @@ getNumAppStates	stateManager.h	/^			inline int getNumAppStates(){return appState
 getNumLines	listbox.h	/^			inline int getNumLines(){return lines.size();}$/;"	f	class:fsim::Listbox	typeref:typename:int
 getNumMappings	abstractAppState.h	/^			inline int getNumMappings(){return mappings.size();}$/;"	f	class:fsim::AbstractAppState	typeref:typename:int
 getNumStructures	inGameAppState.h	/^			inline int getNumStructures(){return structures.size();}$/;"	f	class:fsim::InGameAppState	typeref:typename:int
+getOptions	gameManager.h	/^			inline Options& getOptions(){return options;}$/;"	f	class:fsim::GameManager	typeref:typename:Options &
 getPos	button.h	/^			inline vb01::Vector2 getPos(){return pos;}$/;"	f	class:fsim::Button	typeref:typename:vb01::Vector2
 getPos	listbox.h	/^			inline vb01::Vector2 getPos(){return pos;} $/;"	f	class:fsim::Listbox	typeref:typename:vb01::Vector2
 getRecDirs	util.cpp	/^	void getRecDirs(path p,std::vector<string> &list,bool showFiles, bool showDirs, bool rec){$/;"	f	namespace:fsim	typeref:typename:void
@@ -270,10 +276,12 @@ getTextboxButton	textbox.h	/^			inline TextboxButton* getTextboxButton(){return 
 getTime	util.h	/^	inline s64 getTime(){return (s64)(std::chrono::system_clock::now().time_since_epoch()\/std::chr/;"	f	namespace:fsim	typeref:typename:s64
 getType	abstractAppState.h	/^			inline Type getType(){return type;}$/;"	f	class:fsim::AbstractAppState	typeref:typename:Type
 getType	listbox.h	/^			inline ListboxType getType(){return type;}$/;"	f	class:fsim::Listbox	typeref:typename:ListboxType
+getWidth	gameManager.h	/^			inline int getWidth(){return width;}$/;"	f	class:fsim::GameManager	typeref:typename:int
 gm	button.h	/^			GameManager *gm;$/;"	m	class:fsim::Button	typeref:typename:GameManager *
 gm	exitButton.h	/^			GameManager *gm;$/;"	m	class:fsim::ExitButton	typeref:typename:GameManager *
 gm	guiAppState.h	/^			GameManager *gm;$/;"	m	class:fsim::GuiAppState	typeref:typename:GameManager *
 gm	inGameAppState.h	/^			GameManager *gm;$/;"	m	class:fsim::InGameAppState	typeref:typename:GameManager *
+gm	inputManager.h	/^			GameManager *gm;$/;"	m	class:fsim::InputManager	typeref:typename:GameManager *
 gm	listbox.h	/^			GameManager *gm;$/;"	m	class:fsim::Listbox	typeref:typename:GameManager *
 gm	map.h	/^			GameManager *gm;$/;"	m	class:fsim::Map	typeref:typename:GameManager *
 gm	structure.h	/^			GameManager *gm;$/;"	m	class:fsim::Structure	typeref:typename:GameManager *
@@ -281,7 +289,9 @@ guiNode	button.h	/^			vb01::Node *rectNode,*textNode=nullptr,*guiNode;$/;"	m	cla
 guiNode	listbox.h	/^			vb01::Node *selRectNode,*guiNode;$/;"	m	class:fsim::Listbox	typeref:typename:vb01::Node **
 guiNode	structure.h	/^			vb01::Node *rootNode,*guiNode;$/;"	m	class:fsim::Structure	typeref:typename:vb01::Node **
 guiNode	textbox.h	/^			vb01::Node *guiNode,*textNode,*cursorNode;$/;"	m	class:fsim::Textbox	typeref:typename:vb01::Node *
+height	gameManager.h	/^				int width,height;$/;"	m	struct:fsim::GameManager::Options	typeref:typename:int
 height	gameManager.h	/^			int width,height;$/;"	m	class:fsim::GameManager	typeref:typename:int
+height	inputManager.cpp	/^	int width,height;$/;"	v	namespace:fsim	typeref:typename:int
 id	structure.h	/^			int id;$/;"	m	class:fsim::Structure	typeref:typename:int
 ids	optionsButton.cpp	/^			vector<int> ids;$/;"	m	struct:fsim::OptionsButton::onClick::Options	typeref:typename:vector<int>	file:
 inputManager	gameManager.h	/^			InputManager *inputManager=nullptr;$/;"	m	class:fsim::GameManager	typeref:typename:InputManager *
@@ -364,6 +374,7 @@ onRawMouseButton	abstractAppState.h	/^			virtual void onRawMouseButton(short){}$
 onRawMouseButton	guiAppState.cpp	/^	void GuiAppState::onRawMouseButton(short s){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
 open	listbox.h	/^			bool open = false;$/;"	m	class:fsim::Listbox	typeref:typename:bool
 openUp	listbox.cpp	/^	void Listbox::openUp(){$/;"	f	class:fsim::Listbox	typeref:typename:void
+options	gameManager.h	/^			Options options;$/;"	m	class:fsim::GameManager	typeref:typename:Options
 options	optionsButton.cpp	/^				Options options;$/;"	m	class:fsim::OptionsButton::onClick::DefaultsButton	typeref:typename:Options	file:
 options	optionsButton.cpp	/^				Options options;$/;"	m	class:fsim::OptionsButton::onClick::OkButton	typeref:typename:Options	file:
 path	structureData.h	/^	static const std::string path[numStructures]={$/;"	v	namespace:fsim	typeref:typename:const std::string[]
@@ -377,6 +388,7 @@ posX	inputManager.cpp	/^	double *posX,*posY,strX,strY;$/;"	v	namespace:fsim	type
 posY	inputManager.cpp	/^	double *posX,*posY,strX,strY;$/;"	v	namespace:fsim	typeref:typename:double **
 pressed	mapping.h	/^		bool action,pressed=false;$/;"	m	struct:fsim::Mapping	typeref:typename:bool
 readFile	util.cpp	/^	void readFile(string path,std::vector<string> &lines,int firstLine,int lastLine){$/;"	f	namespace:fsim	typeref:typename:void
+readOptions	gameManager.cpp	/^	void GameManager::readOptions(){$/;"	f	class:fsim::GameManager	typeref:typename:void
 rect	button.h	/^			vb01::Quad *rect;$/;"	m	class:fsim::Button	typeref:typename:vb01::Quad *
 rectNode	button.h	/^			vb01::Node *rectNode,*textNode=nullptr,*guiNode;$/;"	m	class:fsim::Button	typeref:typename:vb01::Node *
 removeAllButtons	guiAppState.cpp	/^	void GuiAppState::removeAllButtons(Button **exceptions,int numExceptions){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
@@ -470,7 +482,9 @@ vb01	listbox.h	/^namespace vb01{$/;"	n
 vb01	map.h	/^namespace vb01{$/;"	n
 vb01	structure.h	/^namespace vb01{$/;"	n
 vb01	textbox.h	/^namespace vb01{$/;"	n
+width	gameManager.h	/^				int width,height;$/;"	m	struct:fsim::GameManager::Options	typeref:typename:int
 width	gameManager.h	/^			int width,height;$/;"	m	class:fsim::GameManager	typeref:typename:int
+width	inputManager.cpp	/^	int width,height;$/;"	v	namespace:fsim	typeref:typename:int
 window	inputManager.h	/^			GLFWwindow *window;$/;"	m	class:fsim::InputManager	typeref:typename:GLFWwindow *
 writeFile	util.cpp	/^	void writeFile(string path,std::vector<string> &lines){$/;"	f	namespace:fsim	typeref:typename:void
 ~AbstractAppState	abstractAppState.cpp	/^	AbstractAppState::~AbstractAppState(){}$/;"	f	class:fsim::AbstractAppState

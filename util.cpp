@@ -136,8 +136,12 @@ namespace fsim{
 			}
 		else{
 			string l;
-			while(getline(inFile,l))
-				lines.push_back(l);
+			int startLine=0;
+			while(getline(inFile,l)){
+				if(startLine>=firstLine)
+					lines.push_back(l);
+				startLine++;	
+			}
 		} 
 		inFile.close();
 	}

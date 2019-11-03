@@ -4,15 +4,16 @@
 class GLFWwindow;
 
 namespace fsim{
+	class GameManager;
 	class StateManager;
 
 	class InputManager{
 		public:
-			InputManager(StateManager*,GLFWwindow*);
+			InputManager(GameManager*,GLFWwindow*);
 			~InputManager();
 			void update();
 		private:
-
+			GameManager *gm;
 			StateManager *stateManager;
 			GLFWwindow *window;
 	};

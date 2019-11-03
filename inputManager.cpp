@@ -1,4 +1,5 @@
 #include"inputManager.h"
+#include"gameManager.h"
 #include"stateManager.h"
 #include"util.h"
 #include<glfw3.h>
@@ -7,13 +8,15 @@
 
 namespace fsim{
 	double *posX,*posY,strX,strY;
+	int width,height;
 	
 	void foo(GLFWwindow *window,double newPosX,double newPosY){
-		strX=(*posX-newPosX)/800,strY=(newPosY-*posY)/600;
+		strX=(*posX-newPosX)/width,strY=(newPosY-*posY)/height;
 	}
 
-	InputManager::InputManager(StateManager *stateManager,GLFWwindow *window){
-		this->stateManager=stateManager;
+	InputManager::InputManager(GameManager *gm,GLFWwindow *window){
+		this->gm=gm;
+		this->stateManager=gm->getStateManager();
 		this->window=window;
 		posX=new double,posY=new double;
 	}
@@ -21,6 +24,8 @@ namespace fsim{
 	InputManager::~InputManager(){}
 
 	void InputManager::update(){
+		width=gm->getWidth(),height=gm->getHeight();
+
 		glfwGetCursorPos(window,posX,posY);
 		int joystick;
 		int numAxis=3,numButtons=6;
