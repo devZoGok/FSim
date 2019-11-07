@@ -12,13 +12,16 @@ namespace vb01{
 
 namespace fsim{
 	class GameManager;
+	class InGameAppState;
 
 	class Map{
 		public:
-			Map(GameManager*,std::string);
+			Map(GameManager*,std::string,InGameAppState*);
 			~Map();
 			void update();
 		private:
+			void getCoords(std::string,std::string&,float*,const int);
+
 			GameManager *gm;
 			vb01::Model* mapModel;
 			vb01::Node *rootNode;

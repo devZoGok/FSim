@@ -4,9 +4,13 @@
 #include"abstractAppState.h"
 
 namespace fsim{
+	class Structure;
+	class GameManager;
+	class Aircraft;
+
 	class ActiveGameAppState : public AbstractAppState{
 		public:
-			ActiveGameAppState(int);
+			ActiveGameAppState(GameManager*,int);
 			void onAttached();
 			void onDettached();
 			void update();
@@ -14,6 +18,8 @@ namespace fsim{
 			void onAnalog(Mapping::Bind,float);
 		private:
 			int playerId;
+			Aircraft *aircraft;
+			std::vector<Structure*> structures;
 	};
 }
 

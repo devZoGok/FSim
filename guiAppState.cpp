@@ -10,7 +10,7 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
-	GuiAppState::GuiAppState(GameManager *gm){
+	GuiAppState::GuiAppState(GameManager *gm) : AbstractAppState(gm){
 		this->gm=gm;
 		type=Type::GUI_STATE;
 	}

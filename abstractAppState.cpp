@@ -6,7 +6,7 @@
 using namespace std;
 
 namespace fsim{
-	AbstractAppState::AbstractAppState(){}
+	AbstractAppState::AbstractAppState(GameManager *gm){this->gm=gm;}
 
 	AbstractAppState::~AbstractAppState(){}
 

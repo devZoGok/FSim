@@ -23,9 +23,9 @@ namespace fsim{
 			inline int getNumStructures(){return structures.size();}
 			inline void addStructure(Structure *s){structures.push_back(s);}
 			inline void setPlayerId(int id){this->playerId=id;}
+			std::vector<Structure*>& getStructures(){return structures;}
 		private:
 			int playerId;
-			GameManager *gm;
 			Map *map;
 			Faction faction;
 			std::vector<Structure*> structures;

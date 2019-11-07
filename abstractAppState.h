@@ -6,6 +6,8 @@
 #include<vector>
 
 namespace fsim{
+	class GameManager;
+
 	class AbstractAppState{
 		public:
 			enum Type{GUI_STATE,IN_GAME_STATE,ACTIVE_GAME_STATE};
@@ -25,8 +27,9 @@ namespace fsim{
 			virtual void onRawJoystickAxis(short,float){}
 			virtual void onRawJoystickButton(short){}
 		protected:
-			AbstractAppState();
+			AbstractAppState(GameManager*);
 			~AbstractAppState();
+			GameManager *gm;
 			std::vector<Mapping*> mappings;
 			Type type;
 			bool attached=false;

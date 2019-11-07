@@ -1,6 +1,7 @@
 #define MYSQLPP_MYSQL_HEADERS_BURIED
 
 #include"playButton.h"
+#include"mainMenuButton.h"
 #include"guiAppState.h"
 #include"gameManager.h"
 #include"stateManager.h"
@@ -95,7 +96,7 @@ namespace fsim{
 											int playerId=inGameState->getNumStructures();
 											inGameState->setPlayerId(playerId);
 											inGameState->addStructure(new Aircraft(gm,aircraftId,Vector3(0,20,0),Quaternion(1,0,0,0)));
-											ActiveGameAppState *activeGameState=new ActiveGameAppState(playerId);	
+											ActiveGameAppState *activeGameState=new ActiveGameAppState(gm,playerId);	
 
 											stateManager->attachState(activeGameState);
 											guiState->removeAllButtons(nullptr);
@@ -157,6 +158,10 @@ namespace fsim{
 					queryText+=");";
 					conn.query(queryText).store();
 
+					Button *e[]{this};
+					guiState->removeAllGUIElements(false);
+					guiState->removeAllButtons(e,1);
+
 					int width=60;
 					AircraftTabButton *tabs[3];
 					for(int i=0;i<3;i++){
@@ -167,9 +172,6 @@ namespace fsim{
 					guiState->getButton("Fighter")->onClick();
 					guiState->addButton(new StartButton(gm,Vector2(500,500),Vector2(100,50),tabs,faction));
 
-					for(int i=0;i<3;i++)
-						guiState->removeButton(to_string(i));
-					guiState->removeTextbox(textbox);
 					guiState->removeButton(this);
 				}
 			private:
@@ -178,16 +180,17 @@ namespace fsim{
 		};
 
 		GuiAppState *guiState=((GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE));
+		Button *e[]{this};
+		guiState->removeAllButtons(e,1);
+
 		int width=200,factionId=0;
 		for(int i=0;i<3;i++)
 			guiState->addButton(new FactionButton(gm,Vector2(50+i*(width+10),10),Vector2(width,400),i,factionId));
 		Textbox *t=new Textbox(gm,Vector2(300,550),Vector2(150,40));
 		guiState->addTextbox(t);
 		guiState->addButton(new OkButton(gm,Vector2(480,550),Vector2(100,40),t,factionId));
+		guiState->addButton(new MainMenuButton(gm,Vector2(100,550),Vector2(100,40)));
 
-		guiState->removeButton("Exit");
-		guiState->removeButton("Load");
-		guiState->removeButton("Options");
 		guiState->removeButton(this);
 	}
 }

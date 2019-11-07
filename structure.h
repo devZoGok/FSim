@@ -18,6 +18,7 @@ namespace fsim{
 			Structure(GameManager*,int,vb01::Vector3,vb01::Quaternion);
 			~Structure();
 			virtual void update();
+			inline int getId(){return id;}
 		protected:
 			GameManager *gm;
 			int id;

@@ -14,6 +14,6 @@ namespace fsim{
 
 	void Aircraft::update(){
 		cam->setPosition(pos-dir*15);
-		//cam->lookAt(dir,up);
+		cam->lookAt(dir,up);
 	}
 }

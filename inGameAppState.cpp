@@ -8,10 +8,9 @@
 using namespace std;
 
 namespace fsim{
-	InGameAppState::InGameAppState(GameManager *gm,int faction){
+	InGameAppState::InGameAppState(GameManager *gm,int faction) : AbstractAppState(gm){
 		type=AbstractAppState::IN_GAME_STATE;
 		this->faction=(Faction)faction;
-		this->gm=gm;
 
 		string factionSuffix;
 		switch(this->faction){
@@ -25,7 +24,7 @@ namespace fsim{
 				factionSuffix="Kr/Level01/";
 				break;
 		}
-		map=new Map(gm,PATH+"Models/Levels/"+factionSuffix);
+		map=new Map(gm,PATH+"Models/Levels/"+factionSuffix,this);
 	}
 
 	InGameAppState::~InGameAppState(){}
