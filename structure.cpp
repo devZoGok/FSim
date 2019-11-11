@@ -18,15 +18,21 @@ namespace fsim{
 		rootNode=gm->getRoot()->getRootNode();
 		guiNode=gm->getRoot()->getGuiNode();
 
+		dir=rot*dir;
+		left=rot*left;
+		up=rot*up;
+
 		model=new Model(PATH+path[id]+".obj");
 		mat=new Material();
 		mat->addDiffuseMap(defaultTexture);
 		model->setMaterial(mat);
 		model->setPosition(pos);
+		model->setOrientation(rot);
 		rootNode->attachChild(model);
 	}
 
 	Structure::~Structure(){}
 
-	void Structure::update(){}
+	void Structure::update(){
+	}
 }

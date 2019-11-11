@@ -8,8 +8,10 @@
 #include"textbox.h"
 #include"defConfigs.h"
 #include"inGameAppState.h"
-#include"activeGameAppState.h"
-#include"aircraft.h"
+#include"jetAppState.h"
+#include"helicopterAppState.h"
+#include"jet.h"
+#include"helicopter.h"
 #include<root.h>
 #include<node.h>
 #include<mysql++.h>
@@ -95,10 +97,12 @@ namespace fsim{
 											InGameAppState *inGameState=(InGameAppState*)stateManager->getState(AbstractAppState::IN_GAME_STATE);
 											int playerId=inGameState->getNumStructures();
 											inGameState->setPlayerId(playerId);
-											inGameState->addStructure(new Aircraft(gm,aircraftId,Vector3(0,20,0),Quaternion(1,0,0,0)));
-											ActiveGameAppState *activeGameState=new ActiveGameAppState(gm,playerId);	
+											Vector3 pos=Vector3(0,20,-20);
+											Aircraft *aircraft=aircraftId==2?(Aircraft*)new Helicopter(gm,aircraftId,pos,Quaternion(1,0,0,0)):
+												(Aircraft*)new Jet(gm,aircraftId,pos,Quaternion(1,0,0,0));
+											inGameState->addStructure(aircraft);
 
-											stateManager->attachState(activeGameState);
+											stateManager->attachState(aircraftId==2?(AbstractAppState*)new HelicopterAppState(gm,playerId):(AbstractAppState*)new JetAppState(gm,playerId));
 											guiState->removeAllButtons(nullptr);
 										}
 									private:

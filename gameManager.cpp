@@ -28,7 +28,7 @@ namespace fsim{
 			cout<<"Failed to connect to FSim database\n";
 			exit(-1);
 		}
-		string savesQuery="create table saves(sid int not null,pid int not null,lid int not null,oid int not null,primary key (sid));",
+		string savesQuery="create table saves(sid int not null,pid int not null,puid int not null,lid int not null,oid int not null,primary key (sid));",
 			   saveUnitsQuery="create table save_units(sid int not null,uid int not null",
 			   statsQuery="create table stats(pid int not null,score int not null,deaths int not null";
 		conn.query("create table pilots(pid int not null,faction int not null,name varchar(40),fighter_upgrades varchar(5),fighter_bomber_upgrades varchar(5),helicopter_upgrades varchar(5),primary key (pid));").store();

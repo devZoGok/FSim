@@ -19,10 +19,12 @@ namespace fsim{
 			~Structure();
 			virtual void update();
 			inline int getId(){return id;}
+			inline void setPos(vb01::Vector3 p){this->pos=p;}
+			inline vb01::Vector3 getPos(){return pos;}
 		protected:
 			GameManager *gm;
 			int id;
-			vb01::Vector3 pos,dir=vb01::Vector3(0,0,1),left=vb01::Vector3(1,0,0),up=vb01::Vector3(0,1,0);
+			vb01::Vector3 pos,dir=vb01::Vector3(0,0,-1),left=vb01::Vector3(1,0,0),up=vb01::Vector3(0,1,0);
 			vb01::Quaternion rot;
 			vb01::Model *model;
 			vb01::Node *rootNode,*guiNode;

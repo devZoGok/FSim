@@ -24,12 +24,15 @@ namespace fsim{
 			public:
 				OkButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size,"OK"){}
 				void onClick(){
+					int sumBinds=0;
+					for(int i=0;i<numStates;i++)
+						sumBinds+=numBinds[i];
 					vector<string> lines;
 					readFile(PATH+"../options.cfg",lines);	
-					for(string &line : lines)
-						for(int i=0;i<line.length();i++)
-							if(line.c_str()[i]==':')
-								line=line.substr(0,i+1);
+					for(int i=0;i<sumBinds;i++)
+						for(int j=0;j<lines[i].length();j++)
+							if(lines[i].c_str()[j]==':')
+								lines[i]=lines[i].substr(0,j+1);
 					int numListboxes=options.listboxes.size(),numTextboxes=options.textboxes.size();
 					for(int i=0;i<numListboxes;i++){
 						for(int j=0;j<options.listboxes[i]->getNumLines();j++)
@@ -118,6 +121,12 @@ namespace fsim{
 							atoi(lines[i].substr(colon+3,1).c_str()),
 							atoi(lines[i].substr(colon+5,string::npos).c_str())
 						};
+						/*
+						*/
+						if(data[0]==Mapping::JOYSTICK_AXIS){
+							data[1]=data[2]%2>0?1:0;
+							data[2]=(data[2]-(data[2]%2>0?1:0))/2;
+						}
 						lines[i]=bind+fromIntToString(data);
 					}
 					Listbox *listbox=new Listbox(gm,Vector2(400,200),Vector2(300,20),lines,numLines>10?10:numLines,Listbox::CONTROLS);

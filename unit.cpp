@@ -1,4 +1,5 @@
 #include"unit.h"
+#include<model.h>
 
 using namespace vb01;
 
@@ -8,5 +9,8 @@ namespace fsim{
 
 	Unit::~Unit(){}
 
-	void Unit::update(){}
+	void Unit::update(){
+		model->setPosition(pos);
+		model->setOrientation(rot);
+	}
 }

@@ -8,7 +8,7 @@ namespace fsim{
 		public:
 			Unit(GameManager*,int,vb01::Vector3,vb01::Quaternion);
 			~Unit();
-			void update();
+			virtual void update();
 		private:
 	};
 }

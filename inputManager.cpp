@@ -77,8 +77,13 @@ namespace fsim{
 								break;
 							}
 						case Mapping::JOYSTICK_AXIS:
-							a->onAnalog(m->bind,axis[m->trigger]);
-							break;
+							{
+								int axisId=(m->trigger-(m->trigger%2>0))/2;
+								float str=fabs(axis[axisId])>=.1?axis[axisId]:0;
+								if(fabs(str)>0)
+									a->onAnalog(m->bind,str);
+								break;
+							}
 					}
 				}
 			}

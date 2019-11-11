@@ -6,7 +6,7 @@
 namespace fsim{
 	const static std::string PATH="../Assets/",defaultTexture=PATH+"Textures/defaultTexture.jpg";
 
-	const static int numStates=3,numBinds[numStates]{0,2,0};
+	const static int numStates=4,numBinds[numStates]{0,2,6,8};
 
 }
 

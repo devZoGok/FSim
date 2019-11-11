@@ -11,14 +11,16 @@ namespace fsim{
 	class ActiveGameAppState : public AbstractAppState{
 		public:
 			ActiveGameAppState(GameManager*,int);
-			void onAttached();
-			void onDettached();
-			void update();
-			void onAction(Mapping::Bind,bool);
-			void onAnalog(Mapping::Bind,float);
+			virtual void onAttached();
+			virtual void onDettached();
+			virtual void update();
+			virtual void onAction(Mapping::Bind,bool){}
 		private:
-			int playerId;
 			Aircraft *aircraft;
+		protected:
+			bool forwPitch=false,backPitch=false,leftRoll=false,rightRoll=false;
+			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.001;
+			int playerId;
 			std::vector<Structure*> structures;
 	};
 }

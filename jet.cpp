@@ -7,5 +7,8 @@ namespace fsim{
 
 	Jet::~Jet(){}
 
-	void Jet::update(){}
+	void Jet::update(){
+		Aircraft::update();
+		pos=pos+dir*.1;
+	}
 }

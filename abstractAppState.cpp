@@ -19,20 +19,23 @@ namespace fsim{
 		endLine=startLine+numBinds[type];
 		readFile(PATH+"../options.cfg",lines,startLine,endLine);
 
-		for(int i=startLine;i<endLine;i++){
-			Type type;
+		for(int i=0;i<lines.size();i++){
+			Mapping::BindType type;
 			bool action;
 			int trigger,semicolon;
 			for(int j=0;j<lines[i].length();j++)	
 				if(lines[i].c_str()[j]==':')
 					semicolon=j;
 
-			type=(Type)atoi(lines[i].substr(semicolon+1,1).c_str());
+			type=(Mapping::BindType)atoi(lines[i].substr(semicolon+1,1).c_str());
 			action=atoi(lines[i].substr(semicolon+3,1).c_str());
 			trigger=atoi(lines[i].substr(semicolon+5,string::npos).c_str());
 
 			Mapping *m=new Mapping;
-			m->bind=(Mapping::Bind)i;
+			m->bind=(Mapping::Bind)(3+startLine+i);
+			m->type=type;
+			m->action=action;
+			m->trigger=trigger;
 			mappings.push_back(m);	
 		}
 	}

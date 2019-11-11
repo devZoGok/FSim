@@ -180,7 +180,7 @@ namespace fsim{
 				output="JOYSTICK_BUTTON_"+to_string(data[2]);
 				break;
 			case Mapping::JOYSTICK_AXIS:
-				output="JOYSTICK_AXIS_"+to_string(data[2]/2)+(data[1]?"+":"-");
+				output="JOYSTICK_AXIS_"+to_string(data[2])+(data[1]?"+":"-");
 				break;
 		}
 		return output;
@@ -202,7 +202,7 @@ namespace fsim{
 		else if(data.substr(0,14)=="JOYSTICK_AXIS_"){
 			output[0]=Mapping::JOYSTICK_AXIS;
 			output[1]=0;
-			output[2]=2*atoi(data.substr(14,string::npos).c_str())+(data.c_str()[15]=='+'?1:0);
+			output[2]=2*atoi(data.substr(14,1).c_str())+(data.c_str()[15]=='+'?1:0);
 		}
 		else{
 			bool specialKey=false;
