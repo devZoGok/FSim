@@ -5,15 +5,22 @@
 #include"playerData.h"
 #include<vector>
 
+namespace vb01{
+	class Quad;
+	class Node;
+}
+
 namespace fsim{
 	class Structure;
 	class Unit;
 	class Map;
+	class GuiAppState;
+	class ActiveGameAppState;
 	class GameManager;
 
 	class InGameAppState : public AbstractAppState{
 		public:
-			InGameAppState(GameManager*,int);
+			InGameAppState(GameManager*,int,int,bool,int,int);
 			~InGameAppState();
 			void onAttached();
 			void onDettached();
@@ -21,13 +28,22 @@ namespace fsim{
 			void onAction(Mapping::Bind,bool);
 			void onAnalog(Mapping::Bind,float);
 			inline int getNumStructures(){return structures.size();}
+			inline int getPilotId(){return pilotId;}
+			inline int getPlayerId(){return playerId;}
 			inline void addStructure(Structure *s){structures.push_back(s);}
 			inline void setPlayerId(int id){this->playerId=id;}
+			inline Map* getMap(){return map;}
 			std::vector<Structure*>& getStructures(){return structures;}
 		private:
-			int playerId;
+			void togglePause();
+			
+			vb01::Node *pauseOverlay=nullptr;
+			ActiveGameAppState *activeState=nullptr;
+			int pilotId,playerId;
+			bool paused=false;
 			Map *map;
 			Faction faction;
+			GuiAppState *guiState;
 			std::vector<Structure*> structures;
 	};
 }

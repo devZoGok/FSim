@@ -16,12 +16,15 @@ namespace fsim{
 
 	class Map{
 		public:
-			Map(GameManager*,std::string,InGameAppState*);
+			Map(GameManager*,std::string,InGameAppState*,bool loadFromSave=false,int=0,int=0,int=-1);
 			~Map();
 			void update();
+			inline int getObjective(){return objective;}
+			inline int getLevel(){return level;}
 		private:
 			void getCoords(std::string,std::string&,float*,const int);
 
+			int objective,level;
 			GameManager *gm;
 			vb01::Model* mapModel;
 			vb01::Node *rootNode;

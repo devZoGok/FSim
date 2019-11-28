@@ -28,16 +28,16 @@ namespace fsim{
 			cout<<"Failed to connect to FSim database\n";
 			exit(-1);
 		}
-		string savesQuery="create table saves(sid int not null,pid int not null,puid int not null,lid int not null,oid int not null,primary key (sid));",
-			   saveUnitsQuery="create table save_units(sid int not null,uid int not null",
+		string savesQuery="create table saves(sid int not null,name varchar(100) not null,pid int not null,puid int not null,lid int not null,oid int not null,primary key (sid));",
+			   saveUnitsQuery="create table save_units(sid int not null,uid int not null,faction int not null",
 			   statsQuery="create table stats(pid int not null,score int not null,deaths int not null";
 		conn.query("create table pilots(pid int not null,faction int not null,name varchar(40),fighter_upgrades varchar(5),fighter_bomber_upgrades varchar(5),helicopter_upgrades varchar(5),primary key (pid));").store();
 		
-		char *coords[]{"x","y","z","w"};
+		char *coords[]{"w","x","y","z"};
 		for(int i=0;i<3;i++)
-			saveUnitsQuery+=",pos_"+string(coords[i])+" decimal(10,3) not null";
+			saveUnitsQuery+=",pos_"+string(coords[i])+" decimal(50,10) not null";
 		for(int i=0;i<4;i++)
-			saveUnitsQuery+=",rot_"+string(coords[i])+" decimal(10,3) not null";
+			saveUnitsQuery+=",rot_"+string(coords[i])+" decimal(50,10) not null";
 		saveUnitsQuery+=");";
 
 		string structures[]{"buildings","aircraft","vehicles","ships"};

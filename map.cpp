@@ -1,22 +1,29 @@
+#define MYSQLPP_MYSQL_HEADERS_BURIED
+
 #include"map.h"
 #include"gameManager.h"
 #include"stateManager.h"
 #include"inGameAppState.h"
-#include"structure.h"
+#include"jet.h"
+#include"helicopter.h"
 #include"structureData.h"
 #include<model.h>
 #include<root.h>
 #include<node.h>
 #include<light.h>
 #include<material.h>
+#include<mysql++.h>
 #include"util.h"
 
 using namespace std;
 using namespace vb01;
+using namespace mysqlpp;
 
 namespace fsim{
-	Map::Map(GameManager *gm,string path,InGameAppState *inGameState){
+	Map::Map(GameManager *gm,string path,InGameAppState *inGameState,bool loadFromSave,int level,int objective,int pilotId){
 		this->gm=gm;
+		this->level=level;
+		this->objective=objective;
 		rootNode=gm->getRoot()->getRootNode();
 
 		mapModel=new Model(path+"level.obj");
@@ -55,18 +62,43 @@ namespace fsim{
 
 		}
 
-		for(int i=structuresLine+1;i<lines.size();i++){
-			string type;
-			const int numCoords=6;
-			float coords[numCoords];
-			getCoords(lines[i],type,coords,numCoords);
-			Vector3 pos=Vector3(coords[0],coords[1],coords[2]);
-			Quaternion rot=Quaternion(coords[3],coords[4],coords[5],coords[6]);
+		if(!loadFromSave)
+			for(int i=structuresLine+1;i<lines.size();i++){
+				string type;
+				const int numCoords=7;
+				float coords[numCoords];
+				getCoords(lines[i],type,coords,numCoords);
+				Vector3 pos=Vector3(coords[0],coords[1],coords[2]);
+				Quaternion rot=Quaternion(coords[3],coords[4],coords[5],coords[6]);
 
-			int structureId;
-			if(type=="samSite")
-				structureId=SAM_SITE;
-			inGameState->addStructure(new Structure(gm,structureId,pos,rot));
+				int structureId;
+				if(type=="samSite")
+					structureId=SAM_SITE;
+				inGameState->addStructure(new Structure(gm,structureId,pos,rot));
+			}
+		else{
+			Connection conn(false);
+			conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
+			StoreQueryResult res=conn.query("select uid,su.faction,pos_x,pos_y,pos_z,rot_w,rot_x,rot_y,rot_z from pilots p inner join saves s inner join save_units su on p.pid=s.pid and s.sid=su.sid where p.pid="+to_string(pilotId)+";").store();
+			for(int i=0;i<res.size();i++){
+				int id=(int)res[i][0];
+				Vector3 pos=Vector3((float)res[i][2],(float)res[i][3],(float)res[i][4]);
+				Quaternion rot=Quaternion((float)res[i][5],(float)res[i][6],(float)res[i][7],(float)res[i][8]);
+				Structure *s;
+				switch(id){
+					case Type::HELICOPTER:
+						s=new Helicopter(gm,id,pos,rot);
+						break;
+					case Type::FIGHTER_BOMBER:
+					case Type::FIGHTER:
+						s=new Jet(gm,id,pos,rot);
+						break;
+					default:
+						s=new Structure(gm,id,pos,rot);
+						break;
+				}
+				inGameState->addStructure(s);
+			}
 		}
 
 

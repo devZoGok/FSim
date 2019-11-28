@@ -10,11 +10,12 @@
 using namespace vb01;
 
 namespace fsim{
-	Structure::Structure(GameManager *gm,int id, Vector3 pos, Quaternion rot){
+	Structure::Structure(GameManager *gm, int id, Vector3 pos, Quaternion rot){
 		this->gm=gm;
 		this->id=id;
 		this->pos=pos;
 		this->rot=rot;	
+		this->faction=0;
 		rootNode=gm->getRoot()->getRootNode();
 		guiNode=gm->getRoot()->getGuiNode();
 

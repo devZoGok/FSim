@@ -18,8 +18,10 @@ namespace fsim{
 
 	void Aircraft::update(){
 		Unit::update();
-		cam->setPosition(pos-dir*10);
-		cam->lookAt(dir,up);
+		if(cam){
+			cam->setPosition(pos-dir*10);
+			cam->lookAt(dir,up);
+		}
 	}
 
 	void Aircraft::roll(float angle){
