@@ -27,7 +27,6 @@ namespace fsim{
 				OkButton *okButton;
 		};
 
-
 		GuiAppState *guiState=((GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE));
 		Button *e[]{this};
 		guiState->removeAllGUIElements(false);

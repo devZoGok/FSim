@@ -1,6 +1,7 @@
 #define MYSQLPP_MYSQL_HEADERS_BURIED
 
 #include"playButton.h"
+#include"upgradeData.h"
 #include"okButton.h"
 #include"mainMenuButton.h"
 #include"guiAppState.h"
@@ -25,49 +26,130 @@ using namespace std;
 using namespace mysqlpp;
 
 namespace fsim{
-	OkButton::OkButton(GameManager *gm,Vector2 pos, Vector2 size,Textbox *textbox,int pilotId) : Button(gm,pos,size,"Ok",true){
+	OkButton::OkButton(GameManager *gm,Vector2 pos, Vector2 size,Textbox *textbox,int saveId,int pilotId) : Button(gm,pos,size,"Ok",true){
 		this->textbox=textbox;
 		this->pilotId=pilotId;
+		this->saveId=saveId;
 	}
 
 	void OkButton::onClick(){
 		class AircraftTabButton : public Button{
 			public:
-				AircraftTabButton(GameManager *gm, Vector2 pos, Vector2 size, string name, string upgrades[5]) : Button(gm,pos,size,name,true){
-					for(int i=0;i<5;i++)
-						this->upgrades[i]=upgrades[i];
+				class UpgradeButton : public Button{
+					public:
+						UpgradeButton(GameManager *gm, Vector2 pos, Vector2 size,AircraftTabButton *tab,int type, int level) : Button(gm,pos,size,"",true,PATH+"Icons/upgrade.jpg"){
+							this->tab=tab;
+							this->type=type;
+							this->level=level;
+						}
+						void onClick(){
+							int *upgradeLevels=tab->getUpgradeLevels();
+							if(upgradeLevels[type]==level){
+								upgradeLevels[type]++;
+								string column,value="";
+								switch(tab->getAircraftTypeId()){
+									case 0:
+										column="fighter_upgrades";
+										break;
+									case 1:
+										column="fighter_bomber_upgrades";
+										break;
+									case 2:
+										column="helicopter_upgrades";
+										break;
+								}
+								for(int i=0;i<numUpgrades;i++){
+									value+=to_string(upgradeLevels[i]);
+								}
+								Connection conn(false);					
+								conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
+								conn.query("update pilots set "+column+"='"+value+"' where pid="+to_string(tab->getPilotId())+";").store();
+								int *score=tab->getScore();
+								*score-=price;
+								tab->getScoreNode()->getText(0)->setText(to_string(*score));
+							}
+						}
+					private:
+						int type,level;
+						AircraftTabButton *tab;
+				};
+
+				AircraftTabButton(GameManager *gm, Vector2 pos, Vector2 size,Node *scoreNode,int pilotId, int aircraftTypeId,int *upgradeLevels,int *score) : Button(gm,pos,size,tabNames[aircraftTypeId],true){
+					this->upgradeLevels=upgradeLevels;
+					this->aircraftTypeId=aircraftTypeId;
+					this->pilotId=pilotId;
+					this->score=score;
+					this->scoreNode=scoreNode;
+					for(int i=0;i<numUpgrades*numLevels;i++)
+						upgradeButtons[i]=nullptr;
+					for(int i=0;i<numUpgrades;i++)
+						textNodes[i]=nullptr;
+				}
+				~AircraftTabButton(){
+					if(!active){
+						Node *guiNode=gm->getRoot()->getGuiNode();
+						guiNode->dettachChild(scoreNode);
+						delete scoreNode;
+						delete score;
+					}
 				}
 				void onClick(){
 					active=false;
 					GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
 					Node *guiNode=gm->getRoot()->getGuiNode();
-					for(int i=0;i<5;i++){
-						Text *upgradeText=new Text(PATH+"Fonts/batang.ttf",upgrades[i]);
+
+					for(int i=0;i<3;i++){
+						if(i!=aircraftTypeId){
+							AircraftTabButton *b=(AircraftTabButton*)guiState->getButton(tabNames[i]);
+							b->setActive(true);
+							for(int j=0;j<numUpgrades;j++){
+								Node *textNode=b->getTextNode(j);
+								if(textNode){
+									b->setTextNode(nullptr,j);
+									guiNode->dettachChild(textNode);
+									delete textNode;
+								}
+								for(int z=0;z<numLevels;z++){
+									int id=numLevels*j+z;
+									UpgradeButton *u=b->getUpgradeButton(id);
+									if(u){
+										b->setUpgradeButton(nullptr,id);
+										delete u;
+									}
+								}
+							}
+						}
+					}
+
+					for(int i=0;i<numUpgrades;i++){
+						Text *upgradeText=new Text(PATH+"Fonts/batang.ttf",upgrades[aircraftTypeId][i]);
 						upgradeText->setScale(.2);
 						Node *textNode=new Node(Vector3(50,300+i*50,.5));
 						textNode->addText(upgradeText);
 						guiNode->attachChild(textNode);
 						textNodes[i]=textNode;
 
-						for(int j=0;j<4;j++){
-							upgradeButtons[4*i+j]=new UpgradeButton(gm,Vector2(50+j*50,300+i*50),Vector2(40,40));
-							guiState->addButton(upgradeButtons[4*i+j]);
+						for(int j=0;j<numLevels;j++){
+							UpgradeButton *u=new UpgradeButton(gm,Vector2(50+j*50,300+i*50),Vector2(40,40),this,i,j);
+							upgradeButtons[numLevels*i+j]=u;
+							guiState->addButton(u);
 						}
 					}
 				}
+				UpgradeButton* getUpgradeButton(int i){return upgradeButtons[i];}
+				void setUpgradeButton(UpgradeButton *u,int i){this->upgradeButtons[i]=u;}
 				Node* getTextNode(int i){return textNodes[i];}
+				Node* getScoreNode(){return scoreNode;}
+				void setTextNode(Node *node,int i){this->textNodes[i]=node;}
+				int* getUpgradeLevels(){return upgradeLevels;}
+				int getAircraftTypeId(){return aircraftTypeId;}
+				int getPilotId(){return pilotId;}
+				int* getScore(){return score;}
 			private:
-				class UpgradeButton : public Button{
-					public:
-						UpgradeButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size,"",true,PATH+"Icons/upgrade.jpg"){}
-						void onClick(){
-					
-						}
-					private:
-				};
-				string upgrades[5];
-				Node *textNodes[5]{0,0,0,0,0};
-				UpgradeButton *upgradeButtons[20]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+				Node *scoreNode;
+				int *upgradeLevels,aircraftTypeId,*score,pilotId;
+				Node *textNodes[numUpgrades];
+				UpgradeButton *upgradeButtons[numUpgrades*numLevels];
 		};
 		class StartButton : public Button{
 			public:
@@ -109,7 +191,7 @@ namespace fsim{
 					}
 
 					const int numExceptions=!loadFromSave?4:2;
-					int playerUnitId=0,level=0,objective=0;
+					int playerUnitId=0,level=1,objective=0;
 					Button *exceptions[numExceptions];
 					exceptions[0]=this;
 
@@ -124,7 +206,7 @@ namespace fsim{
 					for(int i=1;i<numExceptions;i++)
 						exceptions[i]=selectionButtons[i-1];
 
-					stateManager->attachState(new InGameAppState(gm,pilotId,faction,false,level,objective));	
+					stateManager->attachState(new InGameAppState(gm,pilotId,-1,faction,-1,level,objective));	
 					guiState->removeAllButtons(exceptions,numExceptions);
 					guiState->removeButton(this);
 				}
@@ -135,65 +217,57 @@ namespace fsim{
 		};
 
 		GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
+		Node *guiNode=gm->getRoot()->getGuiNode();
 
-		const int numUpgrades=5;
-		string tabNames[]={"Fighter","Fighter_bomber","Helicopter"};
-		string upgrades[][numUpgrades]={
-			{"Airframe","Fuel_tank","Machinegun","AAMs","Countermeasures"},
-			{"Airframe","Fuel_tank","Machinegun","Bombs","Countermeasures"},
-			{"Airframe","Fuel_tank","Machinegun","ASMs","Countermeasures"}
-		};
+		int *score=new int;
+		*score=1000;
+		int **upgradeLevels=new int*[3];
+		for(int i=0;i<3;i++)
+			upgradeLevels[i]=new int[numUpgrades];
+		Text *scoreText=new Text(PATH+"Fonts/batang.ttf",to_string(*score));
+		Node *textNode=new Node(Vector3(200,100,.5));
+		textNode->addText(scoreText);
+		guiNode->attachChild(textNode);
 
 		Connection conn(false);					
 		conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
-		if(textbox){
-			int numPilots=(int)conn.query("select count(*) from pilots;").store()[0][0];
-			pilotId=numPilots;
-			string playerName=textbox->getText(),queryText="insert into pilots values("+to_string(numPilots)+","+to_string(faction)+",'"+playerName+"'";
-			for(int i=0;i<3;i++){
-				queryText+=",'";
+		int pilotId=(int)conn.query("select count(*) from pilots;").store()[0][0];
+		string playerName=textbox->getText(),queryText="insert into pilots values("+to_string(pilotId)+","+to_string(faction)+",'"+playerName+"'";
+		for(int i=0;i<3;i++){
+			queryText+=",'";
+		for(int j=0;j<numUpgrades;j++)
+			queryText+="0";
+			queryText+="'";
+		}
+		queryText+=");";
+		conn.query(queryText).store();
+		conn.query("insert into stats values("+to_string(pilotId)+",0,0,0,0,0,0);").store();
+		StoreQueryResult res=conn.query("select fighter_upgrades,fighter_bomber_upgrades,helicopter_upgrades from pilots where pid="+to_string(pilotId)+";").store();
+		string s[3]={
+			(string)res[0][0],
+			(string)res[0][1],
+			(string)res[0][2]
+		};
+		for(int i=0;i<3;i++){
 			for(int j=0;j<numUpgrades;j++)
-				queryText+="0";
-				queryText+="'";
-			}
-			queryText+=");";
-			conn.query(queryText).store();
+				upgradeLevels[i][j]=atoi(s[i].substr(j,1).c_str());
 		}
-		else{
-			faction=(int)conn.query("select faction from pilots where pid="+to_string(pilotId)+";").store()[0][0];
-		}
+		
 
 		Button *e[]{this};
 		guiState->removeAllGUIElements(false);
 		guiState->removeAllButtons(e,1);
 
-		if(textbox){
-			AircraftTabButton *tabs[3];
-			int width=60;
-			for(int i=0;i<3;i++){
-				AircraftTabButton *tab=new AircraftTabButton(gm,Vector2(100+i*(width+10),300),Vector2(width,20),tabNames[i],upgrades[i]);
-				guiState->addButton(tab);
-				tabs[i]=tab;
-			}
-			guiState->getButton("Fighter")->onClick();
-			guiState->addButton(new StartButton(gm,Vector2(500,500),Vector2(100,50),tabs,pilotId,faction,textbox==nullptr));
+		AircraftTabButton *tabs[3];
+		int width=60;
+		for(int i=0;i<3;i++){
+			AircraftTabButton *tab=new AircraftTabButton(gm,Vector2(100+i*(width+60),250),Vector2(width,20),textNode,pilotId,i,upgradeLevels[i],score);
+			guiState->addButton(tab);
+			tabs[i]=tab;
 		}
-		else{
-			StateManager *stateManager=gm->getStateManager();
-			Connection conn(false);					
-			conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
-			StoreQueryResult res=conn.query("select uid,lid,oid,puid from pilots p inner join saves s inner join save_units su on p.pid=s.pid and s.sid=su.sid where p.pid="+to_string(pilotId)+";").store();
-			int unitId=(int)res[1][0],level=(int)res[0][1],objective=(int)res[0][2],playerId=(int)res[0][3];
-			stateManager->attachState(new InGameAppState(gm,pilotId,faction,true,level,objective));
-			switch(unitId){
-				case Type::HELICOPTER:
-					stateManager->attachState(new HelicopterAppState(gm,playerId));
-					break;
-				default:
-					stateManager->attachState(new JetAppState(gm,playerId));
-					break;
-			}
-		}
+		guiState->getButton("Fighter")->onClick();
+		guiState->addButton(new StartButton(gm,Vector2(500,500),Vector2(100,50),tabs,pilotId,faction,textbox==nullptr));
+		
 		guiState->removeButton(this);
 	}
 }

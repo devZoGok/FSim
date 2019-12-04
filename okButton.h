@@ -8,12 +8,12 @@ namespace fsim{
 
 	class OkButton : public Button{
 		public:
-			OkButton(GameManager*,vb01::Vector2,vb01::Vector2,Textbox*,int=-1);
+			OkButton(GameManager*,vb01::Vector2,vb01::Vector2,Textbox*,int=-1,int=-1);
 			void onClick();
 			inline void setFaction(int f){this->faction=f;}
 		private:
 			Textbox *textbox;
-			int pilotId,faction;
+			int pilotId,saveId,faction;
 	};
 }
 

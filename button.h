@@ -16,7 +16,7 @@ namespace fsim{
 	class Button{
 		public:
 			Button(GameManager*,vb01::Vector2,vb01::Vector2,std::string,bool=true,std::string="");
-			~Button();
+			virtual ~Button();
 			void update();
 			virtual void onMouseOver(){}
 			virtual void onClick(){}
@@ -25,6 +25,7 @@ namespace fsim{
 			inline vb01::Vector2 getSize(){return size;}
 			void setSize(vb01::Vector2);
 			inline std::string getName(){return name;}
+			inline void setActive(bool active){this->active=active;}
 			inline bool isSeparate(){return separate;}
 			inline bool isActive(){return active;}
 			inline vb01::Vector4 getColor(){return color;}

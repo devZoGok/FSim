@@ -6,7 +6,7 @@
 namespace fsim{
 	class Helicopter : public Aircraft{
 		public:
-			Helicopter(GameManager*,int,vb01::Vector3,vb01::Quaternion);
+			Helicopter(GameManager*,int,vb01::Vector3,vb01::Quaternion,int* = nullptr);
 			~Helicopter();
 			void update();
 			inline float getRising(){return rising;}

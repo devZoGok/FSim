@@ -25,26 +25,26 @@ using namespace mysqlpp;
 using namespace vb01;
 
 namespace fsim{
-	InGameAppState::InGameAppState(GameManager *gm,int pilotId,int faction,bool loadFromSave,int level,int objective) : AbstractAppState(gm){
+	InGameAppState::InGameAppState(GameManager *gm,int pilotId,int playerId,int faction,int saveId,int level,int objective) : AbstractAppState(gm){
 		type=AbstractAppState::IN_GAME_STATE;
 		this->faction=(Faction)faction;
 		this->pilotId=pilotId;
 
-		string factionSuffix;
+		string levelSuffix,levelNumSuffix=(level<10?"0"+to_string(level):to_string(level));
 		switch(this->faction){
 			case CHINA:
-				factionSuffix="Ch/Level01/";
+				 levelSuffix="Ch/Level"+levelNumSuffix+"/";
 				break;
 			case JAPAN:
-				factionSuffix="Jp/Level01/";
+				levelSuffix="Jp/Level"+levelNumSuffix+"/";
 				break;
 			case KOREA:
-				factionSuffix="Kr/Level01/";
+				levelSuffix="Kr/Level"+levelNumSuffix+"/";
 				break;
 		}
-		map=new Map(gm,PATH+"Models/Levels/"+factionSuffix,this,loadFromSave,level,objective,pilotId);
-		playerId=structures.size();
+		map=new Map(gm,PATH+"Models/Levels/"+levelSuffix,this,saveId,level,objective,pilotId);
 		guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
+		this->playerId=(playerId==-1?structures.size():playerId);
 		
 		//gm->getStateManager()->dettachState(guiState);
 		
@@ -118,7 +118,7 @@ namespace fsim{
 								conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
 								int numSaves=(int)conn.query("select count(*) from saves;").store()[0][0];
 								int pilotId=inGameState->getPilotId(),playerId=inGameState->getPlayerId(),level=map->getLevel(),objectiveId=map->getObjective();
-								conn.query("insert into saves values("+to_string(numSaves)+","+to_string(pilotId)+","+to_string(playerId)+","+to_string(level)+","+to_string(objectiveId)+",'"+name+"');").store();
+								conn.query("insert into saves values("+to_string(numSaves)+",'"+name+"',"+to_string(pilotId)+","+to_string(playerId)+","+to_string(level)+","+to_string(objectiveId)+");").store();
 								for(int i=0;i<inGameState->getNumStructures();i++){
 									Structure *s=inGameState->getStructures()[i];
 									int id=s->getId(),faction=s->getFaction();

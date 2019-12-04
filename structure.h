@@ -20,9 +20,13 @@ namespace fsim{
 			virtual void update();
 			inline int getId(){return id;}
 			inline int getFaction(){return faction;}
+			inline vb01::Model* getModel(){return model;}
 			inline void setPos(vb01::Vector3 p){this->pos=p;}
 			inline vb01::Quaternion getRot(){return rot;}
 			inline vb01::Vector3 getPos(){return pos;}
+			inline vb01::Vector3 getDir(){return dir;}
+			inline vb01::Vector3 getLeft(){return left;}
+			inline vb01::Vector3 getUp(){return up;}
 		protected:
 			GameManager *gm;
 			int id,faction;

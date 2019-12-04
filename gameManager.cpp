@@ -34,7 +34,7 @@ namespace fsim{
 		conn.query("create table pilots(pid int not null,faction int not null,name varchar(40),fighter_upgrades varchar(5),fighter_bomber_upgrades varchar(5),helicopter_upgrades varchar(5),primary key (pid));").store();
 		
 		char *coords[]{"w","x","y","z"};
-		for(int i=0;i<3;i++)
+		for(int i=1;i<4;i++)
 			saveUnitsQuery+=",pos_"+string(coords[i])+" decimal(50,10) not null";
 		for(int i=0;i<4;i++)
 			saveUnitsQuery+=",rot_"+string(coords[i])+" decimal(50,10) not null";

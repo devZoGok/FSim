@@ -20,7 +20,7 @@ namespace fsim{
 
 	class InGameAppState : public AbstractAppState{
 		public:
-			InGameAppState(GameManager*,int,int,bool,int,int);
+			InGameAppState(GameManager*,int,int,int,int,int,int);
 			~InGameAppState();
 			void onAttached();
 			void onDettached();

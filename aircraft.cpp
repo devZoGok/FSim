@@ -1,4 +1,5 @@
 #include"aircraft.h"
+#include"upgradeData.h"
 #include"gameManager.h"
 #include<camera.h>
 #include<model.h>
@@ -7,7 +8,14 @@
 using namespace vb01;
 
 namespace fsim{
-	Aircraft::Aircraft(GameManager *gm,int id, Vector3 pos, Quaternion rot) : Unit(gm,id,pos,rot){
+	Aircraft::Aircraft(GameManager *gm,int id, Vector3 pos, Quaternion rot, int *upgrades) : Unit(gm,id,pos,rot){
+		if(!upgrades){
+			this->upgrades=new int[numUpgrades];
+			for(int i=0;i<numUpgrades;i++)
+				this->upgrades[i]=0;
+		}
+		else
+			this->upgrades=upgrades;
 		cam=gm->getRoot()->getCamera();
 		this->rollSpeed=.05;
 		this->yawSpeed=.05;

@@ -6,7 +6,7 @@
 namespace fsim{
 	class Jet : public Aircraft{
 		public:
-			Jet(GameManager*,int,vb01::Vector3,vb01::Quaternion);
+			Jet(GameManager*,int,vb01::Vector3,vb01::Quaternion,int* = nullptr);
 			~Jet();
 			void update();
 		private:

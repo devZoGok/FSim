@@ -3,7 +3,7 @@
 using namespace vb01;
 
 namespace fsim{
-	Jet::Jet(GameManager *gm,int id, Vector3 pos, Quaternion rot) : Aircraft(gm,id,pos,rot){}
+	Jet::Jet(GameManager *gm,int id, Vector3 pos, Quaternion rot,int *upgrades) : Aircraft(gm,id,pos,rot,upgrades){}
 
 	Jet::~Jet(){}
 

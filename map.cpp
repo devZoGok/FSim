@@ -1,6 +1,7 @@
 #define MYSQLPP_MYSQL_HEADERS_BURIED
 
 #include"map.h"
+#include"upgradeData.h"
 #include"gameManager.h"
 #include"stateManager.h"
 #include"inGameAppState.h"
@@ -20,7 +21,7 @@ using namespace vb01;
 using namespace mysqlpp;
 
 namespace fsim{
-	Map::Map(GameManager *gm,string path,InGameAppState *inGameState,bool loadFromSave,int level,int objective,int pilotId){
+	Map::Map(GameManager *gm,string path,InGameAppState *inGameState,int saveId,int level,int objective,int pilotId){
 		this->gm=gm;
 		this->level=level;
 		this->objective=objective;
@@ -62,7 +63,7 @@ namespace fsim{
 
 		}
 
-		if(!loadFromSave)
+		if(saveId==-1)
 			for(int i=structuresLine+1;i<lines.size();i++){
 				string type;
 				const int numCoords=7;
@@ -79,22 +80,33 @@ namespace fsim{
 		else{
 			Connection conn(false);
 			conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
-			StoreQueryResult res=conn.query("select uid,su.faction,pos_x,pos_y,pos_z,rot_w,rot_x,rot_y,rot_z from pilots p inner join saves s inner join save_units su on p.pid=s.pid and s.sid=su.sid where p.pid="+to_string(pilotId)+";").store();
+			int playerId=(int)conn.query("select puid from pilots p inner join saves s on p.pid=s.pid where sid="+to_string(saveId)+";").store()[0][0];
+			StoreQueryResult res=conn.query("select uid,su.faction,pos_x,pos_y,pos_z,rot_w,rot_x,rot_y,rot_z from pilots p inner join saves s inner join save_units su on p.pid=s.pid and s.sid=su.sid where p.pid="+to_string(pilotId)+" and s.sid="+to_string(saveId)+";").store();
+
 			for(int i=0;i<res.size();i++){
-				int id=(int)res[i][0];
+				int unitId=(int)res[i][0];
 				Vector3 pos=Vector3((float)res[i][2],(float)res[i][3],(float)res[i][4]);
 				Quaternion rot=Quaternion((float)res[i][5],(float)res[i][6],(float)res[i][7],(float)res[i][8]);
 				Structure *s;
-				switch(id){
-					case Type::HELICOPTER:
-						s=new Helicopter(gm,id,pos,rot);
-						break;
+				int *upgrades=nullptr;
+				if(i==playerId){
+					upgrades=new int[numUpgrades];
+					StoreQueryResult upgradesResults=conn.query("select fighter_upgrades,fighter_bomber_upgrades,helicopter_upgrades from pilots where pid="+to_string(pilotId)+";").store();
+					string upgradesString=(string)upgradesResults[0][unitId];
+					for(int j=0;j<upgradesString.length();j++){
+						upgrades[j]=atoi(upgradesString.substr(j,1).c_str());
+					}
+				}
+				switch(unitId){
 					case Type::FIGHTER_BOMBER:
 					case Type::FIGHTER:
-						s=new Jet(gm,id,pos,rot);
+						s=new Jet(gm,unitId,pos,rot,upgrades);
+						break;
+					case Type::HELICOPTER:
+						s=new Helicopter(gm,unitId,pos,rot,upgrades);
 						break;
 					default:
-						s=new Structure(gm,id,pos,rot);
+						s=new Structure(gm,unitId,pos,rot);
 						break;
 				}
 				inGameState->addStructure(s);

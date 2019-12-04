@@ -10,7 +10,7 @@ namespace vb01{
 namespace fsim{
 	class Aircraft : public Unit{
 		public:
-			Aircraft(GameManager*,int,vb01::Vector3,vb01::Quaternion);
+			Aircraft(GameManager*,int,vb01::Vector3,vb01::Quaternion,int*);
 			virtual ~Aircraft();
 			virtual void update();
 			virtual void yaw(float);
@@ -28,6 +28,7 @@ namespace fsim{
 		private:
 			vb01::Camera *cam=nullptr;
 		protected:
+			int *upgrades;
 			float rollSpeed,yawSpeed,pitchSpeed,pitchVal=0,rollVal=0,yawVal=0;
 	};
 }

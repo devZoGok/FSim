@@ -1,6 +1,17 @@
 #include"jetAppState.h"
+#include"inGameAppState.h"
+#include"gameManager.h"
+#include"stateManager.h"
+#include"map.h"
 #include"jet.h"
 #include<glfw3.h>
+#include<ray.h>
+#include<vector>
+#include<root.h>
+#include<iostream>
+
+using namespace vb01;
+using namespace std;
 
 namespace fsim{
 	JetAppState::JetAppState(GameManager *gm, int playerId) : ActiveGameAppState(gm,playerId){
@@ -68,8 +79,6 @@ namespace fsim{
 				rightRoll=isPressed;
 				break;
 		}
-		/*
-		*/
 	}
 
 	void JetAppState::onAnalog(Mapping::Bind bind, float str){
@@ -87,5 +96,12 @@ namespace fsim{
 				playerJet->setRoll(-playerJet->getRollSpeed()*str);
 				break;
 		}
+		/*
+		vector<CollisionResult> results;
+		Node *rootNode=gm->getRoot()->getRootNode();
+		Model *m=((InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE))->getMap()->getMapModel();
+		retrieveCollisions(Vector3(0,40,0),Vector3(0,-1,0),(Node*)playerJet->getModel(),results,100);
+		cout<<results.size()<<"\n";		
+		*/
 	}
 }
