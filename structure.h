@@ -15,7 +15,7 @@ namespace fsim{
 
 	class Structure{
 		public:
-			Structure(GameManager*,int,vb01::Vector3,vb01::Quaternion);
+			Structure(GameManager*,int,int,vb01::Vector3,vb01::Quaternion);
 			~Structure();
 			virtual void update();
 			inline int getId(){return id;}

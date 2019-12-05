@@ -1,10 +1,12 @@
 #include"helicopter.h"
-#include<cmath>
+#include"inGameAppState.h"
+#include"gameManager.h"
+#include"stateManager.h"
 
 using namespace vb01;
 
 namespace fsim{
-	Helicopter::Helicopter(GameManager *gm,int id, Vector3 pos, Quaternion rot, int *upgrades) : Aircraft(gm,id,pos,rot,upgrades){}
+	Helicopter::Helicopter(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot, int *upgrades) : Aircraft(gm,id,faction,pos,rot,upgrades){}
 
 	Helicopter::~Helicopter(){}
 
@@ -19,4 +21,9 @@ namespace fsim{
 		pos=pos+deltaPos;
 	}
 
+	void Helicopter::primaryFire(){
+	}
+
+	void Helicopter::secondaryFire(){
+	}
 }

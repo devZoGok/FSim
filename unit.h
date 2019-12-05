@@ -6,7 +6,7 @@
 namespace fsim{
 	class Unit : public Structure{
 		public:
-			Unit(GameManager*,int,vb01::Vector3,vb01::Quaternion);
+			Unit(GameManager*,int,int,vb01::Vector3,vb01::Quaternion);
 			~Unit();
 			virtual void update();
 		private:

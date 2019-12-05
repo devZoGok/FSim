@@ -63,7 +63,8 @@ namespace fsim{
 
 		}
 
-		if(saveId==-1)
+		if(saveId==-1){
+			inGameState->addStructure(new Helicopter(gm,Type::HELICOPTER,2,Vector3(0,20,0),Quaternion(1,0,0,0)));
 			for(int i=structuresLine+1;i<lines.size();i++){
 				string type;
 				const int numCoords=7;
@@ -72,11 +73,12 @@ namespace fsim{
 				Vector3 pos=Vector3(coords[0],coords[1],coords[2]);
 				Quaternion rot=Quaternion(coords[3],coords[4],coords[5],coords[6]);
 
-				int structureId;
+				int structureId,faction=0;
 				if(type=="samSite")
 					structureId=SAM_SITE;
-				inGameState->addStructure(new Structure(gm,structureId,pos,rot));
+				inGameState->addStructure(new Structure(gm,structureId,faction,pos,rot));
 			}
+		}
 		else{
 			Connection conn(false);
 			conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
@@ -84,7 +86,7 @@ namespace fsim{
 			StoreQueryResult res=conn.query("select uid,su.faction,pos_x,pos_y,pos_z,rot_w,rot_x,rot_y,rot_z from pilots p inner join saves s inner join save_units su on p.pid=s.pid and s.sid=su.sid where p.pid="+to_string(pilotId)+" and s.sid="+to_string(saveId)+";").store();
 
 			for(int i=0;i<res.size();i++){
-				int unitId=(int)res[i][0];
+				int unitId=(int)res[i][0],faction=(int)res[i][1];
 				Vector3 pos=Vector3((float)res[i][2],(float)res[i][3],(float)res[i][4]);
 				Quaternion rot=Quaternion((float)res[i][5],(float)res[i][6],(float)res[i][7],(float)res[i][8]);
 				Structure *s;
@@ -100,13 +102,13 @@ namespace fsim{
 				switch(unitId){
 					case Type::FIGHTER_BOMBER:
 					case Type::FIGHTER:
-						s=new Jet(gm,unitId,pos,rot,upgrades);
+						s=new Jet(gm,unitId,faction,pos,rot,upgrades);
 						break;
 					case Type::HELICOPTER:
-						s=new Helicopter(gm,unitId,pos,rot,upgrades);
+						s=new Helicopter(gm,unitId,faction,pos,rot,upgrades);
 						break;
 					default:
-						s=new Structure(gm,unitId,pos,rot);
+						s=new Structure(gm,unitId,faction,pos,rot);
 						break;
 				}
 				inGameState->addStructure(s);

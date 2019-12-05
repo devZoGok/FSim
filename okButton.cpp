@@ -168,10 +168,10 @@ namespace fsim{
 								StateManager *stateManager=gm->getStateManager();
 								GuiAppState *guiState=(GuiAppState*)stateManager->getState(AbstractAppState::GUI_STATE);
 								InGameAppState *inGameState=(InGameAppState*)stateManager->getState(AbstractAppState::IN_GAME_STATE);
-								int playerId=inGameState->getNumStructures();
+								int playerId=inGameState->getNumStructures(),faction=0;
 								Vector3 pos=Vector3(0,20,-20);
-								Aircraft *aircraft=aircraftId==2?(Aircraft*)new Helicopter(gm,aircraftId,pos,Quaternion(1,0,0,0)):
-									(Aircraft*)new Jet(gm,aircraftId,pos,Quaternion(1,0,0,0));
+								Aircraft *aircraft=aircraftId==2?(Aircraft*)new Helicopter(gm,aircraftId,faction,pos,Quaternion(1,0,0,0)):
+									(Aircraft*)new Jet(gm,aircraftId,faction,pos,Quaternion(1,0,0,0));
 								inGameState->addStructure(aircraft);
 
 								stateManager->attachState(aircraftId==2?(AbstractAppState*)new HelicopterAppState(gm,playerId):(AbstractAppState*)new JetAppState(gm,playerId));
@@ -219,16 +219,6 @@ namespace fsim{
 		GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
 		Node *guiNode=gm->getRoot()->getGuiNode();
 
-		int *score=new int;
-		*score=1000;
-		int **upgradeLevels=new int*[3];
-		for(int i=0;i<3;i++)
-			upgradeLevels[i]=new int[numUpgrades];
-		Text *scoreText=new Text(PATH+"Fonts/batang.ttf",to_string(*score));
-		Node *textNode=new Node(Vector3(200,100,.5));
-		textNode->addText(scoreText);
-		guiNode->attachChild(textNode);
-
 		Connection conn(false);					
 		conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
 		int pilotId=(int)conn.query("select count(*) from pilots;").store()[0][0];
@@ -241,6 +231,7 @@ namespace fsim{
 		}
 		queryText+=");";
 		conn.query(queryText).store();
+
 		conn.query("insert into stats values("+to_string(pilotId)+",0,0,0,0,0,0);").store();
 		StoreQueryResult res=conn.query("select fighter_upgrades,fighter_bomber_upgrades,helicopter_upgrades from pilots where pid="+to_string(pilotId)+";").store();
 		string s[3]={
@@ -248,6 +239,17 @@ namespace fsim{
 			(string)res[0][1],
 			(string)res[0][2]
 		};
+
+		int *score=new int;
+		*score=(int)conn.query("select score from stats where pid="+to_string(pilotId)+";").store()[0][0];
+		int **upgradeLevels=new int*[3];
+		for(int i=0;i<3;i++)
+			upgradeLevels[i]=new int[numUpgrades];
+		Text *scoreText=new Text(PATH+"Fonts/batang.ttf",to_string(*score));
+		Node *textNode=new Node(Vector3(200,100,.5));
+		textNode->addText(scoreText);
+		guiNode->attachChild(textNode);
+
 		for(int i=0;i<3;i++){
 			for(int j=0;j<numUpgrades;j++)
 				upgradeLevels[i][j]=atoi(s[i].substr(j,1).c_str());

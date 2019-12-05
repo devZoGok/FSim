@@ -1,4 +1,5 @@
 #include"aircraft.h"
+#include"aircraftData.h"
 #include"upgradeData.h"
 #include"gameManager.h"
 #include<camera.h>
@@ -8,7 +9,7 @@
 using namespace vb01;
 
 namespace fsim{
-	Aircraft::Aircraft(GameManager *gm,int id, Vector3 pos, Quaternion rot, int *upgrades) : Unit(gm,id,pos,rot){
+	Aircraft::Aircraft(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot, int *upgrades) : Unit(gm,id,faction,pos,rot){
 		if(!upgrades){
 			this->upgrades=new int[numUpgrades];
 			for(int i=0;i<numUpgrades;i++)
@@ -20,6 +21,8 @@ namespace fsim{
 		this->rollSpeed=.05;
 		this->yawSpeed=.05;
 		this->pitchSpeed=.05;
+		this->rateOfPrimaryFire=aircraftData::rateOfPrimaryFire[id];
+		this->rateOfSecondaryFire=aircraftData::rateOfSecondaryFire[id];
 	}
 
 	Aircraft::~Aircraft(){}
@@ -33,19 +36,19 @@ namespace fsim{
 	}
 
 	void Aircraft::roll(float angle){
-		Quaternion rotQuat=Quaternion(angle,dir);
+		Quaternion rotQuat=Quaternion(angle,dir.norm());
 		left=rotQuat*left,up=rotQuat*up;	
 		rot=rotQuat*rot;
 	}
 
 	void Aircraft::yaw(float angle){
-		Quaternion rotQuat=Quaternion(angle,up);
+		Quaternion rotQuat=Quaternion(angle,up.norm());
 		dir=rotQuat*dir,left=rotQuat*left;	
 		rot=rotQuat*rot;
 	}
 
 	void Aircraft::pitch(float angle){
-		Quaternion rotQuat=Quaternion(angle,left);
+		Quaternion rotQuat=Quaternion(angle,left.norm());
 		dir=rotQuat*dir,up=rotQuat*up;	
 		rot=rotQuat*rot;
 	}

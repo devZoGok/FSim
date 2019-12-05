@@ -15,6 +15,7 @@
 #include"optionsButton.h"
 #include"mainMenuButton.h"
 #include"textbox.h"
+#include"projectile.h"
 #include<root.h>
 #include<quad.h>
 #include<node.h>
@@ -69,9 +70,12 @@ namespace fsim{
 
 	void InGameAppState::update(){
 		map->update();
-		if(!paused)
+		if(!paused){
 			for(Structure *s : structures)
 				s->update();
+			for(Projectile *p : projectiles)
+				p->update();
+		}
 	}
 
 	void InGameAppState::togglePause(){

@@ -78,6 +78,12 @@ namespace fsim{
 			case Mapping::YAW_RIGHT:
 				rightRoll=isPressed;
 				break;
+			case Mapping::PRIMARY_FIRE:
+				if(isPressed)playerJet->primaryFire();
+				break;
+			case Mapping::SECONDARY_FIRE:
+				if(isPressed)playerJet->secondaryFire();
+				break;
 		}
 	}
 

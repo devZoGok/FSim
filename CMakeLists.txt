@@ -16,7 +16,7 @@ link_directories(/usr/lib)
 set(core gameManager.cpp stateManager.cpp inputManager.cpp)
 set(states abstractAppState.cpp guiAppState.cpp inGameAppState.cpp activeGameAppState.cpp jetAppState.cpp helicopterAppState.cpp)
 set(gui button.cpp mainMenuButton.cpp exitButton.cpp optionsButton.cpp playButton.cpp okButton.cpp loadButton.cpp textbox.cpp listbox.cpp)
-set(content map.cpp playerData.h structure.cpp building.cpp unit.cpp aircraft.cpp jet.cpp helicopter.cpp)
+set(content map.cpp playerData.h structure.cpp building.cpp unit.cpp aircraft.cpp jet.cpp helicopter.cpp projectile.cpp bomb.cpp missile.cpp)
 set(utils defConfigs.h util.cpp)
 
 add_executable(fsim main.cpp ${core} ${states} ${gui} ${content} ${utils})

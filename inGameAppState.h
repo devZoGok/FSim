@@ -12,7 +12,7 @@ namespace vb01{
 
 namespace fsim{
 	class Structure;
-	class Unit;
+	class Projectile;
 	class Map;
 	class GuiAppState;
 	class ActiveGameAppState;
@@ -31,6 +31,7 @@ namespace fsim{
 			inline int getPilotId(){return pilotId;}
 			inline int getPlayerId(){return playerId;}
 			inline void addStructure(Structure *s){structures.push_back(s);}
+			inline void addProjectile(Projectile *p){projectiles.push_back(p);}
 			inline void setPlayerId(int id){this->playerId=id;}
 			inline Map* getMap(){return map;}
 			std::vector<Structure*>& getStructures(){return structures;}
@@ -45,6 +46,7 @@ namespace fsim{
 			Faction faction;
 			GuiAppState *guiState;
 			std::vector<Structure*> structures;
+			std::vector<Projectile*> projectiles;
 	};
 }
 
