@@ -45,7 +45,6 @@ namespace fsim{
 			std::vector<Button*> buttons;
 			std::vector<Listbox*> listboxes;
 			std::vector<Textbox*> textboxes;
-			GameManager *gm;
 	};
 }
 

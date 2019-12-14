@@ -7,6 +7,7 @@
 #include"inGameAppState.h"
 #include"jet.h"
 #include"helicopter.h"
+#include"airfield.h"
 #include"structureData.h"
 #include<model.h>
 #include<root.h>
@@ -63,8 +64,17 @@ namespace fsim{
 
 		}
 
+		Vector3 *runwayPos=new Vector3[1];
+		runwayPos[0]=Vector3(0,0,0);
+		Vector3 *helipadPos=new Vector3[1];
+		helipadPos[0]=Vector3(2,0,0);
+		Vector3 *runwayDirs=new Vector3[1];
+		runwayDirs[0]=Vector3(0,0,-1);
+		inGameState->addStructure(new Airfield(gm,Type::AIRFIELD,0,Vector3(0,-20,10),Quaternion(1,0,0,0),1,runwayPos,runwayDirs,1,helipadPos));
+		/*
+		*/
 		if(saveId==-1){
-			inGameState->addStructure(new Helicopter(gm,Type::HELICOPTER,2,Vector3(0,20,0),Quaternion(1,0,0,0)));
+			inGameState->addStructure(new Helicopter(gm,Type::HELICOPTER,2,Vector3(20,0,0),Quaternion(1,0,0,0)));
 			for(int i=structuresLine+1;i<lines.size();i++){
 				string type;
 				const int numCoords=7;

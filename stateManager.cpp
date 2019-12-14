@@ -6,8 +6,8 @@ namespace fsim{
 	StateManager::~StateManager(){}
 
 	void StateManager::update(){
-		for(AbstractAppState *a : appStates)
-			a->update();
+		for(int i=0;i<appStates.size();i++)
+			appStates[i]->update();
 	}
 
 	void StateManager::attachState(AbstractAppState *a){
@@ -20,8 +20,10 @@ namespace fsim{
 		for(int i=0;i<appStates.size()&&id==-1;i++)
 			if(appStates[i]==a)
 				id=i;
-		if(id!=-1)
+		if(id!=-1){
+			a->onDettached();
 			appStates.erase(appStates.begin()+id);
+		}
 	}
 
 	void StateManager::dettachState(AbstractAppState::Type type){
@@ -29,8 +31,10 @@ namespace fsim{
 		for(int i=0;i<appStates.size()&&id==-1;i++)
 			if(appStates[i]->getType()==type)
 				id=i;
-		if(id!=-1)
+		if(id!=-1){
+			appStates[id]->onDettached();
 			appStates.erase(appStates.begin()+id);
+		}
 	}
 
 	AbstractAppState* StateManager::getState(AbstractAppState::Type type){

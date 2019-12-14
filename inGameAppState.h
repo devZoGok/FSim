@@ -30,11 +30,12 @@ namespace fsim{
 			inline int getNumStructures(){return structures.size();}
 			inline int getPilotId(){return pilotId;}
 			inline int getPlayerId(){return playerId;}
-			inline void addStructure(Structure *s){structures.push_back(s);}
+			void addStructure(Structure*);
 			inline void addProjectile(Projectile *p){projectiles.push_back(p);}
 			inline void setPlayerId(int id){this->playerId=id;}
 			inline Map* getMap(){return map;}
-			std::vector<Structure*>& getStructures(){return structures;}
+			inline std::vector<Structure*>& getStructures(){return structures;}
+			inline Structure* getStructure(int i){return structures[i];}
 		private:
 			void togglePause();
 			

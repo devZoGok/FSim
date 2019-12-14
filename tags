@@ -5,22 +5,31 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	0.0.0	/3fdf28bc/
+AAM	projectileData.h	/^		enum Type{AAM,ASM,SAM,BOMB};$/;"	e	enum:fsim::projectileData::Type
 ABSTRACT_APP_STATE_H	abstractAppState.h	/^#define ABSTRACT_APP_STATE_H$/;"	d
 ACTIVE_GAME_APP_STATE_H	activeGameAppState.h	/^#define ACTIVE_GAME_APP_STATE_H$/;"	d
 AIRCRAFT_DATA_H	aircraftData.h	/^#define AIRCRAFT_DATA_H$/;"	d
 AIRCRAFT_H	aircraft.h	/^#define AIRCRAFT_H$/;"	d
+AIRCRAFT_SELECTION_BUTTON_H	aircraftSelectionButton.h	/^#define AIRCRAFT_SELECTION_BUTTON_H$/;"	d
+AIRFIELD	structureData.h	/^		AIRFIELD$/;"	e	enum:fsim::Type
+AIRFIELD_H	airfield.h	/^#define AIRFIELD_H$/;"	d
+ASM	projectileData.h	/^		enum Type{AAM,ASM,SAM,BOMB};$/;"	e	enum:fsim::projectileData::Type
 AbstractAppState	abstractAppState.cpp	/^	AbstractAppState::AbstractAppState(GameManager *gm){this->gm=gm;}$/;"	f	class:fsim::AbstractAppState
 AbstractAppState	abstractAppState.h	/^	class AbstractAppState{$/;"	c	namespace:fsim
 ActiveGameAppState	activeGameAppState.cpp	/^	ActiveGameAppState::ActiveGameAppState(GameManager *gm,int playerId) : AbstractAppState(gm){$/;"	f	class:fsim::ActiveGameAppState
 ActiveGameAppState	activeGameAppState.h	/^	class ActiveGameAppState : public AbstractAppState{$/;"	c	namespace:fsim
-Aircraft	aircraft.cpp	/^	Aircraft::Aircraft(GameManager *gm,int id, Vector3 pos, Quaternion rot) : Unit(gm,id,pos,rot){$/;"	f	class:fsim::Aircraft
+Aircraft	aircraft.cpp	/^	Aircraft::Aircraft(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot, int *upgr/;"	f	class:fsim::Aircraft
 Aircraft	aircraft.h	/^	class Aircraft : public Unit{$/;"	c	namespace:fsim
-AircraftSelectionButton	okButton.cpp	/^							AircraftSelectionButton(GameManager *gm, Vector2 pos, Vector2 size, string name,int aircr/;"	f	class:fsim::OkButton::onClick::StartButton::onClick::AircraftSelectionButton	file:
-AircraftSelectionButton	okButton.cpp	/^					class AircraftSelectionButton : public Button{$/;"	c	function:fsim::OkButton::onClick::StartButton::onClick	file:
-AircraftTabButton	okButton.cpp	/^				AircraftTabButton(GameManager *gm, Vector2 pos, Vector2 size, string name, string upgrades[5/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	file:
+AircraftSelectionButton	aircraftSelectionButton.cpp	/^	AircraftSelectionButton::AircraftSelectionButton(GameManager *gm, Vector2 pos, Vector2 size, st/;"	f	class:fsim::AircraftSelectionButton
+AircraftSelectionButton	aircraftSelectionButton.h	/^	class AircraftSelectionButton : public Button{$/;"	c	namespace:fsim
+AircraftTabButton	okButton.cpp	/^				AircraftTabButton(GameManager *gm, Vector2 pos, Vector2 size,Node *scoreNode,int pilotId, in/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	file:
 AircraftTabButton	okButton.cpp	/^		class AircraftTabButton : public Button{$/;"	c	function:fsim::OkButton::onClick	file:
+Airfield	airfield.cpp	/^	Airfield::Airfield(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot, int numRu/;"	f	class:fsim::Airfield
+Airfield	airfield.h	/^	class Airfield : public Building{$/;"	c	namespace:fsim
 AuxTriggers	mapping.h	/^		enum AuxTriggers{MOUSE_AXIS_LEFT=310,MOUSE_AXIS_RIGHT=311,MOUSE_AXIS_UP=312,MOUSE_AXIS_DOWN=31/;"	g	struct:fsim::Mapping
 BACKSPACE	mapping.h	/^			BACKSPACE,$/;"	e	enum:fsim::Mapping::Bind
+BOMB	projectileData.h	/^		enum Type{AAM,ASM,SAM,BOMB};$/;"	e	enum:fsim::projectileData::Type
+BOMB_H	bomb.h	/^#define BOMB_H$/;"	d
 BUILDING_H	building.h	/^#define BUILDING_H$/;"	d
 BUTTON_H	button.h	/^#define BUTTON_H$/;"	d
 BackButton	inGameAppState.cpp	/^							BackButton(GameManager *gm) : Button(gm,Vector2(100,300),Vector2(100,50),"Back"){}$/;"	f	class:fsim::InGameAppState::togglePause::SaveButton::onClick::BackButton	file:
@@ -29,7 +38,9 @@ BackButton	optionsButton.cpp	/^							BackButton(GameManager *gm,Vector2 pos,Vec
 BackButton	optionsButton.cpp	/^					class BackButton : public Button{$/;"	c	function:fsim::OptionsButton::onClick::TabButton::onClick	file:
 Bind	mapping.h	/^		enum Bind{$/;"	g	struct:fsim::Mapping
 BindType	mapping.h	/^		enum BindType{KEYBOARD,MOUSE_KEY,MOUSE_AXIS,JOYSTICK_KEY,JOYSTICK_AXIS};$/;"	g	struct:fsim::Mapping
-Building	building.cpp	/^	Building::Building(GameManager *gm,int id, Vector3 pos, Quaternion rot) : Structure(gm,id,pos,r/;"	f	class:fsim::Building
+Bomb	bomb.cpp	/^	Bomb::Bomb(GameManager *gm,int id,Structure *structure,Vector3 pos,Quaternion rot,float speed) /;"	f	class:fsim::Bomb
+Bomb	bomb.h	/^	class Bomb : public Projectile{$/;"	c	namespace:fsim
+Building	building.cpp	/^	Building::Building(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot) : Structu/;"	f	class:fsim::Building
 Building	building.h	/^	class Building : public Structure{$/;"	c	namespace:fsim
 Button	button.cpp	/^	Button::Button(GameManager *gm, Vector2 pos, Vector2 size,string name,bool separate,string imag/;"	f	class:fsim::Button
 Button	button.h	/^	class Button{$/;"	c	namespace:fsim
@@ -59,14 +70,14 @@ HELICOPTER	structureData.h	/^		HELICOPTER,$/;"	e	enum:fsim::Type
 HELICOPTER_APP_STATE_H	helicopterAppState.h	/^#define HELICOPTER_APP_STATE_H$/;"	d
 HELICOPTER_H	helicopter.h	/^#define HELICOPTER_H$/;"	d
 HELICOPTER_STATE	abstractAppState.h	/^			enum Type{GUI_STATE,IN_GAME_STATE,JET_STATE,HELICOPTER_STATE};$/;"	e	enum:fsim::AbstractAppState::Type
-Helicopter	helicopter.cpp	/^	Helicopter::Helicopter(GameManager *gm,int id, Vector3 pos, Quaternion rot) : Aircraft(gm,id,po/;"	f	class:fsim::Helicopter
+Helicopter	helicopter.cpp	/^	Helicopter::Helicopter(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot, int */;"	f	class:fsim::Helicopter
 Helicopter	helicopter.h	/^	class Helicopter : public Aircraft{$/;"	c	namespace:fsim
 HelicopterAppState	helicopterAppState.cpp	/^	HelicopterAppState::HelicopterAppState(GameManager *gm, int playerId) : ActiveGameAppState(gm,p/;"	f	class:fsim::HelicopterAppState
 HelicopterAppState	helicopterAppState.h	/^	class HelicopterAppState : public ActiveGameAppState{$/;"	c	namespace:fsim
 INPUT_MANAGER_H	inputManager.h	/^#define INPUT_MANAGER_H$/;"	d
 IN_GAME_APP_STATE_H	inGameAppState.h	/^#define IN_GAME_APP_STATE_H$/;"	d
 IN_GAME_STATE	abstractAppState.h	/^			enum Type{GUI_STATE,IN_GAME_STATE,JET_STATE,HELICOPTER_STATE};$/;"	e	enum:fsim::AbstractAppState::Type
-InGameAppState	inGameAppState.cpp	/^	InGameAppState::InGameAppState(GameManager *gm,int pilotId,int faction,bool loadFromSave,int le/;"	f	class:fsim::InGameAppState
+InGameAppState	inGameAppState.cpp	/^	InGameAppState::InGameAppState(GameManager *gm,int pilotId,int playerId,int faction,int saveId,/;"	f	class:fsim::InGameAppState
 InGameAppState	inGameAppState.h	/^	class InGameAppState : public AbstractAppState{$/;"	c	namespace:fsim
 InputManager	inputManager.cpp	/^	InputManager::InputManager(GameManager *gm,GLFWwindow *window){$/;"	f	class:fsim::InputManager
 InputManager	inputManager.h	/^	class InputManager{$/;"	c	namespace:fsim
@@ -76,7 +87,7 @@ JET_H	jet.h	/^#define JET_H$/;"	d
 JET_STATE	abstractAppState.h	/^			enum Type{GUI_STATE,IN_GAME_STATE,JET_STATE,HELICOPTER_STATE};$/;"	e	enum:fsim::AbstractAppState::Type
 JOYSTICK_AXIS	mapping.h	/^		enum BindType{KEYBOARD,MOUSE_KEY,MOUSE_AXIS,JOYSTICK_KEY,JOYSTICK_AXIS};$/;"	e	enum:fsim::Mapping::BindType
 JOYSTICK_KEY	mapping.h	/^		enum BindType{KEYBOARD,MOUSE_KEY,MOUSE_AXIS,JOYSTICK_KEY,JOYSTICK_AXIS};$/;"	e	enum:fsim::Mapping::BindType
-Jet	jet.cpp	/^	Jet::Jet(GameManager *gm,int id, Vector3 pos, Quaternion rot) : Aircraft(gm,id,pos,rot){}$/;"	f	class:fsim::Jet
+Jet	jet.cpp	/^	Jet::Jet(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot,int *upgrades) : Air/;"	f	class:fsim::Jet
 Jet	jet.h	/^	class Jet : public Aircraft{$/;"	c	namespace:fsim
 JetAppState	jetAppState.cpp	/^	JetAppState::JetAppState(GameManager *gm, int playerId) : ActiveGameAppState(gm,playerId){$/;"	f	class:fsim::JetAppState
 JetAppState	jetAppState.h	/^	class JetAppState : public ActiveGameAppState{$/;"	c	namespace:fsim
@@ -96,6 +107,7 @@ MAIN_MENU	mapping.h	/^			MAIN_MENU,$/;"	e	enum:fsim::Mapping::Bind
 MAIN_MENU_BUTTON_H	mainMenuButton.h	/^#define MAIN_MENU_BUTTON_H$/;"	d
 MAPPING_H	mapping.h	/^#define MAPPING_H$/;"	d
 MAP_H	map.h	/^#define MAP_H$/;"	d
+MISSILE_H	missile.h	/^#define MISSILE_H$/;"	d
 MOUSE_AXIS	mapping.h	/^		enum BindType{KEYBOARD,MOUSE_KEY,MOUSE_AXIS,JOYSTICK_KEY,JOYSTICK_AXIS};$/;"	e	enum:fsim::Mapping::BindType
 MOUSE_AXIS_DOWN	mapping.h	/^		enum AuxTriggers{MOUSE_AXIS_LEFT=310,MOUSE_AXIS_RIGHT=311,MOUSE_AXIS_UP=312,MOUSE_AXIS_DOWN=31/;"	e	enum:fsim::Mapping::AuxTriggers
 MOUSE_AXIS_LEFT	mapping.h	/^		enum AuxTriggers{MOUSE_AXIS_LEFT=310,MOUSE_AXIS_RIGHT=311,MOUSE_AXIS_UP=312,MOUSE_AXIS_DOWN=31/;"	e	enum:fsim::Mapping::AuxTriggers
@@ -111,14 +123,16 @@ MYSQLPP_MYSQL_HEADERS_BURIED	okButton.cpp	/^#define MYSQLPP_MYSQL_HEADERS_BURIED
 MYSQLPP_MYSQL_HEADERS_BURIED	playButton.cpp	/^#define MYSQLPP_MYSQL_HEADERS_BURIED$/;"	d	file:
 MainMenuButton	mainMenuButton.cpp	/^	MainMenuButton::MainMenuButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size/;"	f	class:fsim::MainMenuButton
 MainMenuButton	mainMenuButton.h	/^	class MainMenuButton : public Button{$/;"	c	namespace:fsim
-Map	map.cpp	/^	Map::Map(GameManager *gm,string path,InGameAppState *inGameState,bool loadFromSave,int level,in/;"	f	class:fsim::Map
+Map	map.cpp	/^	Map::Map(GameManager *gm,string path,InGameAppState *inGameState,int saveId,int level,int objec/;"	f	class:fsim::Map
 Map	map.h	/^	class Map{$/;"	c	namespace:fsim
 Mapping	mapping.h	/^	struct Mapping{$/;"	s	namespace:fsim
+Missile	missile.cpp	/^	Missile::Missile(GameManager *gm,int id,Structure *structure,Vector3 pos,Quaternion rot,Structu/;"	f	class:fsim::Missile
+Missile	missile.h	/^	class Missile : public Projectile{$/;"	c	namespace:fsim
 OK_BUTTON_H	okButton.h	/^#define OK_BUTTON_H$/;"	d
 OPTIONS_BUTTON_H	optionsButton.h	/^#define OPTIONS_BUTTON_H$/;"	d
 OkButton	inGameAppState.cpp	/^							OkButton(GameManager *gm,Textbox *textbox) : Button(gm,Vector2(100,500),Vector2(100,50),"/;"	f	class:fsim::InGameAppState::togglePause::SaveButton::onClick::OkButton	file:
 OkButton	inGameAppState.cpp	/^					class OkButton : public Button{$/;"	c	function:fsim::InGameAppState::togglePause::SaveButton::onClick	file:
-OkButton	okButton.cpp	/^	OkButton::OkButton(GameManager *gm,Vector2 pos, Vector2 size,Textbox *textbox,int pilotId) : Bu/;"	f	class:fsim::OkButton
+OkButton	okButton.cpp	/^	OkButton::OkButton(GameManager *gm,Vector2 pos, Vector2 size,Textbox *textbox,int saveId,int pi/;"	f	class:fsim::OkButton
 OkButton	okButton.h	/^	class OkButton : public Button{$/;"	c	namespace:fsim
 OkButton	optionsButton.cpp	/^				OkButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size,"OK"){}$/;"	f	class:fsim::OptionsButton::onClick::OkButton	file:
 OkButton	optionsButton.cpp	/^		class OkButton : public Button{$/;"	c	function:fsim::OptionsButton::onClick	file:
@@ -127,15 +141,22 @@ Options	optionsButton.cpp	/^		struct Options{$/;"	s	function:fsim::OptionsButton
 OptionsButton	optionsButton.cpp	/^	OptionsButton::OptionsButton(GameManager *gm,Vector2 pos, Vector2 size) : Button(gm,pos,size,"O/;"	f	class:fsim::OptionsButton
 OptionsButton	optionsButton.h	/^	class OptionsButton : public Button{$/;"	c	namespace:fsim
 PATH	defConfigs.h	/^	const static std::string PATH="..\/Assets\/",defaultTexture=PATH+"Textures\/defaultTexture.jpg"/;"	v	namespace:fsim	typeref:typename:const std::string
-PAUSE	mapping.h	/^			PAUSE,$/;"	e	enum:fsim::Mapping::Bind
 PITCH_DOWN	mapping.h	/^			PITCH_DOWN,$/;"	e	enum:fsim::Mapping::Bind
 PITCH_HELICOPTER_DOWN	mapping.h	/^			PITCH_HELICOPTER_DOWN,$/;"	e	enum:fsim::Mapping::Bind
 PITCH_HELICOPTER_UP	mapping.h	/^			PITCH_HELICOPTER_UP,$/;"	e	enum:fsim::Mapping::Bind
 PITCH_UP	mapping.h	/^			PITCH_UP,$/;"	e	enum:fsim::Mapping::Bind
 PLAYER_DATA_H	playerData.h	/^#define PLAYER_DATA_H$/;"	d
 PLAY_BUTTON_H	playButton.h	/^#define PLAY_BUTTON_H$/;"	d
+PRIMARY_FIRE	mapping.h	/^			PRIMARY_FIRE,$/;"	e	enum:fsim::Mapping::Bind
+PRIMARY_HELICOPTER_FIRE	mapping.h	/^			PRIMARY_HELICOPTER_FIRE,$/;"	e	enum:fsim::Mapping::Bind
+PROJECTILE_DATA_H	projectileData.h	/^#define PROJECTILE_DATA_H$/;"	d
+PROJECTILE_H	projectile.h	/^#define PROJECTILE_H$/;"	d
+PilotSelectionButton	loadButton.cpp	/^				PilotSelectionButton(GameManager *gm, Vector2 pos, Vector2 size,Listbox *listbox) : Button(g/;"	f	class:fsim::LoadButton::onClick::PilotSelectionButton	file:
+PilotSelectionButton	loadButton.cpp	/^		class PilotSelectionButton : public Button{$/;"	c	function:fsim::LoadButton::onClick	file:
 PlayButton	playButton.cpp	/^	PlayButton::PlayButton(GameManager *gm,Vector2 pos, Vector2 size):Button(gm,pos,size,"Play",tru/;"	f	class:fsim::PlayButton
 PlayButton	playButton.h	/^	class PlayButton : public Button{$/;"	c	namespace:fsim
+Projectile	projectile.cpp	/^	Projectile::Projectile(GameManager *gm,int id,Structure *structure,Vector3 pos,Quaternion rot){$/;"	f	class:fsim::Projectile
+Projectile	projectile.h	/^	class Projectile{$/;"	c	namespace:fsim
 RISE	mapping.h	/^			RISE,$/;"	e	enum:fsim::Mapping::Bind
 ROLL_HELICOPTER_LEFT	mapping.h	/^			ROLL_HELICOPTER_LEFT,$/;"	e	enum:fsim::Mapping::Bind
 ROLL_HELICOPTER_RIGHT	mapping.h	/^			ROLL_HELICOPTER_RIGHT,$/;"	e	enum:fsim::Mapping::Bind
@@ -143,7 +164,10 @@ ROLL_LEFT	mapping.h	/^			ROLL_LEFT,$/;"	e	enum:fsim::Mapping::Bind
 ROLL_RIGHT	mapping.h	/^			ROLL_RIGHT,$/;"	e	enum:fsim::Mapping::Bind
 ResumeButton	inGameAppState.cpp	/^				ResumeButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size,"Resume"){}$/;"	f	class:fsim::InGameAppState::togglePause::ResumeButton	file:
 ResumeButton	inGameAppState.cpp	/^		class ResumeButton : public Button{$/;"	c	function:fsim::InGameAppState::togglePause	file:
-SAM_SITE	structureData.h	/^		SAM_SITE$/;"	e	enum:fsim::Type
+SAM	projectileData.h	/^		enum Type{AAM,ASM,SAM,BOMB};$/;"	e	enum:fsim::projectileData::Type
+SAM_SITE	structureData.h	/^		SAM_SITE,$/;"	e	enum:fsim::Type
+SECONDARY_FIRE	mapping.h	/^			SECONDARY_FIRE,$/;"	e	enum:fsim::Mapping::Bind
+SECONDARY_HELICOPTER_FIRE	mapping.h	/^			SECONDARY_HELICOPTER_FIRE,$/;"	e	enum:fsim::Mapping::Bind
 SHIFT	mapping.h	/^			SHIFT,$/;"	e	enum:fsim::Mapping::Bind
 STATE_MANAGER_H	stateManager.h	/^#define STATE_MANAGER_H$/;"	d
 STOCK	listbox.h	/^			enum ListboxType{STOCK,CONTROLS};$/;"	e	enum:fsim::Listbox::ListboxType
@@ -151,15 +175,15 @@ STRUCTURE_DATA_H	structureData.h	/^#define STRUCTURE_DATA_H$/;"	d
 STRUCTURE_H	structure.h	/^#define STRUCTURE_H$/;"	d
 SaveButton	inGameAppState.cpp	/^				SaveButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size,"Save"){}$/;"	f	class:fsim::InGameAppState::togglePause::SaveButton	file:
 SaveButton	inGameAppState.cpp	/^		class SaveButton : public Button{$/;"	c	function:fsim::InGameAppState::togglePause	file:
-SaveSelectionButton	loadButton.cpp	/^				SaveSelectionButton(GameManager *gm, Vector2 pos, Vector2 size,Listbox *listbox) : Button(gm/;"	f	class:fsim::LoadButton::onClick::SaveSelectionButton	file:
-SaveSelectionButton	loadButton.cpp	/^		class SaveSelectionButton : public Button{$/;"	c	function:fsim::LoadButton::onClick	file:
+SaveSelectionButton	loadButton.cpp	/^							SaveSelectionButton(GameManager *gm,Vector2 pos,Vector2 size,Listbox *l,int pilotId) : Bu/;"	f	class:fsim::LoadButton::onClick::PilotSelectionButton::onClick::SaveSelectionButton	file:
+SaveSelectionButton	loadButton.cpp	/^					class SaveSelectionButton : public Button{$/;"	c	function:fsim::LoadButton::onClick::PilotSelectionButton::onClick	file:
 ScrollingButton	listbox.cpp	/^	Listbox::ScrollingButton::ScrollingButton(GameManager *gm, Vector2 pos, Vector2 size, string na/;"	f	class:fsim::Listbox::ScrollingButton
 ScrollingButton	listbox.h	/^			class ScrollingButton : public Button{$/;"	c	class:fsim::Listbox
 StartButton	okButton.cpp	/^				StartButton(GameManager *gm, Vector2 pos, Vector2 size, AircraftTabButton *tabs[3], int pilo/;"	f	class:fsim::OkButton::onClick::StartButton	file:
 StartButton	okButton.cpp	/^		class StartButton : public Button{$/;"	c	function:fsim::OkButton::onClick	file:
 StateManager	stateManager.cpp	/^	StateManager::StateManager(){}$/;"	f	class:fsim::StateManager
 StateManager	stateManager.h	/^	class StateManager{$/;"	c	namespace:fsim
-Structure	structure.cpp	/^	Structure::Structure(GameManager *gm, int id, Vector3 pos, Quaternion rot){$/;"	f	class:fsim::Structure
+Structure	structure.cpp	/^	Structure::Structure(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot){$/;"	f	class:fsim::Structure
 Structure	structure.h	/^	class Structure{$/;"	c	namespace:fsim
 TEXTBOX_H	textbox.h	/^#define TEXTBOX_H$/;"	d
 TabButton	optionsButton.cpp	/^				TabButton(GameManager *gm, Vector2 pos, Vector2 size, string name) : Button(gm,pos,size,name/;"	f	class:fsim::OptionsButton::onClick::TabButton	file:
@@ -169,12 +193,14 @@ Textbox	textbox.h	/^	class Textbox{$/;"	c	namespace:fsim
 TextboxButton	textbox.cpp	/^	Textbox::TextboxButton::TextboxButton(Textbox *t, GameManager *gm,Vector2 pos, Vector2 size, st/;"	f	class:fsim::Textbox::TextboxButton
 TextboxButton	textbox.h	/^			class TextboxButton : public Button{$/;"	c	class:fsim::Textbox
 Type	abstractAppState.h	/^			enum Type{GUI_STATE,IN_GAME_STATE,JET_STATE,HELICOPTER_STATE};$/;"	g	class:fsim::AbstractAppState
+Type	projectileData.h	/^		enum Type{AAM,ASM,SAM,BOMB};$/;"	g	namespace:fsim::projectileData
 Type	structureData.h	/^	enum Type{$/;"	g	namespace:fsim
 UNIT_H	unit.h	/^#define UNIT_H$/;"	d
+UPGRADE_DATA_H	upgradeData.h	/^#define UPGRADE_DATA_H$/;"	d
 UTILS_H	util.h	/^#define UTILS_H$/;"	d
-Unit	unit.cpp	/^	Unit::Unit(GameManager *gm,int id, Vector3 pos, Quaternion rot) : Structure(gm,id,pos,rot){$/;"	f	class:fsim::Unit
+Unit	unit.cpp	/^	Unit::Unit(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot) : Structure(gm,id/;"	f	class:fsim::Unit
 Unit	unit.h	/^	class Unit : public Structure{$/;"	c	namespace:fsim
-UpgradeButton	okButton.cpp	/^						UpgradeButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size,"",true,PAT/;"	f	class:fsim::OkButton::onClick::AircraftTabButton::UpgradeButton	file:
+UpgradeButton	okButton.cpp	/^						UpgradeButton(GameManager *gm, Vector2 pos, Vector2 size,AircraftTabButton *tab,int type, /;"	f	class:fsim::OkButton::onClick::AircraftTabButton::UpgradeButton	file:
 UpgradeButton	okButton.cpp	/^				class UpgradeButton : public Button{$/;"	c	class:fsim::OkButton::onClick::AircraftTabButton	file:
 YAW_HELICOPTER_LEFT	mapping.h	/^			YAW_HELICOPTER_LEFT,$/;"	e	enum:fsim::Mapping::Bind
 YAW_HELICOPTER_RIGHT	mapping.h	/^			YAW_HELICOPTER_RIGHT,$/;"	e	enum:fsim::Mapping::Bind
@@ -187,22 +213,30 @@ activeState	inGameAppState.h	/^			ActiveGameAppState *activeState=nullptr;$/;"	m
 addButton	guiAppState.cpp	/^	void GuiAppState::addButton(Button *b){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
 addLine	listbox.cpp	/^	void Listbox::addLine(string line){$/;"	f	class:fsim::Listbox	typeref:typename:void
 addListbox	guiAppState.cpp	/^	void GuiAppState::addListbox(Listbox *l){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
-addStructure	inGameAppState.h	/^			inline void addStructure(Structure *s){structures.push_back(s);}$/;"	f	class:fsim::InGameAppState	typeref:typename:void
+addProjectile	inGameAppState.h	/^			inline void addProjectile(Projectile *p){projectiles.push_back(p);}$/;"	f	class:fsim::InGameAppState	typeref:typename:void
+addStructure	inGameAppState.cpp	/^	void InGameAppState::addStructure(Structure *s){$/;"	f	class:fsim::InGameAppState	typeref:typename:void
+addStructureIcon	activeGameAppState.cpp	/^	void ActiveGameAppState::addStructureIcon(int id){$/;"	f	class:fsim::ActiveGameAppState	typeref:typename:void
 addTextbox	guiAppState.cpp	/^	void GuiAppState::addTextbox(Textbox *t){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
 aircraft	activeGameAppState.h	/^			Aircraft *aircraft;$/;"	m	class:fsim::ActiveGameAppState	typeref:typename:Aircraft *
-aircraftId	okButton.cpp	/^							int aircraftId;$/;"	m	class:fsim::OkButton::onClick::StartButton::onClick::AircraftSelectionButton	typeref:typename:int	file:
+aircraftData	aircraftData.h	/^	namespace aircraftData{$/;"	n	namespace:fsim
+aircraftId	aircraftSelectionButton.h	/^			int aircraftId;$/;"	m	class:fsim::AircraftSelectionButton	typeref:typename:int
+aircraftTypeId	okButton.cpp	/^				int *upgradeLevels,aircraftTypeId,*score,pilotId;$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:int *	file:
 appStates	stateManager.h	/^			std::vector<AbstractAppState*> appStates;$/;"	m	class:fsim::StateManager	typeref:typename:std::vector<AbstractAppState * >
 attachState	stateManager.cpp	/^	void StateManager::attachState(AbstractAppState *a){$/;"	f	class:fsim::StateManager	typeref:typename:void
 attached	abstractAppState.h	/^			bool attached=false;$/;"	m	class:fsim::AbstractAppState	typeref:typename:bool
 backPitch	activeGameAppState.h	/^			bool forwPitch=false,backPitch=false,leftRoll=false,rightRoll=false;$/;"	m	class:fsim::ActiveGameAppState	typeref:typename:bool
+baseDir	bomb.h	/^			vb01::Vector3 baseDir;$/;"	m	class:fsim::Bomb	typeref:typename:vb01::Vector3
 bind	mapping.h	/^		Bind bind;$/;"	m	struct:fsim::Mapping	typeref:typename:Bind
 buttons	guiAppState.h	/^			std::vector<Button*> buttons;$/;"	m	class:fsim::GuiAppState	typeref:typename:std::vector<Button * >
 cam	aircraft.h	/^			vb01::Camera *cam=nullptr;$/;"	m	class:fsim::Aircraft	typeref:typename:vb01::Camera *
 canChangeCursor	textbox.h	/^			inline bool canChangeCursor(){return getTime()-lastBlinkTime>250;}$/;"	f	class:fsim::Textbox	typeref:typename:bool
+canPrimaryFire	aircraft.h	/^			inline bool canPrimaryFire(){return getTime()-lastPrimaryFire>rateOfPrimaryFire;}$/;"	f	class:fsim::Aircraft	typeref:typename:bool
+canSecondaryFire	aircraft.h	/^			inline bool canSecondaryFire(){return getTime()-lastSecondaryFire>rateOfSecondaryFire;}$/;"	f	class:fsim::Aircraft	typeref:typename:bool
 canShowCursor	textbox.h	/^			bool enabled=false,canShowCursor=false,capitalLeters=false;$/;"	m	class:fsim::Textbox	typeref:typename:bool
 canType	guiAppState.h	/^			bool canType(){return getTime()-lastTypeTime>100;}$/;"	f	class:fsim::GuiAppState	typeref:typename:bool
 capitalLeters	textbox.h	/^			bool enabled=false,canShowCursor=false,capitalLeters=false;$/;"	m	class:fsim::Textbox	typeref:typename:bool
 changeLine	listbox.cpp	/^	void Listbox::changeLine(int id, string change){$/;"	f	class:fsim::Listbox	typeref:typename:void
+checkForCollision	projectile.cpp	/^	void Projectile::checkForCollision(){$/;"	f	class:fsim::Projectile	typeref:typename:void
 close	listbox.cpp	/^	void Listbox::close(){$/;"	f	class:fsim::Listbox	typeref:typename:void
 color	button.h	/^			vb01::Vector4 color=vb01::Vector4(.6,.6,.6,1);$/;"	m	class:fsim::Button	typeref:typename:vb01::Vector4
 convert	listbox.cpp	/^	string Listbox::convert(string str){$/;"	f	class:fsim::Listbox	typeref:typename:string
@@ -218,6 +252,7 @@ deleteCharacter	textbox.cpp	/^	void Textbox::deleteCharacter(){$/;"	f	class:fsim
 dettachState	stateManager.cpp	/^	void StateManager::dettachState(AbstractAppState *a){$/;"	f	class:fsim::StateManager	typeref:typename:void
 dettachState	stateManager.cpp	/^	void StateManager::dettachState(AbstractAppState::Type type){$/;"	f	class:fsim::StateManager	typeref:typename:void
 dettachState	stateManager.h	/^			inline void dettachState(int id){appStates.erase(appStates.begin()+id);}$/;"	f	class:fsim::StateManager	typeref:typename:void
+dir	projectile.h	/^			vb01::Vector3 pos,dir,left,up;$/;"	m	class:fsim::Projectile	typeref:typename:vb01::Vector3
 dir	structure.h	/^			vb01::Vector3 pos,dir=vb01::Vector3(0,0,-1),left=vb01::Vector3(1,0,0),up=vb01::Vector3(0,1,0)/;"	m	class:fsim::Structure	typeref:typename:vb01::Vector3
 disable	textbox.cpp	/^	void Textbox::disable(){$/;"	f	class:fsim::Textbox	typeref:typename:void
 enable	textbox.cpp	/^	void Textbox::enable(){$/;"	f	class:fsim::Textbox	typeref:typename:void
@@ -225,7 +260,7 @@ enabled	textbox.h	/^			bool enabled=false,canShowCursor=false,capitalLeters=fals
 entry	textbox.h	/^			std::string entry="";$/;"	m	class:fsim::Textbox	typeref:typename:std::string
 faction	inGameAppState.h	/^			Faction faction;$/;"	m	class:fsim::InGameAppState	typeref:typename:Faction
 faction	okButton.cpp	/^				int faction,pilotId;$/;"	m	class:fsim::OkButton::onClick::StartButton	typeref:typename:int	file:
-faction	okButton.h	/^			int pilotId,faction;$/;"	m	class:fsim::OkButton	typeref:typename:int
+faction	okButton.h	/^			int faction;$/;"	m	class:fsim::OkButton	typeref:typename:int
 faction	playButton.cpp	/^				int faction;$/;"	m	class:fsim::PlayButton::onClick::FactionButton	typeref:typename:int	file:
 faction	structure.h	/^			int id,faction;$/;"	m	class:fsim::Structure	typeref:typename:int
 foo	inputManager.cpp	/^	void foo(GLFWwindow *window,double newPosX,double newPosY){$/;"	f	namespace:fsim	typeref:typename:void
@@ -239,6 +274,12 @@ fsim	activeGameAppState.h	/^namespace fsim{$/;"	n
 fsim	aircraft.cpp	/^namespace fsim{$/;"	n	file:
 fsim	aircraft.h	/^namespace fsim{$/;"	n
 fsim	aircraftData.h	/^namespace fsim{$/;"	n
+fsim	aircraftSelectionButton.cpp	/^namespace fsim{$/;"	n	file:
+fsim	aircraftSelectionButton.h	/^namespace fsim{$/;"	n
+fsim	airfield.cpp	/^namespace fsim{$/;"	n	file:
+fsim	airfield.h	/^namespace fsim{$/;"	n
+fsim	bomb.cpp	/^namespace fsim{$/;"	n	file:
+fsim	bomb.h	/^namespace fsim{$/;"	n
 fsim	building.cpp	/^namespace fsim{$/;"	n	file:
 fsim	building.h	/^namespace fsim{$/;"	n
 fsim	button.cpp	/^namespace fsim{$/;"	n	file:
@@ -271,6 +312,8 @@ fsim	mainMenuButton.h	/^namespace fsim{$/;"	n
 fsim	map.cpp	/^namespace fsim{$/;"	n	file:
 fsim	map.h	/^namespace fsim{$/;"	n
 fsim	mapping.h	/^namespace fsim{$/;"	n
+fsim	missile.cpp	/^namespace fsim{$/;"	n	file:
+fsim	missile.h	/^namespace fsim{$/;"	n
 fsim	okButton.cpp	/^namespace fsim{$/;"	n	file:
 fsim	okButton.h	/^namespace fsim{$/;"	n
 fsim	optionsButton.cpp	/^namespace fsim{$/;"	n	file:
@@ -278,6 +321,9 @@ fsim	optionsButton.h	/^namespace fsim{$/;"	n
 fsim	playButton.cpp	/^namespace fsim{$/;"	n	file:
 fsim	playButton.h	/^namespace fsim{$/;"	n
 fsim	playerData.h	/^namespace fsim{$/;"	n
+fsim	projectile.cpp	/^namespace fsim{$/;"	n	file:
+fsim	projectile.h	/^namespace fsim{$/;"	n
+fsim	projectileData.h	/^namespace fsim{$/;"	n
 fsim	stateManager.cpp	/^namespace fsim{$/;"	n	file:
 fsim	stateManager.h	/^namespace fsim{$/;"	n
 fsim	structure.cpp	/^namespace fsim{$/;"	n	file:
@@ -287,34 +333,45 @@ fsim	textbox.cpp	/^namespace fsim{$/;"	n	file:
 fsim	textbox.h	/^namespace fsim{$/;"	n
 fsim	unit.cpp	/^namespace fsim{$/;"	n	file:
 fsim	unit.h	/^namespace fsim{$/;"	n
+fsim	upgradeData.h	/^namespace fsim{$/;"	n
 fsim	util.cpp	/^namespace fsim{$/;"	n	file:
 fsim	util.h	/^namespace fsim{$/;"	n
+getAircraft	activeGameAppState.h	/^			inline Aircraft* getAircraft(){return aircraft;}$/;"	f	class:fsim::ActiveGameAppState	typeref:typename:Aircraft *
+getAircraftTypeId	okButton.cpp	/^				int getAircraftTypeId(){return aircraftTypeId;}$/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:int	file:
 getAppStates	stateManager.h	/^			inline std::vector<AbstractAppState*> getAppStates(){return appStates;}$/;"	f	class:fsim::StateManager	typeref:typename:std::vector<AbstractAppState * >
 getButton	guiAppState.cpp	/^	Button* GuiAppState::getButton(string name){$/;"	f	class:fsim::GuiAppState	typeref:typename:Button *
 getColor	button.h	/^			inline vb01::Vector4 getColor(){return color;}$/;"	f	class:fsim::Button	typeref:typename:vb01::Vector4
 getContents	listbox.cpp	/^	std::vector<string> Listbox::getContents(){$/;"	f	class:fsim::Listbox	typeref:typename:std::vector<string>
 getCoords	map.cpp	/^	void Map::getCoords(string line, string &type, float *coords,const int numCoords){$/;"	f	class:fsim::Map	typeref:typename:void
+getDir	structure.h	/^			inline vb01::Vector3 getDir(){return dir;}$/;"	f	class:fsim::Structure	typeref:typename:vb01::Vector3
 getFaction	structure.h	/^			inline int getFaction(){return faction;}$/;"	f	class:fsim::Structure	typeref:typename:int
 getHeight	gameManager.h	/^			inline int getHeight(){return height;}$/;"	f	class:fsim::GameManager	typeref:typename:int
+getHelipadPos	airfield.h	/^			inline vb01::Vector3 getHelipadPos(int i){return helipadPos[i];}$/;"	f	class:fsim::Airfield	typeref:typename:vb01::Vector3
 getId	structure.h	/^			inline int getId(){return id;}$/;"	f	class:fsim::Structure	typeref:typename:int
 getLanding	helicopter.h	/^			inline float getLanding(){return landing;}$/;"	f	class:fsim::Helicopter	typeref:typename:float
 getLandingSpeed	helicopter.h	/^			inline float getLandingSpeed(){return landingSpeed;}$/;"	f	class:fsim::Helicopter	typeref:typename:float
+getLeft	structure.h	/^			inline vb01::Vector3 getLeft(){return left;}$/;"	f	class:fsim::Structure	typeref:typename:vb01::Vector3
 getLevel	map.h	/^			inline int getLevel(){return level;}$/;"	f	class:fsim::Map	typeref:typename:int
 getListboxButton	listbox.h	/^			inline ListboxButton* getListboxButton(){return listboxButton;}$/;"	f	class:fsim::Listbox	typeref:typename:ListboxButton *
 getMap	inGameAppState.h	/^			inline Map* getMap(){return map;}$/;"	f	class:fsim::InGameAppState	typeref:typename:Map *
+getMapModel	map.h	/^			inline vb01::Model* getMapModel(){return mapModel;}$/;"	f	class:fsim::Map	typeref:typename:vb01::Model *
 getMapping	abstractAppState.h	/^			inline Mapping* getMapping(int id){return mappings[id];}$/;"	f	class:fsim::AbstractAppState	typeref:typename:Mapping *
 getMappings	abstractAppState.h	/^			inline std::vector<Mapping*>& getMappings(){return mappings;}$/;"	f	class:fsim::AbstractAppState	typeref:typename:std::vector<Mapping * > &
 getMaxDisplay	listbox.h	/^			inline int getMaxDisplay(){return maxDisplay;}$/;"	f	class:fsim::Listbox	typeref:typename:int
+getModel	structure.h	/^			inline vb01::Model* getModel(){return model;}$/;"	f	class:fsim::Structure	typeref:typename:vb01::Model *
 getMousePosX	listbox.h	/^			inline double* getMousePosX(){return mousePosX;}$/;"	f	class:fsim::Listbox	typeref:typename:double *
 getMousePosY	listbox.h	/^			inline double* getMousePosY(){return mousePosY;}$/;"	f	class:fsim::Listbox	typeref:typename:double *
 getName	button.h	/^			inline std::string getName(){return name;}$/;"	f	class:fsim::Button	typeref:typename:std::string
 getNumAppStates	stateManager.h	/^			inline int getNumAppStates(){return appStates.size();}$/;"	f	class:fsim::StateManager	typeref:typename:int
+getNumHelipads	airfield.h	/^			inline int getNumHelipads(){return numHelipads;}$/;"	f	class:fsim::Airfield	typeref:typename:int
 getNumLines	listbox.h	/^			inline int getNumLines(){return lines.size();}$/;"	f	class:fsim::Listbox	typeref:typename:int
 getNumMappings	abstractAppState.h	/^			inline int getNumMappings(){return mappings.size();}$/;"	f	class:fsim::AbstractAppState	typeref:typename:int
+getNumRunways	airfield.h	/^			inline int getNumRunways(){return numRunways;}$/;"	f	class:fsim::Airfield	typeref:typename:int
 getNumStructures	inGameAppState.h	/^			inline int getNumStructures(){return structures.size();}$/;"	f	class:fsim::InGameAppState	typeref:typename:int
 getObjective	map.h	/^			inline int getObjective(){return objective;}$/;"	f	class:fsim::Map	typeref:typename:int
 getOptions	gameManager.h	/^			inline Options& getOptions(){return options;}$/;"	f	class:fsim::GameManager	typeref:typename:Options &
 getPilotId	inGameAppState.h	/^			inline int getPilotId(){return pilotId;}$/;"	f	class:fsim::InGameAppState	typeref:typename:int
+getPilotId	okButton.cpp	/^				int getPilotId(){return pilotId;}$/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:int	file:
 getPitch	aircraft.h	/^			inline float getPitch(){return pitchVal;}$/;"	f	class:fsim::Aircraft	typeref:typename:float
 getPitchSpeed	aircraft.h	/^			inline float getPitchSpeed(){return pitchSpeed;}$/;"	f	class:fsim::Aircraft	typeref:typename:float
 getPlayerId	inGameAppState.h	/^			inline int getPlayerId(){return playerId;}$/;"	f	class:fsim::InGameAppState	typeref:typename:int
@@ -328,6 +385,10 @@ getRoll	aircraft.h	/^			inline float getRoll(){return rollVal;}$/;"	f	class:fsim
 getRollSpeed	aircraft.h	/^			inline float getRollSpeed(){return rollSpeed;}$/;"	f	class:fsim::Aircraft	typeref:typename:float
 getRoot	gameManager.h	/^			inline vb01::Root* getRoot(){return root;}$/;"	f	class:fsim::GameManager	typeref:typename:vb01::Root *
 getRot	structure.h	/^			inline vb01::Quaternion getRot(){return rot;}$/;"	f	class:fsim::Structure	typeref:typename:vb01::Quaternion
+getRunwayDir	airfield.h	/^			inline vb01::Vector3 getRunwayDir(int i){return runwayDirs[i];}$/;"	f	class:fsim::Airfield	typeref:typename:vb01::Vector3
+getRunwayPos	airfield.h	/^			inline vb01::Vector3 getRunwayPos(int i){return runwayPos[i];}$/;"	f	class:fsim::Airfield	typeref:typename:vb01::Vector3
+getScore	okButton.cpp	/^				int* getScore(){return score;}$/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:int *	file:
+getScoreNode	okButton.cpp	/^				Node* getScoreNode(){return scoreNode;}$/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:Node *	file:
 getScrollingButton	listbox.h	/^			inline ScrollingButton* getScrollingButton(){return scrollingButton;}$/;"	f	class:fsim::Listbox	typeref:typename:ScrollingButton *
 getSelectedOption	listbox.h	/^			inline int getSelectedOption(){return selectedOption;}$/;"	f	class:fsim::Listbox	typeref:typename:int
 getSize	button.h	/^			inline vb01::Vector2 getSize(){return size;}$/;"	f	class:fsim::Button	typeref:typename:vb01::Vector2
@@ -335,24 +396,28 @@ getSize	listbox.h	/^			inline vb01::Vector2 getSize(){return size;} $/;"	f	class
 getState	stateManager.cpp	/^	AbstractAppState* StateManager::getState(AbstractAppState::Type type){$/;"	f	class:fsim::StateManager	typeref:typename:AbstractAppState *
 getState	stateManager.h	/^			inline AbstractAppState* getState(int i){return appStates[i];}$/;"	f	class:fsim::StateManager	typeref:typename:AbstractAppState *
 getStateManager	gameManager.h	/^			inline StateManager* getStateManager(){return stateManager;}$/;"	f	class:fsim::GameManager	typeref:typename:StateManager *
-getStructures	inGameAppState.h	/^			std::vector<Structure*>& getStructures(){return structures;}$/;"	f	class:fsim::InGameAppState	typeref:typename:std::vector<Structure * > &
+getStructure	inGameAppState.h	/^			inline Structure* getStructure(int i){return structures[i];}$/;"	f	class:fsim::InGameAppState	typeref:typename:Structure *
+getStructures	inGameAppState.h	/^			inline std::vector<Structure*>& getStructures(){return structures;}$/;"	f	class:fsim::InGameAppState	typeref:typename:std::vector<Structure * > &
 getText	textbox.h	/^			inline std::string getText(){return text->getText();}$/;"	f	class:fsim::Textbox	typeref:typename:std::string
 getTextNode	okButton.cpp	/^				Node* getTextNode(int i){return textNodes[i];}$/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:Node *	file:
 getTextboxButton	textbox.h	/^			inline TextboxButton* getTextboxButton(){return textboxButton;}$/;"	f	class:fsim::Textbox	typeref:typename:TextboxButton *
 getTime	util.h	/^	inline s64 getTime(){return (s64)(std::chrono::system_clock::now().time_since_epoch()\/std::chr/;"	f	namespace:fsim	typeref:typename:s64
 getType	abstractAppState.h	/^			inline Type getType(){return type;}$/;"	f	class:fsim::AbstractAppState	typeref:typename:Type
 getType	listbox.h	/^			inline ListboxType getType(){return type;}$/;"	f	class:fsim::Listbox	typeref:typename:ListboxType
+getUp	structure.h	/^			inline vb01::Vector3 getUp(){return up;}$/;"	f	class:fsim::Structure	typeref:typename:vb01::Vector3
+getUpgradeButton	okButton.cpp	/^				UpgradeButton* getUpgradeButton(int i){return upgradeButtons[i];}$/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:UpgradeButton *	file:
+getUpgradeLevels	okButton.cpp	/^				int* getUpgradeLevels(){return upgradeLevels;}$/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:int *	file:
 getWidth	gameManager.h	/^			inline int getWidth(){return width;}$/;"	f	class:fsim::GameManager	typeref:typename:int
 getYaw	aircraft.h	/^			inline float getYaw(){return yawVal;}$/;"	f	class:fsim::Aircraft	typeref:typename:float
 getYawSpeed	aircraft.h	/^			inline float getYawSpeed(){return yawSpeed;}$/;"	f	class:fsim::Aircraft	typeref:typename:float
 gm	abstractAppState.h	/^			GameManager *gm;$/;"	m	class:fsim::AbstractAppState	typeref:typename:GameManager *
 gm	button.h	/^			GameManager *gm;$/;"	m	class:fsim::Button	typeref:typename:GameManager *
-gm	exitButton.h	/^			GameManager *gm;$/;"	m	class:fsim::ExitButton	typeref:typename:GameManager *
-gm	guiAppState.h	/^			GameManager *gm;$/;"	m	class:fsim::GuiAppState	typeref:typename:GameManager *
 gm	inputManager.h	/^			GameManager *gm;$/;"	m	class:fsim::InputManager	typeref:typename:GameManager *
 gm	listbox.h	/^			GameManager *gm;$/;"	m	class:fsim::Listbox	typeref:typename:GameManager *
 gm	map.h	/^			GameManager *gm;$/;"	m	class:fsim::Map	typeref:typename:GameManager *
+gm	projectile.h	/^			GameManager *gm;$/;"	m	class:fsim::Projectile	typeref:typename:GameManager *
 gm	structure.h	/^			GameManager *gm;$/;"	m	class:fsim::Structure	typeref:typename:GameManager *
+guiNode	activeGameAppState.h	/^			vb01::Node *guiNode,*minimapNode;$/;"	m	class:fsim::ActiveGameAppState	typeref:typename:vb01::Node *
 guiNode	button.h	/^			vb01::Node *rectNode,*textNode=nullptr,*guiNode;$/;"	m	class:fsim::Button	typeref:typename:vb01::Node ***
 guiNode	listbox.h	/^			vb01::Node *selRectNode,*guiNode;$/;"	m	class:fsim::Listbox	typeref:typename:vb01::Node **
 guiNode	structure.h	/^			vb01::Node *rootNode,*guiNode;$/;"	m	class:fsim::Structure	typeref:typename:vb01::Node **
@@ -362,8 +427,14 @@ height	gameManager.h	/^				int width,height;$/;"	m	struct:fsim::GameManager::Opt
 height	gameManager.h	/^			int width,height;$/;"	m	class:fsim::GameManager	typeref:typename:int
 height	inputManager.cpp	/^	int width,height;$/;"	v	namespace:fsim	typeref:typename:int
 helicopter	helicopterAppState.h	/^			Helicopter *helicopter;$/;"	m	class:fsim::HelicopterAppState	typeref:typename:Helicopter *
+helipadPos	airfield.h	/^			vb01::Vector3 *runwayPos,*runwayDirs,*helipadPos;$/;"	m	class:fsim::Airfield	typeref:typename:vb01::Vector3 ***
+iconPath	structureData.h	/^	static const std::string iconPath[numStructures]={$/;"	v	namespace:fsim	typeref:typename:const std::string[]
+iconSize	activeGameAppState.h	/^			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.0/;"	m	class:fsim::ActiveGameAppState	typeref:typename:float
+id	projectile.h	/^			int id;$/;"	m	class:fsim::Projectile	typeref:typename:int
 id	structure.h	/^			int id,faction;$/;"	m	class:fsim::Structure	typeref:typename:int
 ids	optionsButton.cpp	/^			vector<int> ids;$/;"	m	struct:fsim::OptionsButton::onClick::Options	typeref:typename:vector<int>	file:
+initAngle	bomb.h	/^			float initAngle=0;$/;"	m	class:fsim::Bomb	typeref:typename:float
+initTime	bomb.h	/^			s64 initTime;$/;"	m	class:fsim::Bomb	typeref:typename:s64
 inputManager	gameManager.h	/^			InputManager *inputManager=nullptr;$/;"	m	class:fsim::GameManager	typeref:typename:InputManager *
 isActive	button.h	/^			inline bool isActive(){return active;}$/;"	f	class:fsim::Button	typeref:typename:bool
 isAttached	abstractAppState.h	/^			inline bool isAttached(){return attached;}$/;"	f	class:fsim::AbstractAppState	typeref:typename:bool
@@ -373,20 +444,27 @@ isRunning	gameManager.h	/^			inline bool isRunning(){return running;}$/;"	f	clas
 isSeparate	button.h	/^			inline bool isSeparate(){return separate;}$/;"	f	class:fsim::Button	typeref:typename:bool
 isSuchFile	util.cpp	/^	bool isSuchFile(boost::filesystem::path path){$/;"	f	namespace:fsim	typeref:typename:bool
 keyStrings	util.cpp	/^	std::string keyStrings[]{$/;"	v	namespace:fsim	typeref:typename:std::string[]
+l	loadButton.cpp	/^							Listbox *l;$/;"	m	class:fsim::LoadButton::onClick::PilotSelectionButton::onClick::SaveSelectionButton	typeref:typename:Listbox *	file:
 landIncrement	helicopterAppState.h	/^			float riseIncrement=.5,landIncrement=.5;$/;"	m	class:fsim::HelicopterAppState	typeref:typename:float
+landTime	airfield.h	/^			s64 totalLandingTime=0,landTime=200;$/;"	m	class:fsim::Airfield	typeref:typename:s64
 landing	helicopter.h	/^			float rising=0,landing=0,risingSpeed=.8,landingSpeed=.5;$/;"	m	class:fsim::Helicopter	typeref:typename:float
 landing	helicopterAppState.h	/^			bool leftYaw=0,rightYaw=0,rising=0,landing=0;$/;"	m	class:fsim::HelicopterAppState	typeref:typename:bool
 landingSpeed	helicopter.h	/^			float rising=0,landing=0,risingSpeed=.8,landingSpeed=.5;$/;"	m	class:fsim::Helicopter	typeref:typename:float
 lastBlinkTime	textbox.h	/^			s64 lastBlinkTime, cursorPosOffset=0;$/;"	m	class:fsim::Textbox	typeref:typename:s64
+lastPrimaryFire	aircraft.h	/^			s64 rateOfPrimaryFire,rateOfSecondaryFire,lastPrimaryFire=0,lastSecondaryFire=0;$/;"	m	class:fsim::Aircraft	typeref:typename:s64
+lastSecondaryFire	aircraft.h	/^			s64 rateOfPrimaryFire,rateOfSecondaryFire,lastPrimaryFire=0,lastSecondaryFire=0;$/;"	m	class:fsim::Aircraft	typeref:typename:s64
 lastTypeTime	guiAppState.h	/^			s64 lastTypeTime=0;$/;"	m	class:fsim::GuiAppState	typeref:typename:s64
+left	projectile.h	/^			vb01::Vector3 pos,dir,left,up;$/;"	m	class:fsim::Projectile	typeref:typename:vb01::Vector3
 left	structure.h	/^			vb01::Vector3 pos,dir=vb01::Vector3(0,0,-1),left=vb01::Vector3(1,0,0),up=vb01::Vector3(0,1,0)/;"	m	class:fsim::Structure	typeref:typename:vb01::Vector3
 leftRoll	activeGameAppState.h	/^			bool forwPitch=false,backPitch=false,leftRoll=false,rightRoll=false;$/;"	m	class:fsim::ActiveGameAppState	typeref:typename:bool
 leftYaw	helicopterAppState.h	/^			bool leftYaw=0,rightYaw=0,rising=0,landing=0;$/;"	m	class:fsim::HelicopterAppState	typeref:typename:bool
 level	map.h	/^			int objective,level;$/;"	m	class:fsim::Map	typeref:typename:int
+level	okButton.cpp	/^						int type,level;$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton::UpgradeButton	typeref:typename:int	file:
 lights	map.h	/^			std::vector<vb01::Light*> lights;$/;"	m	class:fsim::Map	typeref:typename:std::vector<vb01::Light * >
+lineOfSight	activeGameAppState.h	/^			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.0/;"	m	class:fsim::ActiveGameAppState	typeref:typename:float
 lines	listbox.h	/^			std::vector<vb01::Text*> lines;$/;"	m	class:fsim::Listbox	typeref:typename:std::vector<vb01::Text * >
 listbox	listbox.h	/^					Listbox *listbox = nullptr;$/;"	m	class:fsim::Listbox::ListboxButton	typeref:typename:Listbox *
-listbox	loadButton.cpp	/^				Listbox *listbox;$/;"	m	class:fsim::LoadButton::onClick::SaveSelectionButton	typeref:typename:Listbox *	file:
+listbox	loadButton.cpp	/^				Listbox *listbox;$/;"	m	class:fsim::LoadButton::onClick::PilotSelectionButton	typeref:typename:Listbox *	file:
 listboxButton	listbox.h	/^			ListboxButton *listboxButton;$/;"	m	class:fsim::Listbox	typeref:typename:ListboxButton *
 listboxes	guiAppState.h	/^			std::vector<Listbox*> listboxes;$/;"	m	class:fsim::GuiAppState	typeref:typename:std::vector<Listbox * >
 listboxes	optionsButton.cpp	/^			vector<Listbox*> listboxes;$/;"	m	struct:fsim::OptionsButton::onClick::Options	typeref:typename:vector<Listbox * >	file:
@@ -398,14 +476,24 @@ mapModel	map.h	/^			vb01::Model* mapModel;$/;"	m	class:fsim::Map	typeref:typenam
 mappings	abstractAppState.h	/^			std::vector<Mapping*> mappings;$/;"	m	class:fsim::AbstractAppState	typeref:typename:std::vector<Mapping * >
 mat	structure.h	/^			vb01::Material *mat;$/;"	m	class:fsim::Structure	typeref:typename:vb01::Material *
 maxDisplay	listbox.h	/^			int maxDisplay, scrollOffset = 0, selectedOption = 0;$/;"	m	class:fsim::Listbox	typeref:typename:int
+mesh	projectile.h	/^			vb01::Model *mesh;$/;"	m	class:fsim::Projectile	typeref:typename:vb01::Model *
+meshPath	projectileData.h	/^		static const std::string meshPath[numProjectiles]{$/;"	v	namespace:fsim::projectileData	typeref:typename:const std::string[]
+minimapNode	activeGameAppState.h	/^			vb01::Node *guiNode,*minimapNode;$/;"	m	class:fsim::ActiveGameAppState	typeref:typename:vb01::Node **
+minimapPos	activeGameAppState.h	/^			vb01::Vector3 minimapPos=vb01::Vector3(100,400,.5);$/;"	m	class:fsim::ActiveGameAppState	typeref:typename:vb01::Vector3
+minimapRadius	activeGameAppState.h	/^			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.0/;"	m	class:fsim::ActiveGameAppState	typeref:typename:float
 model	structure.h	/^			vb01::Model *model;$/;"	m	class:fsim::Structure	typeref:typename:vb01::Model *
 mousePosX	listbox.h	/^			double *mousePosX,*mousePosY;$/;"	m	class:fsim::Listbox	typeref:typename:double *
 mousePosY	listbox.h	/^			double *mousePosX,*mousePosY;$/;"	m	class:fsim::Listbox	typeref:typename:double **
 moveCursor	textbox.cpp	/^	void Textbox::moveCursor(bool left,float charWidth){$/;"	f	class:fsim::Textbox	typeref:typename:void
 name	button.h	/^			std::string name;$/;"	m	class:fsim::Button	typeref:typename:std::string
-numBinds	defConfigs.h	/^	const static int numStates=4,numBinds[numStates]{0,2,6,8};$/;"	v	namespace:fsim	typeref:typename:const int[]
-numStates	defConfigs.h	/^	const static int numStates=4,numBinds[numStates]{0,2,6,8};$/;"	v	namespace:fsim	typeref:typename:const int
-numStructures	structureData.h	/^	const int numStructures=4;$/;"	v	namespace:fsim	typeref:typename:const int
+numBinds	defConfigs.h	/^	const static int numStates=4,numBinds[numStates]{0,1,8,10};$/;"	v	namespace:fsim	typeref:typename:const int[]
+numHelipads	airfield.h	/^			int numRunways,numHelipads;$/;"	m	class:fsim::Airfield	typeref:typename:int
+numLevels	upgradeData.h	/^	static const int numUpgrades=5,numLevels=4;$/;"	v	namespace:fsim	typeref:typename:const int
+numProjectiles	projectileData.h	/^		static const int numProjectiles=4;	$/;"	v	namespace:fsim::projectileData	typeref:typename:const int
+numRunways	airfield.h	/^			int numRunways,numHelipads;$/;"	m	class:fsim::Airfield	typeref:typename:int
+numStates	defConfigs.h	/^	const static int numStates=4,numBinds[numStates]{0,1,8,10};$/;"	v	namespace:fsim	typeref:typename:const int
+numStructures	structureData.h	/^	const int numStructures=5;$/;"	v	namespace:fsim	typeref:typename:const int
+numUpgrades	upgradeData.h	/^	static const int numUpgrades=5,numLevels=4;$/;"	v	namespace:fsim	typeref:typename:const int
 objective	map.h	/^			int objective,level;$/;"	m	class:fsim::Map	typeref:typename:int
 okButton	optionsButton.cpp	/^				OkButton *okButton;$/;"	m	class:fsim::OptionsButton::onClick::TabButton	typeref:typename:OkButton *	file:
 okButton	playButton.cpp	/^				OkButton *okButton;$/;"	m	class:fsim::PlayButton::onClick::FactionButton	typeref:typename:OkButton *	file:
@@ -425,6 +513,7 @@ onAttached	guiAppState.cpp	/^	void GuiAppState::onAttached(){$/;"	f	class:fsim::
 onAttached	helicopterAppState.cpp	/^	void HelicopterAppState::onAttached(){$/;"	f	class:fsim::HelicopterAppState	typeref:typename:void
 onAttached	inGameAppState.cpp	/^	void InGameAppState::onAttached(){$/;"	f	class:fsim::InGameAppState	typeref:typename:void
 onAttached	jetAppState.cpp	/^	void JetAppState::onAttached(){$/;"	f	class:fsim::JetAppState	typeref:typename:void
+onClick	aircraftSelectionButton.cpp	/^	void AircraftSelectionButton::onClick(){$/;"	f	class:fsim::AircraftSelectionButton	typeref:typename:void
 onClick	button.h	/^			virtual void onClick(){}$/;"	f	class:fsim::Button	typeref:typename:void
 onClick	exitButton.cpp	/^	void ExitButton::onClick(){gm->setRunning(false);}$/;"	f	class:fsim::ExitButton	typeref:typename:void
 onClick	inGameAppState.cpp	/^							void onClick(){$/;"	f	class:fsim::InGameAppState::togglePause::SaveButton::onClick::BackButton	typeref:typename:void	file:
@@ -433,10 +522,10 @@ onClick	inGameAppState.cpp	/^				void onClick(){$/;"	f	class:fsim::InGameAppStat
 onClick	inGameAppState.cpp	/^				void onClick(){$/;"	f	class:fsim::InGameAppState::togglePause::SaveButton	typeref:typename:void	file:
 onClick	listbox.cpp	/^	void Listbox::ListboxButton::onClick(){$/;"	f	class:fsim::Listbox::ListboxButton	typeref:typename:void
 onClick	listbox.cpp	/^	void Listbox::ScrollingButton::onClick(){}$/;"	f	class:fsim::Listbox::ScrollingButton	typeref:typename:void
-onClick	loadButton.cpp	/^				void onClick(){$/;"	f	class:fsim::LoadButton::onClick::SaveSelectionButton	typeref:typename:void	file:
+onClick	loadButton.cpp	/^							void onClick(){$/;"	f	class:fsim::LoadButton::onClick::PilotSelectionButton::onClick::SaveSelectionButton	typeref:typename:void	file:
+onClick	loadButton.cpp	/^				void onClick(){$/;"	f	class:fsim::LoadButton::onClick::PilotSelectionButton	typeref:typename:void	file:
 onClick	loadButton.cpp	/^	void LoadButton::onClick(){$/;"	f	class:fsim::LoadButton	typeref:typename:void
 onClick	mainMenuButton.cpp	/^	void MainMenuButton::onClick(){$/;"	f	class:fsim::MainMenuButton	typeref:typename:void
-onClick	okButton.cpp	/^							void onClick(){$/;"	f	class:fsim::OkButton::onClick::StartButton::onClick::AircraftSelectionButton	typeref:typename:void	file:
 onClick	okButton.cpp	/^						void onClick(){$/;"	f	class:fsim::OkButton::onClick::AircraftTabButton::UpgradeButton	typeref:typename:void	file:
 onClick	okButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:void	file:
 onClick	okButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OkButton::onClick::StartButton	typeref:typename:void	file:
@@ -474,8 +563,9 @@ path	structureData.h	/^	static const std::string path[numStructures]={$/;"	v	nam
 pauseOverlay	inGameAppState.h	/^			vb01::Node *pauseOverlay=nullptr;$/;"	m	class:fsim::InGameAppState	typeref:typename:vb01::Node *
 paused	inGameAppState.h	/^			bool paused=false;$/;"	m	class:fsim::InGameAppState	typeref:typename:bool
 pilotId	inGameAppState.h	/^			int pilotId,playerId;$/;"	m	class:fsim::InGameAppState	typeref:typename:int
+pilotId	loadButton.cpp	/^							int pilotId;$/;"	m	class:fsim::LoadButton::onClick::PilotSelectionButton::onClick::SaveSelectionButton	typeref:typename:int	file:
+pilotId	okButton.cpp	/^				int *upgradeLevels,aircraftTypeId,*score,pilotId;$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:int **	file:
 pilotId	okButton.cpp	/^				int faction,pilotId;$/;"	m	class:fsim::OkButton::onClick::StartButton	typeref:typename:int	file:
-pilotId	okButton.h	/^			int pilotId,faction;$/;"	m	class:fsim::OkButton	typeref:typename:int
 pitch	aircraft.cpp	/^	void Aircraft::pitch(float angle){$/;"	f	class:fsim::Aircraft	typeref:typename:void
 pitchIncrement	activeGameAppState.h	/^			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.0/;"	m	class:fsim::ActiveGameAppState	typeref:typename:float
 pitchSpeed	aircraft.h	/^			float rollSpeed,yawSpeed,pitchSpeed,pitchVal=0,rollVal=0,yawVal=0;$/;"	m	class:fsim::Aircraft	typeref:typename:float
@@ -485,11 +575,21 @@ playerId	inGameAppState.h	/^			int pilotId,playerId;$/;"	m	class:fsim::InGameApp
 playerJet	jetAppState.h	/^			Jet *playerJet;$/;"	m	class:fsim::JetAppState	typeref:typename:Jet *
 pos	button.h	/^			vb01::Vector2 pos,size;$/;"	m	class:fsim::Button	typeref:typename:vb01::Vector2
 pos	listbox.h	/^			vb01::Vector2 pos, size;$/;"	m	class:fsim::Listbox	typeref:typename:vb01::Vector2
+pos	projectile.h	/^			vb01::Vector3 pos,dir,left,up;$/;"	m	class:fsim::Projectile	typeref:typename:vb01::Vector3
 pos	structure.h	/^			vb01::Vector3 pos,dir=vb01::Vector3(0,0,-1),left=vb01::Vector3(1,0,0),up=vb01::Vector3(0,1,0)/;"	m	class:fsim::Structure	typeref:typename:vb01::Vector3
 pos	textbox.h	/^			vb01::Vector2 pos, size;$/;"	m	class:fsim::Textbox	typeref:typename:vb01::Vector2
 posX	inputManager.cpp	/^	double *posX,*posY,strX,strY;$/;"	v	namespace:fsim	typeref:typename:double *
 posY	inputManager.cpp	/^	double *posX,*posY,strX,strY;$/;"	v	namespace:fsim	typeref:typename:double **
 pressed	mapping.h	/^		bool action,pressed=false;$/;"	m	struct:fsim::Mapping	typeref:typename:bool
+price	upgradeData.h	/^	static const int price=100;$/;"	v	namespace:fsim	typeref:typename:const int
+primaryFire	helicopter.cpp	/^	void Helicopter::primaryFire(){$/;"	f	class:fsim::Helicopter	typeref:typename:void
+primaryFire	jet.cpp	/^	void Jet::primaryFire(){$/;"	f	class:fsim::Jet	typeref:typename:void
+projectileData	projectileData.h	/^	namespace projectileData{$/;"	n	namespace:fsim
+projectiles	inGameAppState.h	/^			std::vector<Projectile*> projectiles;$/;"	m	class:fsim::InGameAppState	typeref:typename:std::vector<Projectile * >
+rateOfPrimaryFire	aircraft.h	/^			s64 rateOfPrimaryFire,rateOfSecondaryFire,lastPrimaryFire=0,lastSecondaryFire=0;$/;"	m	class:fsim::Aircraft	typeref:typename:s64
+rateOfPrimaryFire	aircraftData.h	/^		static const int rateOfPrimaryFire[numStructures]{100,100,100};		$/;"	v	namespace:fsim::aircraftData	typeref:typename:const int[]
+rateOfSecondaryFire	aircraft.h	/^			s64 rateOfPrimaryFire,rateOfSecondaryFire,lastPrimaryFire=0,lastSecondaryFire=0;$/;"	m	class:fsim::Aircraft	typeref:typename:s64
+rateOfSecondaryFire	aircraftData.h	/^		static const int rateOfSecondaryFire[numStructures]{100,100,100};		$/;"	v	namespace:fsim::aircraftData	typeref:typename:const int[]
 readFile	util.cpp	/^	void readFile(string path,std::vector<string> &lines,int firstLine,int lastLine){$/;"	f	namespace:fsim	typeref:typename:void
 readOptions	gameManager.cpp	/^	void GameManager::readOptions(){$/;"	f	class:fsim::GameManager	typeref:typename:void
 rect	button.h	/^			vb01::Quad *rect;$/;"	m	class:fsim::Button	typeref:typename:vb01::Quad *
@@ -515,19 +615,27 @@ rollVal	aircraft.h	/^			float rollSpeed,yawSpeed,pitchSpeed,pitchVal=0,rollVal=0
 root	gameManager.h	/^			vb01::Root *root;$/;"	m	class:fsim::GameManager	typeref:typename:vb01::Root *
 rootNode	map.h	/^			vb01::Node *rootNode;$/;"	m	class:fsim::Map	typeref:typename:vb01::Node *
 rootNode	structure.h	/^			vb01::Node *rootNode,*guiNode;$/;"	m	class:fsim::Structure	typeref:typename:vb01::Node *
+rot	projectile.h	/^			vb01::Quaternion rot;$/;"	m	class:fsim::Projectile	typeref:typename:vb01::Quaternion
 rot	structure.h	/^			vb01::Quaternion rot;$/;"	m	class:fsim::Structure	typeref:typename:vb01::Quaternion
 running	gameManager.h	/^			bool running=false;$/;"	m	class:fsim::GameManager	typeref:typename:bool
+runwayDirs	airfield.h	/^			vb01::Vector3 *runwayPos,*runwayDirs,*helipadPos;$/;"	m	class:fsim::Airfield	typeref:typename:vb01::Vector3 **
+runwayPos	airfield.h	/^			vb01::Vector3 *runwayPos,*runwayDirs,*helipadPos;$/;"	m	class:fsim::Airfield	typeref:typename:vb01::Vector3 *
 s16	util.h	/^	typedef short s16;$/;"	t	namespace:fsim	typeref:typename:short
 s32	util.h	/^	typedef int s32;$/;"	t	namespace:fsim	typeref:typename:int
 s64	util.h	/^	typedef long long s64;$/;"	t	namespace:fsim	typeref:typename:long long
 s8	util.h	/^	typedef char s8;$/;"	t	namespace:fsim	typeref:typename:char
+score	okButton.cpp	/^				int *upgradeLevels,aircraftTypeId,*score,pilotId;$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:int **	file:
+scoreNode	okButton.cpp	/^				Node *scoreNode;$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:Node *	file:
 scrollDown	listbox.cpp	/^	void Listbox::scrollDown(){$/;"	f	class:fsim::Listbox	typeref:typename:void
 scrollOffset	listbox.h	/^			int maxDisplay, scrollOffset = 0, selectedOption = 0;$/;"	m	class:fsim::Listbox	typeref:typename:int
 scrollUp	listbox.cpp	/^	void Listbox::scrollUp(){$/;"	f	class:fsim::Listbox	typeref:typename:void
 scrollingButton	listbox.h	/^			ScrollingButton *scrollingButton;$/;"	m	class:fsim::Listbox	typeref:typename:ScrollingButton *
+secondaryFire	helicopter.cpp	/^	void Helicopter::secondaryFire(){$/;"	f	class:fsim::Helicopter	typeref:typename:void
+secondaryFire	jet.cpp	/^	void Jet::secondaryFire(){$/;"	f	class:fsim::Jet	typeref:typename:void
 selRectNode	listbox.h	/^			vb01::Node *selRectNode,*guiNode;$/;"	m	class:fsim::Listbox	typeref:typename:vb01::Node *
 selectedOption	listbox.h	/^			int maxDisplay, scrollOffset = 0, selectedOption = 0;$/;"	m	class:fsim::Listbox	typeref:typename:int
 separate	button.h	/^			bool separate,active=true;$/;"	m	class:fsim::Button	typeref:typename:bool
+setActive	button.h	/^			inline void setActive(bool active){this->active=active;}$/;"	f	class:fsim::Button	typeref:typename:void
 setColor	button.cpp	/^	void Button::setColor(Vector4 c){$/;"	f	class:fsim::Button	typeref:typename:void
 setEntry	textbox.cpp	/^	void Textbox::setEntry(string entry){$/;"	f	class:fsim::Textbox	typeref:typename:void
 setFaction	okButton.h	/^			inline void setFaction(int f){this->faction=f;}$/;"	f	class:fsim::OkButton	typeref:typename:void
@@ -542,24 +650,33 @@ setRising	helicopter.h	/^			inline void setRising(float r){this->rising=r;}$/;"	
 setRoll	aircraft.cpp	/^	void Aircraft::setRoll(float r){$/;"	f	class:fsim::Aircraft	typeref:typename:void
 setRunning	gameManager.h	/^			inline void setRunning(bool r){this->running=r;}$/;"	f	class:fsim::GameManager	typeref:typename:void
 setSize	button.cpp	/^	void Button::setSize(Vector2 size){$/;"	f	class:fsim::Button	typeref:typename:void
+setTextNode	okButton.cpp	/^				void setTextNode(Node *node,int i){this->textNodes[i]=node;}$/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:void	file:
+setUpgradeButton	okButton.cpp	/^				void setUpgradeButton(UpgradeButton *u,int i){this->upgradeButtons[i]=u;}$/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:void	file:
 setYaw	aircraft.cpp	/^	void Aircraft::setYaw(float y){$/;"	f	class:fsim::Aircraft	typeref:typename:void
 setZOrder	button.cpp	/^	void Button::setZOrder(float zOrder){$/;"	f	class:fsim::Button	typeref:typename:void
 shiftPressed	guiAppState.h	/^			bool shiftPressed=false;$/;"	m	class:fsim::GuiAppState	typeref:typename:bool
+singleModel	structureData.h	/^	static const bool singleModel[numStructures]={$/;"	v	namespace:fsim	typeref:typename:const bool[]
 size	button.h	/^			vb01::Vector2 pos,size;$/;"	m	class:fsim::Button	typeref:typename:vb01::Vector2
 size	listbox.h	/^			vb01::Vector2 pos, size;$/;"	m	class:fsim::Listbox	typeref:typename:vb01::Vector2
 size	textbox.h	/^			vb01::Vector2 pos, size;$/;"	m	class:fsim::Textbox	typeref:typename:vb01::Vector2
+speed	projectile.h	/^			float speed,turnSpeed;$/;"	m	class:fsim::Projectile	typeref:typename:float
+speed	projectileData.h	/^		static const float speed[numProjectiles]{.2,.1,.1,.1};$/;"	v	namespace:fsim::projectileData	typeref:typename:const float[]
 stateManager	gameManager.h	/^			StateManager *stateManager=nullptr;$/;"	m	class:fsim::GameManager	typeref:typename:StateManager *
 stateManager	inputManager.h	/^			StateManager *stateManager;$/;"	m	class:fsim::InputManager	typeref:typename:StateManager *
 strX	inputManager.cpp	/^	double *posX,*posY,strX,strY;$/;"	v	namespace:fsim	typeref:typename:double **
 strY	inputManager.cpp	/^	double *posX,*posY,strX,strY;$/;"	v	namespace:fsim	typeref:typename:double **
-structures	activeGameAppState.h	/^			std::vector<Structure*> structures;$/;"	m	class:fsim::ActiveGameAppState	typeref:typename:std::vector<Structure * >
+structure	projectile.h	/^			Structure *structure;$/;"	m	class:fsim::Projectile	typeref:typename:Structure *
+structureIconNodes	activeGameAppState.h	/^			std::vector<vb01::Node*> structureIconNodes;$/;"	m	class:fsim::ActiveGameAppState	typeref:typename:std::vector<vb01::Node * >
 structures	inGameAppState.h	/^			std::vector<Structure*> structures;$/;"	m	class:fsim::InGameAppState	typeref:typename:std::vector<Structure * >
+tab	okButton.cpp	/^						AircraftTabButton *tab;$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton::UpgradeButton	typeref:typename:AircraftTabButton *	file:
+tabNames	upgradeData.h	/^	static const std::string tabNames[]={"Fighter","Fighter_bomber","Helicopter"};$/;"	v	namespace:fsim	typeref:typename:const std::string[]
 tabs	okButton.cpp	/^				AircraftTabButton *tabs[3];$/;"	m	class:fsim::OkButton::onClick::StartButton	typeref:typename:AircraftTabButton * [3]	file:
+target	missile.h	/^			Structure *target=nullptr;$/;"	m	class:fsim::Missile	typeref:typename:Structure *
 text	button.h	/^			vb01::Text *text=nullptr;$/;"	m	class:fsim::Button	typeref:typename:vb01::Text *
 text	textbox.h	/^			vb01::Text *text;$/;"	m	class:fsim::Textbox	typeref:typename:vb01::Text *
 textNode	button.h	/^			vb01::Node *rectNode,*textNode=nullptr,*guiNode;$/;"	m	class:fsim::Button	typeref:typename:vb01::Node **
 textNode	textbox.h	/^			vb01::Node *guiNode,*textNode,*cursorNode;$/;"	m	class:fsim::Textbox	typeref:typename:vb01::Node **
-textNodes	okButton.cpp	/^				Node *textNodes[5]{0,0,0,0,0};$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:Node * [5]	file:
+textNodes	okButton.cpp	/^				Node *textNodes[numUpgrades];$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:Node * []	file:
 textbox	inGameAppState.cpp	/^							Textbox *textbox;$/;"	m	class:fsim::InGameAppState::togglePause::SaveButton::onClick::OkButton	typeref:typename:Textbox *	file:
 textbox	okButton.h	/^			Textbox *textbox;$/;"	m	class:fsim::OkButton	typeref:typename:Textbox *
 textbox	textbox.h	/^					Textbox *textbox;$/;"	m	class:fsim::Textbox::TextboxButton	typeref:typename:Textbox *
@@ -567,20 +684,27 @@ textboxButton	textbox.h	/^			TextboxButton *textboxButton;$/;"	m	class:fsim::Tex
 textboxes	guiAppState.h	/^			std::vector<Textbox*> textboxes;$/;"	m	class:fsim::GuiAppState	typeref:typename:std::vector<Textbox * >
 textboxes	optionsButton.cpp	/^			vector<Textbox*> textboxes;$/;"	m	struct:fsim::OptionsButton::onClick::Options	typeref:typename:vector<Textbox * >	file:
 togglePause	inGameAppState.cpp	/^	void InGameAppState::togglePause(){$/;"	f	class:fsim::InGameAppState	typeref:typename:void
+totalLandingTime	airfield.h	/^			s64 totalLandingTime=0,landTime=200;$/;"	m	class:fsim::Airfield	typeref:typename:s64
 trigger	mapping.h	/^		int trigger;$/;"	m	struct:fsim::Mapping	typeref:typename:int
 triggers	util.cpp	/^	int triggers[]{$/;"	v	namespace:fsim	typeref:typename:int[]
+turnSpeed	projectile.h	/^			float speed,turnSpeed;$/;"	m	class:fsim::Projectile	typeref:typename:float
+turnSpeed	projectileData.h	/^		static const float turnSpeed[numProjectiles]{.5,.1,.1,0};$/;"	v	namespace:fsim::projectileData	typeref:typename:const float[]
 type	abstractAppState.h	/^			Type type;$/;"	m	class:fsim::AbstractAppState	typeref:typename:Type
 type	listbox.h	/^			ListboxType type;$/;"	m	class:fsim::Listbox	typeref:typename:ListboxType
 type	mapping.h	/^		BindType type;$/;"	m	struct:fsim::Mapping	typeref:typename:BindType
+type	okButton.cpp	/^						int type,level;$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton::UpgradeButton	typeref:typename:int	file:
 type	textbox.cpp	/^	void Textbox::type(char c, bool capitalLetters){$/;"	f	class:fsim::Textbox	typeref:typename:void
 u16	util.h	/^	typedef unsigned short u16;$/;"	t	namespace:fsim	typeref:typename:unsigned short
 u32	util.h	/^	typedef unsigned int u32;$/;"	t	namespace:fsim	typeref:typename:unsigned int
 u64	util.h	/^	typedef unsigned long long u64;$/;"	t	namespace:fsim	typeref:typename:unsigned long long
 u8	util.h	/^	typedef unsigned char u8;$/;"	t	namespace:fsim	typeref:typename:unsigned char
+up	projectile.h	/^			vb01::Vector3 pos,dir,left,up;$/;"	m	class:fsim::Projectile	typeref:typename:vb01::Vector3
 up	structure.h	/^			vb01::Vector3 pos,dir=vb01::Vector3(0,0,-1),left=vb01::Vector3(1,0,0),up=vb01::Vector3(0,1,0)/;"	m	class:fsim::Structure	typeref:typename:vb01::Vector3
 update	abstractAppState.cpp	/^	void AbstractAppState::update(){}$/;"	f	class:fsim::AbstractAppState	typeref:typename:void
-update	activeGameAppState.cpp	/^	void ActiveGameAppState::update(){}$/;"	f	class:fsim::ActiveGameAppState	typeref:typename:void
+update	activeGameAppState.cpp	/^	void ActiveGameAppState::update(){$/;"	f	class:fsim::ActiveGameAppState	typeref:typename:void
 update	aircraft.cpp	/^	void Aircraft::update(){$/;"	f	class:fsim::Aircraft	typeref:typename:void
+update	airfield.cpp	/^	void Airfield::update(){$/;"	f	class:fsim::Airfield	typeref:typename:void
+update	bomb.cpp	/^	void Bomb::update(){$/;"	f	class:fsim::Bomb	typeref:typename:void
 update	building.cpp	/^	void Building::update(){}$/;"	f	class:fsim::Building	typeref:typename:void
 update	button.cpp	/^	void Button::update(){}$/;"	f	class:fsim::Button	typeref:typename:void
 update	gameManager.cpp	/^	void GameManager::update(){$/;"	f	class:fsim::GameManager	typeref:typename:void
@@ -593,19 +717,25 @@ update	jet.cpp	/^	void Jet::update(){$/;"	f	class:fsim::Jet	typeref:typename:voi
 update	jetAppState.cpp	/^	void JetAppState::update(){$/;"	f	class:fsim::JetAppState	typeref:typename:void
 update	listbox.cpp	/^	void Listbox::update(){$/;"	f	class:fsim::Listbox	typeref:typename:void
 update	map.cpp	/^	void Map::update(){}$/;"	f	class:fsim::Map	typeref:typename:void
+update	missile.cpp	/^	void Missile::update(){$/;"	f	class:fsim::Missile	typeref:typename:void
+update	projectile.cpp	/^	void Projectile::update(){$/;"	f	class:fsim::Projectile	typeref:typename:void
 update	stateManager.cpp	/^	void StateManager::update(){$/;"	f	class:fsim::StateManager	typeref:typename:void
 update	structure.cpp	/^	void Structure::update(){$/;"	f	class:fsim::Structure	typeref:typename:void
 update	textbox.cpp	/^	void Textbox::update(){$/;"	f	class:fsim::Textbox	typeref:typename:void
 update	unit.cpp	/^	void Unit::update(){$/;"	f	class:fsim::Unit	typeref:typename:void
 updateControlsListbox	guiAppState.cpp	/^	void GuiAppState::updateControlsListbox(Mapping::BindType bt, bool action, short trigger){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
-upgradeButtons	okButton.cpp	/^				UpgradeButton *upgradeButtons[20]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:UpgradeButton * [20]	file:
-upgrades	okButton.cpp	/^				string upgrades[5];$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:string[5]	file:
+upgradeButtons	okButton.cpp	/^				UpgradeButton *upgradeButtons[numUpgrades*numLevels];$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:UpgradeButton * []	file:
+upgradeLevels	okButton.cpp	/^				int *upgradeLevels,aircraftTypeId,*score,pilotId;$/;"	m	class:fsim::OkButton::onClick::AircraftTabButton	typeref:typename:int *	file:
+upgrades	aircraft.h	/^			int *upgrades;$/;"	m	class:fsim::Aircraft	typeref:typename:int *
+upgrades	upgradeData.h	/^	static const std::string upgrades[][numUpgrades]={$/;"	v	namespace:fsim	typeref:typename:const std::string[][]
+vb01	activeGameAppState.h	/^namespace vb01{$/;"	n
 vb01	aircraft.h	/^namespace vb01{$/;"	n
 vb01	button.h	/^namespace vb01{$/;"	n
 vb01	gameManager.h	/^namespace vb01{$/;"	n
 vb01	inGameAppState.h	/^namespace vb01{$/;"	n
 vb01	listbox.h	/^namespace vb01{$/;"	n
 vb01	map.h	/^namespace vb01{$/;"	n
+vb01	projectile.h	/^namespace vb01{$/;"	n
 vb01	structure.h	/^namespace vb01{$/;"	n
 vb01	textbox.h	/^namespace vb01{$/;"	n
 width	gameManager.h	/^				int width,height;$/;"	m	struct:fsim::GameManager::Options	typeref:typename:int
@@ -618,7 +748,10 @@ yawIncrement	activeGameAppState.h	/^			float accIncrement=.01,deccIncrement=.01,
 yawSpeed	aircraft.h	/^			float rollSpeed,yawSpeed,pitchSpeed,pitchVal=0,rollVal=0,yawVal=0;$/;"	m	class:fsim::Aircraft	typeref:typename:float
 yawVal	aircraft.h	/^			float rollSpeed,yawSpeed,pitchSpeed,pitchVal=0,rollVal=0,yawVal=0;$/;"	m	class:fsim::Aircraft	typeref:typename:float
 ~AbstractAppState	abstractAppState.cpp	/^	AbstractAppState::~AbstractAppState(){}$/;"	f	class:fsim::AbstractAppState
+~ActiveGameAppState	activeGameAppState.cpp	/^	ActiveGameAppState::~ActiveGameAppState(){$/;"	f	class:fsim::ActiveGameAppState
 ~Aircraft	aircraft.cpp	/^	Aircraft::~Aircraft(){}$/;"	f	class:fsim::Aircraft
+~AircraftTabButton	okButton.cpp	/^				~AircraftTabButton(){$/;"	f	class:fsim::OkButton::onClick::AircraftTabButton	file:
+~Bomb	bomb.cpp	/^	Bomb::~Bomb(){$/;"	f	class:fsim::Bomb
 ~Building	building.cpp	/^	Building::~Building(){}$/;"	f	class:fsim::Building
 ~Button	button.cpp	/^	Button::~Button(){$/;"	f	class:fsim::Button
 ~GameManager	gameManager.cpp	/^	GameManager::~GameManager(){}$/;"	f	class:fsim::GameManager
@@ -631,7 +764,9 @@ yawVal	aircraft.h	/^			float rollSpeed,yawSpeed,pitchSpeed,pitchVal=0,rollVal=0,
 ~JetAppState	jetAppState.cpp	/^	JetAppState::~JetAppState(){}$/;"	f	class:fsim::JetAppState
 ~Listbox	listbox.cpp	/^	Listbox::~Listbox(){$/;"	f	class:fsim::Listbox
 ~Map	map.cpp	/^	Map::~Map(){}$/;"	f	class:fsim::Map
+~Missile	missile.cpp	/^	Missile::~Missile(){$/;"	f	class:fsim::Missile
+~Projectile	projectile.cpp	/^	Projectile::~Projectile(){$/;"	f	class:fsim::Projectile
 ~StateManager	stateManager.cpp	/^	StateManager::~StateManager(){}$/;"	f	class:fsim::StateManager
-~Structure	structure.cpp	/^	Structure::~Structure(){}$/;"	f	class:fsim::Structure
+~Structure	structure.cpp	/^	Structure::~Structure(){$/;"	f	class:fsim::Structure
 ~Textbox	textbox.cpp	/^	Textbox::~Textbox(){$/;"	f	class:fsim::Textbox
 ~Unit	unit.cpp	/^	Unit::~Unit(){}$/;"	f	class:fsim::Unit

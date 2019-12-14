@@ -2,8 +2,10 @@
 #include"aircraftData.h"
 #include"upgradeData.h"
 #include"gameManager.h"
+#include"defConfigs.h"
 #include<camera.h>
 #include<model.h>
+#include<quad.h>
 #include<root.h>
 
 using namespace vb01;
@@ -23,6 +25,15 @@ namespace fsim{
 		this->pitchSpeed=.05;
 		this->rateOfPrimaryFire=aircraftData::rateOfPrimaryFire[id];
 		this->rateOfSecondaryFire=aircraftData::rateOfSecondaryFire[id];
+		/*
+		Quad *quad=new Quad(Vector3(100,100,.5),false,true);
+		Material *mat=new Material(Material::MATERIAL_GUI);
+		mat->addDiffuseMap(PATH+"Icons/Hitmarker/hitmarker.png");
+		mat->setDiffuseColorEnabled(true);
+		mat->setDiffuseColor(Vector4(0,0,1,1));
+		quad->setMaterial(mat);
+		model->attachMesh(quad);
+		*/
 	}
 
 	Aircraft::~Aircraft(){}

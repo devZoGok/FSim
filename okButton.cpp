@@ -3,6 +3,7 @@
 #include"playButton.h"
 #include"upgradeData.h"
 #include"okButton.h"
+#include"aircraftSelectionButton.h"
 #include"mainMenuButton.h"
 #include"guiAppState.h"
 #include"gameManager.h"
@@ -28,8 +29,6 @@ using namespace mysqlpp;
 namespace fsim{
 	OkButton::OkButton(GameManager *gm,Vector2 pos, Vector2 size,Textbox *textbox,int saveId,int pilotId) : Button(gm,pos,size,"Ok",true){
 		this->textbox=textbox;
-		this->pilotId=pilotId;
-		this->saveId=saveId;
 	}
 
 	void OkButton::onClick(){
@@ -37,7 +36,7 @@ namespace fsim{
 			public:
 				class UpgradeButton : public Button{
 					public:
-						UpgradeButton(GameManager *gm, Vector2 pos, Vector2 size,AircraftTabButton *tab,int type, int level) : Button(gm,pos,size,"",true,PATH+"Icons/upgrade.jpg"){
+						UpgradeButton(GameManager *gm, Vector2 pos, Vector2 size,AircraftTabButton *tab,int type, int level) : Button(gm,pos,size,"",true,PATH+"Icons/Upgrades/upgrade.jpg"){
 							this->tab=tab;
 							this->type=type;
 							this->level=level;
@@ -161,25 +160,6 @@ namespace fsim{
 						this->tabs[i]=tabs[i];
 				}
 				void onClick(){
-					class AircraftSelectionButton : public Button{
-						public:
-							AircraftSelectionButton(GameManager *gm, Vector2 pos, Vector2 size, string name,int aircraftId) : Button(gm,pos,size,name){this->aircraftId=aircraftId;}
-							void onClick(){
-								StateManager *stateManager=gm->getStateManager();
-								GuiAppState *guiState=(GuiAppState*)stateManager->getState(AbstractAppState::GUI_STATE);
-								InGameAppState *inGameState=(InGameAppState*)stateManager->getState(AbstractAppState::IN_GAME_STATE);
-								int playerId=inGameState->getNumStructures(),faction=0;
-								Vector3 pos=Vector3(0,20,-20);
-								Aircraft *aircraft=aircraftId==2?(Aircraft*)new Helicopter(gm,aircraftId,faction,pos,Quaternion(1,0,0,0)):
-									(Aircraft*)new Jet(gm,aircraftId,faction,pos,Quaternion(1,0,0,0));
-								inGameState->addStructure(aircraft);
-
-								stateManager->attachState(aircraftId==2?(AbstractAppState*)new HelicopterAppState(gm,playerId):(AbstractAppState*)new JetAppState(gm,playerId));
-								guiState->removeAllButtons(nullptr);
-							}
-						private:
-							int aircraftId;
-					};
 
 					StateManager *stateManager=gm->getStateManager();
 					GuiAppState *guiState=(GuiAppState*)stateManager->getState(AbstractAppState::GUI_STATE);

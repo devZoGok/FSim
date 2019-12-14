@@ -1,3 +1,6 @@
+#include"inGameAppState.h"
+#include"gameManager.h"
+#include"stateManager.h"
 #include"helicopterAppState.h"
 #include"helicopter.h"
 
@@ -6,7 +9,8 @@ using namespace vb01;
 namespace fsim{
 	HelicopterAppState::HelicopterAppState(GameManager *gm, int playerId) : ActiveGameAppState(gm,playerId){
 		type=AbstractAppState::HELICOPTER_STATE;	
-		helicopter=(Helicopter*)structures[playerId];
+		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
+		helicopter=(Helicopter*)(inGameState->getStructure(playerId));
 	}
 
 	HelicopterAppState::~HelicopterAppState(){}

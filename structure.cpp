@@ -23,16 +23,23 @@ namespace fsim{
 		left=rot*left;
 		up=rot*up;
 
-		model=new Model(PATH+path[id]+".obj");
-		mat=new Material();
-		mat->addDiffuseMap(defaultTexture);
-		model->setMaterial(mat);
-		model->setPosition(pos);
-		model->setOrientation(rot);
-		rootNode->attachChild(model);
+		if(singleModel[id]){
+			model=new Model(PATH+path[id]+".obj");
+			mat=new Material();
+			mat->addDiffuseMap(defaultTexture);
+			model->setMaterial(mat);
+			model->setPosition(pos);
+			model->setOrientation(rot);
+			rootNode->attachChild(model);
+		}
 	}
 
-	Structure::~Structure(){}
+	Structure::~Structure(){
+		if(singleModel[id]){
+			rootNode->dettachChild(model);
+			delete model;
+		}
+	}
 
 	void Structure::update(){
 	}

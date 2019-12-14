@@ -71,10 +71,10 @@ namespace fsim{
 	void InGameAppState::update(){
 		map->update();
 		if(!paused){
-			for(Structure *s : structures)
-				s->update();
-			for(Projectile *p : projectiles)
-				p->update();
+			for(int i=0;i<structures.size();i++)
+				structures[i]->update();
+			for(int i=0;i<projectiles.size();i++)
+				projectiles[i]->update();
 		}
 	}
 
@@ -183,5 +183,11 @@ namespace fsim{
 		switch(bind){
 		
 		}
+	}
+
+	void InGameAppState::addStructure(Structure *s){
+		if(activeState)
+			activeState->addStructureIcon(s->getId());
+		structures.push_back(s);
 	}
 }
