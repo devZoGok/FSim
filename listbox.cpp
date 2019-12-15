@@ -13,7 +13,7 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
-	Listbox::ListboxButton::ListboxButton(Listbox *l, GameManager *gm,Vector2 pos, Vector2 size, string name) : Button(gm, pos, size, name, false){listbox = l;}
+	Listbox::ListboxButton::ListboxButton(Listbox *l, GameManager *gm,Vector2 pos, Vector2 size, string name) : Button(gm, pos, size, name, Mapping::NONE, false){listbox = l;}
 
 	void Listbox::ListboxButton::onClick(){
 		ListboxType type=listbox->getType();
@@ -37,7 +37,7 @@ namespace fsim{
 		}
 	}
 
-	Listbox::ScrollingButton::ScrollingButton(GameManager *gm, Vector2 pos, Vector2 size, string name) : Button(gm,pos,size,name,false){}
+	Listbox::ScrollingButton::ScrollingButton(GameManager *gm, Vector2 pos, Vector2 size, string name) : Button(gm,pos,size,name){}
 
 	void Listbox::ScrollingButton::onClick(){}
 

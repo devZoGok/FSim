@@ -45,4 +45,13 @@ namespace fsim{
 	}
 
 	void AbstractAppState::update(){}
+
+	void AbstractAppState::removeMapping(Mapping::Bind bind){
+		int id=-1;
+		for(int i=0;i<mappings.size();i++)
+			if(mappings[i]->bind==bind)
+				id=i;
+		if(id!=-1)
+			mappings.erase(mappings.begin()+id);
+	}
 }

@@ -67,7 +67,7 @@ namespace fsim{
 						landed=true;
 						stateManager->dettachState(AbstractAppState::JET_STATE);
 						for(int j=0;j<3;j++)
-							guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*j,100),Vector2(width,100),aircraftTypes[j],j));
+							guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*j,100),Vector2(width,100),aircraftTypes[j],j,Mapping::Bind(Mapping::FIGHTER+i)));
 						delete jetState;
 					}
 				}
@@ -79,7 +79,7 @@ namespace fsim{
 						landed=true;
 						stateManager->dettachState(AbstractAppState::HELICOPTER_STATE);
 						for(int j=0;j<3;j++)
-							guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*j,100),Vector2(width,100),aircraftTypes[j],j));
+							guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*j,100),Vector2(width,100),aircraftTypes[j],j,Mapping::Bind(Mapping::FIGHTER+i)));
 						delete helicopterState;
 					}
 				}

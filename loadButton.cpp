@@ -18,7 +18,7 @@ using namespace std;
 using namespace mysqlpp;
 
 namespace fsim{
-	LoadButton::LoadButton(GameManager *gm,Vector2 pos, Vector2 size):Button(gm,pos,size,"Load",true){}
+	LoadButton::LoadButton(GameManager *gm,Vector2 pos, Vector2 size):Button(gm,pos,size,"Load",Mapping::LOAD){}
 
 	void LoadButton::onClick(){
 		class PilotSelectionButton : public Button{
@@ -39,8 +39,8 @@ namespace fsim{
 								StateManager *stateManager=gm->getStateManager();
 
 								int saveId=l->getSelectedOption(),faction=(int)conn.query("select faction from pilots where pid="+to_string(pilotId)+";").store()[0][0];
-								StoreQueryResult res=conn.query("select uid,lid,oid,puid from pilots p inner join saves s inner join save_units su on p.pid=s.pid and s.sid=su.sid where p.pid="+to_string(pilotId)+" and s.sid="+to_string(saveId)+";").store();
-								int unitId=(int)res[0][0],level=(int)res[0][1],objective=(int)res[0][2],playerId=(int)res[0][3];
+								StoreQueryResult res=conn.query("select uid,puid,lid,oid from pilots p inner join saves s inner join save_units su on p.pid=s.pid and s.sid=su.sid where p.pid="+to_string(pilotId)+" and s.sid="+to_string(saveId)+";").store();
+								int level=(int)res[0][2],objective=(int)res[0][3],playerId=(int)res[0][1],unitId=(int)res[playerId][0];
 								stateManager->attachState(new InGameAppState(gm,pilotId,playerId,faction,saveId,level,objective));
 								switch(unitId){
 									case Type::HELICOPTER:

@@ -57,6 +57,7 @@ namespace fsim{
 
 	void GuiAppState::addButton(Button *b){
 		buttons.push_back(b);
+		mappings.push_back(b->getMapping());
 	}
 
 	Button* GuiAppState::getButton(string name){
@@ -102,6 +103,7 @@ namespace fsim{
 			if(buttons[i]==b)
 				id=i;
 		if(id!=-1){
+			removeMapping(buttons[id]->getMapping()->bind);
 			delete buttons[id];
 			buttons.erase(buttons.begin()+id);
 		}
@@ -113,6 +115,7 @@ namespace fsim{
 			if(buttons[i]->getName()==name)
 				id=i;
 		if(id!=-1){
+			removeMapping(buttons[id]->getMapping()->bind);
 			delete buttons[id];
 			buttons.erase(buttons.begin()+id);
 		}
@@ -125,6 +128,7 @@ namespace fsim{
 					swap(buttons[i],buttons[j]);
 		}
 		while(buttons.size()>numExceptions){
+			removeMapping(buttons[buttons.size()-1]->getMapping()->bind);
 			delete buttons[buttons.size()-1];
 			buttons.pop_back();
 		}
@@ -188,6 +192,9 @@ namespace fsim{
 			case Mapping::SHIFT:
 				shiftPressed=!shiftPressed;
 				break;
+			default:
+				if(isPressed&&bind!=Mapping::NONE)
+					activateBoundButton(bind);
 		}
 		delete x,y;
 	}
@@ -301,5 +308,11 @@ namespace fsim{
 			string key=fromIntToString(i),bind=line.substr(0,colonId+1);
 			listbox->changeLine(selectedOption,bind+fromIntToString(i));
 		}
+	}
+
+	void GuiAppState::activateBoundButton(Mapping::Bind bind){
+		for(int i=0;i<buttons.size();i++)	
+			if(buttons[i]->getMapping()->bind==bind)
+				buttons[i]->onClick();
 	}
 }

@@ -3,6 +3,7 @@
 
 #include<vector.h>
 #include<string>
+#include"mapping.h"
 
 namespace vb01{
 	class Quad;
@@ -15,7 +16,7 @@ namespace fsim{
 
 	class Button{
 		public:
-			Button(GameManager*,vb01::Vector2,vb01::Vector2,std::string,bool=true,std::string="");
+			Button(GameManager*,vb01::Vector2,vb01::Vector2,std::string,Mapping::Bind=Mapping::NONE,bool=true,std::string="");
 			virtual ~Button();
 			void update();
 			virtual void onMouseOver(){}
@@ -29,6 +30,7 @@ namespace fsim{
 			inline bool isSeparate(){return separate;}
 			inline bool isActive(){return active;}
 			inline vb01::Vector4 getColor(){return color;}
+			inline Mapping* getMapping(){return &mapping;}
 			void setColor(vb01::Vector4);
 			void setZOrder(float);
 		protected:
@@ -39,6 +41,7 @@ namespace fsim{
 			vb01::Vector2 pos,size;
 			vb01::Text *text=nullptr;
 			std::string name;
+			Mapping mapping;
 			vb01::Vector4 color=vb01::Vector4(.6,.6,.6,1);
 	};
 }

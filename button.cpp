@@ -11,12 +11,17 @@ using namespace std;
 using namespace vb01;
 
 namespace fsim{
-	Button::Button(GameManager *gm, Vector2 pos, Vector2 size,string name,bool separate,string imagePath){
+	Button::Button(GameManager *gm, Vector2 pos, Vector2 size,string name,Mapping::Bind bind,bool separate,string imagePath){
 		this->gm=gm;
 		this->pos=pos;
 		this->size=size;
 		this->name=name;
 		this->separate=separate;
+
+		mapping.bind=bind;
+		mapping.trigger=buttonTriggers[(int)bind-(int)Mapping::NONE-1];
+		mapping.action=1;
+		mapping.type=Mapping::KEYBOARD;
 
 		guiNode=gm->getRoot()->getGuiNode();
 		rect=new Quad(Vector3(size.x,size.y,0),false);

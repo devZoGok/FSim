@@ -12,12 +12,12 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
-	PlayButton::PlayButton(GameManager *gm,Vector2 pos, Vector2 size):Button(gm,pos,size,"Play",true){}
+	PlayButton::PlayButton(GameManager *gm,Vector2 pos, Vector2 size):Button(gm,pos,size,"Play",Mapping::PLAY){}
 
 	void PlayButton::onClick(){
 		class FactionButton : public Button{
 			public:
-				FactionButton(GameManager *gm, Vector2 pos, Vector2 size,OkButton *okButton, int faction):Button(gm,pos,size,to_string(faction),true){
+				FactionButton(GameManager *gm, Vector2 pos, Vector2 size,OkButton *okButton, int faction):Button(gm,pos,size,to_string(faction)){
 					this->okButton=okButton;
 					this->faction=faction;
 				}

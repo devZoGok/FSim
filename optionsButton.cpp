@@ -12,7 +12,7 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
-	OptionsButton::OptionsButton(GameManager *gm,Vector2 pos, Vector2 size) : Button(gm,pos,size,"Options",true){}
+	OptionsButton::OptionsButton(GameManager *gm,Vector2 pos, Vector2 size) : Button(gm,pos,size,"Options",Mapping::OPTIONS){}
 
 	void OptionsButton::onClick(){
 		struct Options{
@@ -65,7 +65,7 @@ namespace fsim{
 
 		class TabButton : public Button{
 			public:
-				TabButton(GameManager *gm, Vector2 pos, Vector2 size, string name) : Button(gm,pos,size,name){}
+				TabButton(GameManager *gm, Vector2 pos, Vector2 size, string name,Mapping::Bind bind) : Button(gm,pos,size,name,bind){}
 				void onClick(){
 					class BackButton : public Button{
 						public:
@@ -100,7 +100,7 @@ namespace fsim{
 
 		class ControlsTab : public TabButton{
 			public:
-				ControlsTab(GameManager *gm) : TabButton(gm,Vector2(100,100),Vector2(100,20),"Controls"){}
+				ControlsTab(GameManager *gm) : TabButton(gm,Vector2(100,100),Vector2(100,20),"Controls",Mapping::CONTROLS){}
 				void onClick(){
 					TabButton::onClick();
 

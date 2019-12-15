@@ -39,6 +39,7 @@ namespace fsim{
 		private:
 			bool canType(){return getTime()-lastTypeTime>100;}
 			void updateControlsListbox(Mapping::BindType,bool,short);
+			void activateBoundButton(Mapping::Bind);
 
 			s64 lastTypeTime=0;
 			bool shiftPressed=false;

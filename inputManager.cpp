@@ -36,8 +36,10 @@ namespace fsim{
 			axis=glfwGetJoystickAxes(joystick,&numAxis);
 			buttons=glfwGetJoystickButtons(joystick,&numButtons);
 		}
-		for(AbstractAppState *a : stateManager->getAppStates()){
-			for(Mapping *m : a->getMappings()){
+		for(int j=0;j<stateManager->getAppStates().size();j++){
+			AbstractAppState *a=stateManager->getAppStates()[j];
+			for(int i=0;i<a->getNumMappings();i++){
+				Mapping *m =a->getMapping(i);
 				if(m->action){
 					bool pressed;
 					switch(m->type){

@@ -64,6 +64,7 @@ namespace fsim{
 
 		}
 
+		/*
 		Vector3 *runwayPos=new Vector3[1];
 		runwayPos[0]=Vector3(0,0,0);
 		Vector3 *helipadPos=new Vector3[1];
@@ -71,7 +72,6 @@ namespace fsim{
 		Vector3 *runwayDirs=new Vector3[1];
 		runwayDirs[0]=Vector3(0,0,-1);
 		inGameState->addStructure(new Airfield(gm,Type::AIRFIELD,0,Vector3(0,-20,10),Quaternion(1,0,0,0),1,runwayPos,runwayDirs,1,helipadPos));
-		/*
 		*/
 		if(saveId==-1){
 			inGameState->addStructure(new Helicopter(gm,Type::HELICOPTER,2,Vector3(20,0,0),Quaternion(1,0,0,0)));

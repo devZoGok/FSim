@@ -12,7 +12,7 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
-	AircraftSelectionButton::AircraftSelectionButton(GameManager *gm, Vector2 pos, Vector2 size, string name,int aircraftId) : Button(gm,pos,size,name){
+	AircraftSelectionButton::AircraftSelectionButton(GameManager *gm, Vector2 pos, Vector2 size, string name,int aircraftId,Mapping::Bind bind) : Button(gm,pos,size,name,bind){
 		this->aircraftId=aircraftId;
 	}
 

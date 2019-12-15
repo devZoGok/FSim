@@ -27,7 +27,7 @@ using namespace std;
 using namespace mysqlpp;
 
 namespace fsim{
-	OkButton::OkButton(GameManager *gm,Vector2 pos, Vector2 size,Textbox *textbox,int saveId,int pilotId) : Button(gm,pos,size,"Ok",true){
+	OkButton::OkButton(GameManager *gm,Vector2 pos, Vector2 size,Textbox *textbox,int saveId,int pilotId) : Button(gm,pos,size,"Ok"){
 		this->textbox=textbox;
 	}
 
@@ -36,7 +36,7 @@ namespace fsim{
 			public:
 				class UpgradeButton : public Button{
 					public:
-						UpgradeButton(GameManager *gm, Vector2 pos, Vector2 size,AircraftTabButton *tab,int type, int level) : Button(gm,pos,size,"",true,PATH+"Icons/Upgrades/upgrade.jpg"){
+						UpgradeButton(GameManager *gm, Vector2 pos, Vector2 size,AircraftTabButton *tab,int type, int level) : Button(gm,pos,size,"",Mapping::NONE,true,PATH+"Icons/Upgrades/upgrade.jpg"){
 							this->tab=tab;
 							this->type=type;
 							this->level=level;
@@ -73,7 +73,7 @@ namespace fsim{
 						AircraftTabButton *tab;
 				};
 
-				AircraftTabButton(GameManager *gm, Vector2 pos, Vector2 size,Node *scoreNode,int pilotId, int aircraftTypeId,int *upgradeLevels,int *score) : Button(gm,pos,size,tabNames[aircraftTypeId],true){
+				AircraftTabButton(GameManager *gm, Vector2 pos, Vector2 size,Node *scoreNode,int pilotId, int aircraftTypeId,int *upgradeLevels,int *score) : Button(gm,pos,size,tabNames[aircraftTypeId]){
 					this->upgradeLevels=upgradeLevels;
 					this->aircraftTypeId=aircraftTypeId;
 					this->pilotId=pilotId;
@@ -179,7 +179,7 @@ namespace fsim{
 					AircraftSelectionButton *selectionButtons[3];
 					string aircraft[]={"Fighter","Fighter-bomber","Helicopter"};
 					for(int i=0;i<3;i++){
-						selectionButtons[i]=new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),aircraft[i],i);
+						selectionButtons[i]=new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),aircraft[i],i,Mapping::Bind(Mapping::FIGHTER+i));
 						guiState->addButton(selectionButtons[i]);
 					}
 

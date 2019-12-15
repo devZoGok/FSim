@@ -13,7 +13,7 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
-	Textbox::TextboxButton::TextboxButton(Textbox *t, GameManager *gm,Vector2 pos, Vector2 size, string name) : Button(gm,pos,size,name,false) {textbox = t;}
+	Textbox::TextboxButton::TextboxButton(Textbox *t, GameManager *gm,Vector2 pos, Vector2 size, string name) : Button(gm,pos,size,name,Mapping::NONE,false) {textbox = t;}
 
 	void Textbox::TextboxButton::onClick(){
 		if(!textbox->isEnabled())

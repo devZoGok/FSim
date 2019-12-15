@@ -20,6 +20,7 @@ namespace fsim{
 			inline std::vector<Mapping*>& getMappings(){return mappings;}
 			inline int getNumMappings(){return mappings.size();}
 			inline bool isAttached(){return attached;}
+			void removeMapping(Mapping::Bind);
 			virtual void onAction(Mapping::Bind,bool){}
 			virtual void onAnalog(Mapping::Bind,float){}
 			virtual void onRawKeyButton(short){}
