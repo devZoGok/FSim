@@ -211,6 +211,8 @@ Unit	unit.h	/^	class Unit : public Structure{$/;"	c	namespace:fsim
 UpgradeButton	okButton.cpp	/^						UpgradeButton(GameManager *gm, Vector2 pos, Vector2 size,AircraftTabButton *tab,int type, /;"	f	class:fsim::OkButton::onClick::AircraftTabButton::UpgradeButton	file:
 UpgradeButton	okButton.cpp	/^				class UpgradeButton : public Button{$/;"	c	class:fsim::OkButton::onClick::AircraftTabButton	file:
 VIDEO	mapping.h	/^			VIDEO,$/;"	e	enum:fsim::Mapping::Bind
+VideoTab	optionsButton.cpp	/^				VideoTab(GameManager *gm) : TabButton(gm,Vector2(210,100),Vector2(100,20),"Video",Mapping::V/;"	f	class:fsim::OptionsButton::onClick::VideoTab	file:
+VideoTab	optionsButton.cpp	/^		class VideoTab : public TabButton{$/;"	c	function:fsim::OptionsButton::onClick	file:
 YAW_HELICOPTER_LEFT	mapping.h	/^			YAW_HELICOPTER_LEFT,$/;"	e	enum:fsim::Mapping::Bind
 YAW_HELICOPTER_RIGHT	mapping.h	/^			YAW_HELICOPTER_RIGHT,$/;"	e	enum:fsim::Mapping::Bind
 YAW_LEFT	mapping.h	/^			YAW_LEFT,$/;"	e	enum:fsim::Mapping::Bind
@@ -435,7 +437,7 @@ guiNode	listbox.h	/^			vb01::Node *selRectNode,*guiNode;$/;"	m	class:fsim::Listb
 guiNode	structure.h	/^			vb01::Node *rootNode,*guiNode;$/;"	m	class:fsim::Structure	typeref:typename:vb01::Node **
 guiNode	textbox.h	/^			vb01::Node *guiNode,*textNode,*cursorNode;$/;"	m	class:fsim::Textbox	typeref:typename:vb01::Node *
 guiState	inGameAppState.h	/^			GuiAppState *guiState;$/;"	m	class:fsim::InGameAppState	typeref:typename:GuiAppState *
-height	gameManager.h	/^				int width,height;$/;"	m	struct:fsim::GameManager::Options	typeref:typename:int
+height	gameManager.h	/^				int width,height,textureLevel;$/;"	m	struct:fsim::GameManager::Options	typeref:typename:int
 height	gameManager.h	/^			int width,height;$/;"	m	class:fsim::GameManager	typeref:typename:int
 height	inputManager.cpp	/^	int width,height;$/;"	v	namespace:fsim	typeref:typename:int
 helicopter	helicopterAppState.h	/^			Helicopter *helicopter;$/;"	m	class:fsim::HelicopterAppState	typeref:typename:Helicopter *
@@ -451,6 +453,7 @@ inputManager	gameManager.h	/^			InputManager *inputManager=nullptr;$/;"	m	class:
 isActive	button.h	/^			inline bool isActive(){return active;}$/;"	f	class:fsim::Button	typeref:typename:bool
 isAttached	abstractAppState.h	/^			inline bool isAttached(){return attached;}$/;"	f	class:fsim::AbstractAppState	typeref:typename:bool
 isEnabled	textbox.h	/^			inline bool isEnabled(){return enabled;}$/;"	f	class:fsim::Textbox	typeref:typename:bool
+isException	guiAppState.cpp	/^	bool GuiAppState::isException(Button **e, int num, Button *b){$/;"	f	class:fsim::GuiAppState	typeref:typename:bool
 isOpen	listbox.h	/^			inline bool isOpen(){return open;}$/;"	f	class:fsim::Listbox	typeref:typename:bool
 isRunning	gameManager.h	/^			inline bool isRunning(){return running;}$/;"	f	class:fsim::GameManager	typeref:typename:bool
 isSeparate	button.h	/^			inline bool isSeparate(){return separate;}$/;"	f	class:fsim::Button	typeref:typename:bool
@@ -548,6 +551,7 @@ onClick	optionsButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OptionsButton:
 onClick	optionsButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OptionsButton::onClick::DefaultsButton	typeref:typename:void	file:
 onClick	optionsButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OptionsButton::onClick::OkButton	typeref:typename:void	file:
 onClick	optionsButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OptionsButton::onClick::TabButton	typeref:typename:void	file:
+onClick	optionsButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OptionsButton::onClick::VideoTab	typeref:typename:void	file:
 onClick	optionsButton.cpp	/^	void OptionsButton::onClick(){$/;"	f	class:fsim::OptionsButton	typeref:typename:void
 onClick	playButton.cpp	/^				void onClick(){okButton->setFaction(faction);}$/;"	f	class:fsim::PlayButton::onClick::FactionButton	typeref:typename:void	file:
 onClick	playButton.cpp	/^	void PlayButton::onClick(){$/;"	f	class:fsim::PlayButton	typeref:typename:void
@@ -697,6 +701,7 @@ textbox	textbox.h	/^					Textbox *textbox;$/;"	m	class:fsim::Textbox::TextboxBut
 textboxButton	textbox.h	/^			TextboxButton *textboxButton;$/;"	m	class:fsim::Textbox	typeref:typename:TextboxButton *
 textboxes	guiAppState.h	/^			std::vector<Textbox*> textboxes;$/;"	m	class:fsim::GuiAppState	typeref:typename:std::vector<Textbox * >
 textboxes	optionsButton.cpp	/^			vector<Textbox*> textboxes;$/;"	m	struct:fsim::OptionsButton::onClick::Options	typeref:typename:vector<Textbox * >	file:
+textureLevel	gameManager.h	/^				int width,height,textureLevel;$/;"	m	struct:fsim::GameManager::Options	typeref:typename:int
 togglePause	inGameAppState.cpp	/^	void InGameAppState::togglePause(){$/;"	f	class:fsim::InGameAppState	typeref:typename:void
 totalLandingTime	airfield.h	/^			s64 totalLandingTime=0,landTime=200;$/;"	m	class:fsim::Airfield	typeref:typename:s64
 trigger	mapping.h	/^		int trigger;$/;"	m	struct:fsim::Mapping	typeref:typename:int
@@ -752,7 +757,7 @@ vb01	map.h	/^namespace vb01{$/;"	n
 vb01	projectile.h	/^namespace vb01{$/;"	n
 vb01	structure.h	/^namespace vb01{$/;"	n
 vb01	textbox.h	/^namespace vb01{$/;"	n
-width	gameManager.h	/^				int width,height;$/;"	m	struct:fsim::GameManager::Options	typeref:typename:int
+width	gameManager.h	/^				int width,height,textureLevel;$/;"	m	struct:fsim::GameManager::Options	typeref:typename:int
 width	gameManager.h	/^			int width,height;$/;"	m	class:fsim::GameManager	typeref:typename:int
 width	inputManager.cpp	/^	int width,height;$/;"	v	namespace:fsim	typeref:typename:int
 window	inputManager.h	/^			GLFWwindow *window;$/;"	m	class:fsim::InputManager	typeref:typename:GLFWwindow *

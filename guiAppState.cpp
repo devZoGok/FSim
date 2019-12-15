@@ -122,15 +122,14 @@ namespace fsim{
 	}
 
 	void GuiAppState::removeAllButtons(Button **exceptions,int numExceptions){
-		for(int i=0;i<buttons.size();i++){
-			for(int j=0;j<numExceptions;j++)
-				if(buttons[i]==exceptions[j])
-					swap(buttons[i],buttons[j]);
-		}
-		while(buttons.size()>numExceptions){
-			removeMapping(buttons[buttons.size()-1]->getMapping()->bind);
-			delete buttons[buttons.size()-1];
-			buttons.pop_back();
+		int targetId=0;
+		while(targetId!=buttons.size()){
+			if(!isException(exceptions,numExceptions,buttons[targetId])){
+				delete buttons[targetId];	
+				buttons.erase(buttons.begin()+targetId);
+			}
+			else
+				targetId++;
 		}
 	}
 
@@ -314,5 +313,13 @@ namespace fsim{
 		for(int i=0;i<buttons.size();i++)	
 			if(buttons[i]->getMapping()->bind==bind)
 				buttons[i]->onClick();
+	}
+
+	bool GuiAppState::isException(Button **e, int num, Button *b){
+		bool exception=false;
+		for(int i=0;i<num&&!exception;i++)
+			if(b==e[i])
+				exception=true;
+		return exception;
 	}
 }

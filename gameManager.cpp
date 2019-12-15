@@ -75,6 +75,7 @@ namespace fsim{
 		height=atoi(lines[1].substr(colonIds[1]+1,string::npos).c_str());
 		options.width=width;
 		options.height=height;
+		options.textureLevel=atoi(lines[2].substr(colonIds[2]+1,string::npos).c_str());
 		options.databaseUser=lines[numOptions-1].substr(colonIds[numOptions-1]+1,string::npos);
 	}
 }

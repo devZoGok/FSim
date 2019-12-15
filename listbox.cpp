@@ -37,7 +37,7 @@ namespace fsim{
 		}
 	}
 
-	Listbox::ScrollingButton::ScrollingButton(GameManager *gm, Vector2 pos, Vector2 size, string name) : Button(gm,pos,size,name){}
+	Listbox::ScrollingButton::ScrollingButton(GameManager *gm, Vector2 pos, Vector2 size, string name) : Button(gm,pos,size,name,Mapping::NONE,false){}
 
 	void Listbox::ScrollingButton::onClick(){}
 

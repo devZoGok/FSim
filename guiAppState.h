@@ -38,6 +38,7 @@ namespace fsim{
 			void onRawJoystickButton(short);
 		private:
 			bool canType(){return getTime()-lastTypeTime>100;}
+			bool isException(Button**,int,Button*);
 			void updateControlsListbox(Mapping::BindType,bool,short);
 			void activateBoundButton(Mapping::Bind);
 

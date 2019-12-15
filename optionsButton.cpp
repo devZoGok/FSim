@@ -82,6 +82,7 @@ namespace fsim{
 							}
 						private:
 					};
+
 					GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
 					guiState->removeAllGUIElements(false);
 					BackButton *backButton=new BackButton(gm,Vector2(500,400),Vector2(100,20));
@@ -105,6 +106,7 @@ namespace fsim{
 					TabButton::onClick();
 
 					GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
+
 					vector<string> lines;
 					int numLines=0;
 					for(int i=0;i<numStates;i++)
@@ -147,10 +149,36 @@ namespace fsim{
 			private:
 		};
 
+		class VideoTab : public TabButton{
+			public:
+				VideoTab(GameManager *gm) : TabButton(gm,Vector2(210,100),Vector2(100,20),"Video",Mapping::VIDEO){}
+				void onClick(){
+					TabButton::onClick();	
+
+					GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
+
+					vector<string> l1,l2;
+					l1.push_back("800,600");
+					l1.push_back("1376,766");
+					l1.push_back("1920,1080");
+					l2.push_back("Low");
+					l2.push_back("Medium");
+					l2.push_back("High");
+					Listbox *resolutionListbox=new Listbox(gm,Vector2(100,300),Vector2(100,20),l1,3);
+					Listbox *textureListbox=new Listbox(gm,Vector2(210,300),Vector2(100,20),l2,3);
+					guiState->addListbox(resolutionListbox);
+					guiState->addListbox(textureListbox);
+
+					guiState->removeButton(this);
+				}
+			private:
+		};
+
 		GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
 		Button *e[]{this};
 		guiState->removeAllButtons(e,1);
 		guiState->addButton(new ControlsTab(gm));
+		guiState->addButton(new VideoTab(gm));
 		//guiState->addButton(new MainMenuButton(gm,Vector2(500,400),Vector2(100,40)));
 		guiState->removeButton(this);
 	}

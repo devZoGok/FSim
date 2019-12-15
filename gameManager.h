@@ -14,7 +14,7 @@ namespace fsim{
 	class GameManager{
 		public:
 			struct Options{
-				int width,height;
+				int width,height,textureLevel;
 				std::string databaseUser;
 			};
 
