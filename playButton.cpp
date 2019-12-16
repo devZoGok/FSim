@@ -12,12 +12,14 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
+	string flags[]{"chineseInsignia.jpg","japaneseInsignia.jpg","koreanInsignia.jpg"};
+
 	PlayButton::PlayButton(GameManager *gm,Vector2 pos, Vector2 size):Button(gm,pos,size,"Play",Mapping::PLAY){}
 
 	void PlayButton::onClick(){
 		class FactionButton : public Button{
 			public:
-				FactionButton(GameManager *gm, Vector2 pos, Vector2 size,OkButton *okButton, int faction):Button(gm,pos,size,to_string(faction)){
+				FactionButton(GameManager *gm, Vector2 pos, Vector2 size,OkButton *okButton, int faction):Button(gm,pos,size,to_string(faction),Mapping::NONE,true,PATH+"Textures/"+flags[faction]){
 					this->okButton=okButton;
 					this->faction=faction;
 				}

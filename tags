@@ -50,8 +50,10 @@ CONTROLS	mapping.h	/^			CONTROLS,$/;"	e	enum:fsim::Mapping::Bind
 ControlsTab	optionsButton.cpp	/^				ControlsTab(GameManager *gm) : TabButton(gm,Vector2(100,100),Vector2(100,20),"Controls",Mapp/;"	f	class:fsim::OptionsButton::onClick::ControlsTab	file:
 ControlsTab	optionsButton.cpp	/^		class ControlsTab : public TabButton{$/;"	c	function:fsim::OptionsButton::onClick	file:
 DEFCONFIGS_H	defConfigs.h	/^#define DEFCONFIGS_H$/;"	d
-DefaultsButton	optionsButton.cpp	/^				DefaultsButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size,"Restore def/;"	f	class:fsim::OptionsButton::onClick::DefaultsButton	file:
-DefaultsButton	optionsButton.cpp	/^		class DefaultsButton : public Button{$/;"	c	function:fsim::OptionsButton::onClick	file:
+DefaultsButton	optionsButton.cpp	/^						DefaultsButton(GameManager *gm) : Button(gm,defaultsButtonPos,defaultsButtonSize,"Restore /;"	f	class:fsim::OptionsButton::onClick::ControlsTab::DefaultsButton	file:
+DefaultsButton	optionsButton.cpp	/^						DefaultsButton(GameManager *gm) : Button(gm,defaultsButtonPos,defaultsButtonSize,"Restore /;"	f	class:fsim::OptionsButton::onClick::VideoTab::DefaultsButton	file:
+DefaultsButton	optionsButton.cpp	/^				class DefaultsButton : public Button{$/;"	c	class:fsim::OptionsButton::onClick::ControlsTab	file:
+DefaultsButton	optionsButton.cpp	/^				class DefaultsButton : public Button{$/;"	c	class:fsim::OptionsButton::onClick::VideoTab	file:
 EXIT_BUTTON_H	exitButton.h	/^#define EXIT_BUTTON_H$/;"	d
 ExitButton	exitButton.cpp	/^	ExitButton::ExitButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size,"Exit")/;"	f	class:fsim::ExitButton
 ExitButton	exitButton.h	/^	class ExitButton : public Button{$/;"	c	namespace:fsim
@@ -141,8 +143,10 @@ OkButton	inGameAppState.cpp	/^							OkButton(GameManager *gm,Textbox *textbox) 
 OkButton	inGameAppState.cpp	/^					class OkButton : public Button{$/;"	c	function:fsim::InGameAppState::togglePause::SaveButton::onClick	file:
 OkButton	okButton.cpp	/^	OkButton::OkButton(GameManager *gm,Vector2 pos, Vector2 size,Textbox *textbox,int saveId,int pi/;"	f	class:fsim::OkButton
 OkButton	okButton.h	/^	class OkButton : public Button{$/;"	c	namespace:fsim
-OkButton	optionsButton.cpp	/^				OkButton(GameManager *gm, Vector2 pos, Vector2 size) : Button(gm,pos,size,"OK"){}$/;"	f	class:fsim::OptionsButton::onClick::OkButton	file:
-OkButton	optionsButton.cpp	/^		class OkButton : public Button{$/;"	c	function:fsim::OptionsButton::onClick	file:
+OkButton	optionsButton.cpp	/^						OkButton(GameManager *gm) : Button(gm,okButtonPos,okButtonSize,"OK"){}$/;"	f	class:fsim::OptionsButton::onClick::ControlsTab::OkButton	file:
+OkButton	optionsButton.cpp	/^						OkButton(GameManager *gm) : Button(gm,okButtonPos,okButtonSize,"OK"){}$/;"	f	class:fsim::OptionsButton::onClick::VideoTab::OkButton	file:
+OkButton	optionsButton.cpp	/^				class OkButton : public Button{$/;"	c	class:fsim::OptionsButton::onClick::ControlsTab	file:
+OkButton	optionsButton.cpp	/^				class OkButton : public Button{$/;"	c	class:fsim::OptionsButton::onClick::VideoTab	file:
 Options	gameManager.h	/^			struct Options{$/;"	s	class:fsim::GameManager
 Options	optionsButton.cpp	/^		struct Options{$/;"	s	function:fsim::OptionsButton::onClick	file:
 OptionsButton	optionsButton.cpp	/^	OptionsButton::OptionsButton(GameManager *gm,Vector2 pos, Vector2 size) : Button(gm,pos,size,"O/;"	f	class:fsim::OptionsButton
@@ -260,7 +264,8 @@ cursorWidth	textbox.h	/^			const int cursorWidth=5;$/;"	m	class:fsim::Textbox	ty
 databaseUser	gameManager.h	/^				std::string databaseUser;$/;"	m	struct:fsim::GameManager::Options	typeref:typename:std::string
 deccIncrement	activeGameAppState.h	/^			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.0/;"	m	class:fsim::ActiveGameAppState	typeref:typename:float
 defaultTexture	defConfigs.h	/^	const static std::string PATH="..\/Assets\/",defaultTexture=PATH+"Textures\/defaultTexture.jpg"/;"	v	namespace:fsim	typeref:typename:const std::string
-defaultsButton	optionsButton.cpp	/^				DefaultsButton *defaultsButton;$/;"	m	class:fsim::OptionsButton::onClick::TabButton	typeref:typename:DefaultsButton *	file:
+defaultsButtonPos	optionsButton.cpp	/^	Vector2 okButtonPos=Vector2(280,400),okButtonSize=Vector2(100,20),defaultsButtonPos=Vector2(390/;"	v	namespace:fsim	typeref:typename:Vector2
+defaultsButtonSize	optionsButton.cpp	/^	Vector2 okButtonPos=Vector2(280,400),okButtonSize=Vector2(100,20),defaultsButtonPos=Vector2(390/;"	v	namespace:fsim	typeref:typename:Vector2
 deleteCharacter	textbox.cpp	/^	void Textbox::deleteCharacter(){$/;"	f	class:fsim::Textbox	typeref:typename:void
 dettachState	stateManager.cpp	/^	void StateManager::dettachState(AbstractAppState *a){$/;"	f	class:fsim::StateManager	typeref:typename:void
 dettachState	stateManager.cpp	/^	void StateManager::dettachState(AbstractAppState::Type type){$/;"	f	class:fsim::StateManager	typeref:typename:void
@@ -276,6 +281,7 @@ faction	okButton.cpp	/^				int faction,pilotId;$/;"	m	class:fsim::OkButton::onCl
 faction	okButton.h	/^			int faction;$/;"	m	class:fsim::OkButton	typeref:typename:int
 faction	playButton.cpp	/^				int faction;$/;"	m	class:fsim::PlayButton::onClick::FactionButton	typeref:typename:int	file:
 faction	structure.h	/^			int id,faction;$/;"	m	class:fsim::Structure	typeref:typename:int
+flags	playButton.cpp	/^	string flags[]{"chineseInsignia.jpg","japaneseInsignia.jpg","koreanInsignia.jpg"};$/;"	v	namespace:fsim	typeref:typename:string[]
 foo	inputManager.cpp	/^	void foo(GLFWwindow *window,double newPosX,double newPosY){$/;"	f	namespace:fsim	typeref:typename:void
 forwPitch	activeGameAppState.h	/^			bool forwPitch=false,backPitch=false,leftRoll=false,rightRoll=false;$/;"	m	class:fsim::ActiveGameAppState	typeref:typename:bool
 fromIntToString	util.cpp	/^	string fromIntToString(int data[3]){$/;"	f	namespace:fsim	typeref:typename:string
@@ -446,7 +452,6 @@ iconPath	structureData.h	/^	static const std::string iconPath[numStructures]={$/
 iconSize	activeGameAppState.h	/^			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.0/;"	m	class:fsim::ActiveGameAppState	typeref:typename:float
 id	projectile.h	/^			int id;$/;"	m	class:fsim::Projectile	typeref:typename:int
 id	structure.h	/^			int id,faction;$/;"	m	class:fsim::Structure	typeref:typename:int
-ids	optionsButton.cpp	/^			vector<int> ids;$/;"	m	struct:fsim::OptionsButton::onClick::Options	typeref:typename:vector<int>	file:
 initAngle	bomb.h	/^			float initAngle=0;$/;"	m	class:fsim::Bomb	typeref:typename:float
 initTime	bomb.h	/^			s64 initTime;$/;"	m	class:fsim::Bomb	typeref:typename:s64
 inputManager	gameManager.h	/^			InputManager *inputManager=nullptr;$/;"	m	class:fsim::GameManager	typeref:typename:InputManager *
@@ -511,8 +516,9 @@ numStates	defConfigs.h	/^	const static int numStates=4,numBinds[numStates]{0,1,8
 numStructures	structureData.h	/^	const int numStructures=5;$/;"	v	namespace:fsim	typeref:typename:const int
 numUpgrades	upgradeData.h	/^	static const int numUpgrades=5,numLevels=4;$/;"	v	namespace:fsim	typeref:typename:const int
 objective	map.h	/^			int objective,level;$/;"	m	class:fsim::Map	typeref:typename:int
-okButton	optionsButton.cpp	/^				OkButton *okButton;$/;"	m	class:fsim::OptionsButton::onClick::TabButton	typeref:typename:OkButton *	file:
 okButton	playButton.cpp	/^				OkButton *okButton;$/;"	m	class:fsim::PlayButton::onClick::FactionButton	typeref:typename:OkButton *	file:
+okButtonPos	optionsButton.cpp	/^	Vector2 okButtonPos=Vector2(280,400),okButtonSize=Vector2(100,20),defaultsButtonPos=Vector2(390/;"	v	namespace:fsim	typeref:typename:Vector2
+okButtonSize	optionsButton.cpp	/^	Vector2 okButtonPos=Vector2(280,400),okButtonSize=Vector2(100,20),defaultsButtonPos=Vector2(390/;"	v	namespace:fsim	typeref:typename:Vector2
 onAction	abstractAppState.h	/^			virtual void onAction(Mapping::Bind,bool){}$/;"	f	class:fsim::AbstractAppState	typeref:typename:void
 onAction	activeGameAppState.h	/^			virtual void onAction(Mapping::Bind,bool){}$/;"	f	class:fsim::ActiveGameAppState	typeref:typename:void
 onAction	guiAppState.cpp	/^	void GuiAppState::onAction(Mapping::Bind bind, bool isPressed){$/;"	f	class:fsim::GuiAppState	typeref:typename:void
@@ -547,9 +553,11 @@ onClick	okButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OkButton::onClick::
 onClick	okButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OkButton::onClick::StartButton	typeref:typename:void	file:
 onClick	okButton.cpp	/^	void OkButton::onClick(){$/;"	f	class:fsim::OkButton	typeref:typename:void
 onClick	optionsButton.cpp	/^							void onClick(){$/;"	f	class:fsim::OptionsButton::onClick::TabButton::onClick::BackButton	typeref:typename:void	file:
+onClick	optionsButton.cpp	/^						void onClick(){$/;"	f	class:fsim::OptionsButton::onClick::ControlsTab::OkButton	typeref:typename:void	file:
+onClick	optionsButton.cpp	/^						void onClick(){$/;"	f	class:fsim::OptionsButton::onClick::VideoTab::OkButton	typeref:typename:void	file:
+onClick	optionsButton.cpp	/^						void onClick(){}$/;"	f	class:fsim::OptionsButton::onClick::ControlsTab::DefaultsButton	typeref:typename:void	file:
+onClick	optionsButton.cpp	/^						void onClick(){}$/;"	f	class:fsim::OptionsButton::onClick::VideoTab::DefaultsButton	typeref:typename:void	file:
 onClick	optionsButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OptionsButton::onClick::ControlsTab	typeref:typename:void	file:
-onClick	optionsButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OptionsButton::onClick::DefaultsButton	typeref:typename:void	file:
-onClick	optionsButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OptionsButton::onClick::OkButton	typeref:typename:void	file:
 onClick	optionsButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OptionsButton::onClick::TabButton	typeref:typename:void	file:
 onClick	optionsButton.cpp	/^				void onClick(){$/;"	f	class:fsim::OptionsButton::onClick::VideoTab	typeref:typename:void	file:
 onClick	optionsButton.cpp	/^	void OptionsButton::onClick(){$/;"	f	class:fsim::OptionsButton	typeref:typename:void
@@ -574,8 +582,10 @@ onRawMouseButton	guiAppState.cpp	/^	void GuiAppState::onRawMouseButton(short s){
 open	listbox.h	/^			bool open = false;$/;"	m	class:fsim::Listbox	typeref:typename:bool
 openUp	listbox.cpp	/^	void Listbox::openUp(){$/;"	f	class:fsim::Listbox	typeref:typename:void
 options	gameManager.h	/^			Options options;$/;"	m	class:fsim::GameManager	typeref:typename:Options
-options	optionsButton.cpp	/^				Options options;$/;"	m	class:fsim::OptionsButton::onClick::DefaultsButton	typeref:typename:Options	file:
-options	optionsButton.cpp	/^				Options options;$/;"	m	class:fsim::OptionsButton::onClick::OkButton	typeref:typename:Options	file:
+options	optionsButton.cpp	/^						Options options;$/;"	m	class:fsim::OptionsButton::onClick::ControlsTab::DefaultsButton	typeref:typename:Options	file:
+options	optionsButton.cpp	/^						Options options;$/;"	m	class:fsim::OptionsButton::onClick::ControlsTab::OkButton	typeref:typename:Options	file:
+options	optionsButton.cpp	/^						Options options;$/;"	m	class:fsim::OptionsButton::onClick::VideoTab::DefaultsButton	typeref:typename:Options	file:
+options	optionsButton.cpp	/^						Options options;$/;"	m	class:fsim::OptionsButton::onClick::VideoTab::OkButton	typeref:typename:Options	file:
 path	structureData.h	/^	static const std::string path[numStructures]={$/;"	v	namespace:fsim	typeref:typename:const std::string[]
 pauseOverlay	inGameAppState.h	/^			vb01::Node *pauseOverlay=nullptr;$/;"	m	class:fsim::InGameAppState	typeref:typename:vb01::Node *
 paused	inGameAppState.h	/^			bool paused=false;$/;"	m	class:fsim::InGameAppState	typeref:typename:bool
@@ -658,8 +668,10 @@ setColor	button.cpp	/^	void Button::setColor(Vector4 c){$/;"	f	class:fsim::Butto
 setEntry	textbox.cpp	/^	void Textbox::setEntry(string entry){$/;"	f	class:fsim::Textbox	typeref:typename:void
 setFaction	okButton.h	/^			inline void setFaction(int f){this->faction=f;}$/;"	f	class:fsim::OkButton	typeref:typename:void
 setLanding	helicopter.h	/^			inline void setLanding(float l){this->landing=l;}$/;"	f	class:fsim::Helicopter	typeref:typename:void
-setOptions	optionsButton.cpp	/^				void setOptions(Options o){this->options=o;}$/;"	f	class:fsim::OptionsButton::onClick::DefaultsButton	typeref:typename:void	file:
-setOptions	optionsButton.cpp	/^				void setOptions(Options o){this->options=o;}$/;"	f	class:fsim::OptionsButton::onClick::OkButton	typeref:typename:void	file:
+setOptions	optionsButton.cpp	/^						void setOptions(Options o){this->options=o;}$/;"	f	class:fsim::OptionsButton::onClick::ControlsTab::DefaultsButton	typeref:typename:void	file:
+setOptions	optionsButton.cpp	/^						void setOptions(Options o){this->options=o;}$/;"	f	class:fsim::OptionsButton::onClick::ControlsTab::OkButton	typeref:typename:void	file:
+setOptions	optionsButton.cpp	/^						void setOptions(Options o){this->options=o;}$/;"	f	class:fsim::OptionsButton::onClick::VideoTab::DefaultsButton	typeref:typename:void	file:
+setOptions	optionsButton.cpp	/^						void setOptions(Options o){this->options=o;}$/;"	f	class:fsim::OptionsButton::onClick::VideoTab::OkButton	typeref:typename:void	file:
 setPitch	aircraft.cpp	/^	void Aircraft::setPitch(float p){$/;"	f	class:fsim::Aircraft	typeref:typename:void
 setPlayerId	inGameAppState.h	/^			inline void setPlayerId(int id){this->playerId=id;}$/;"	f	class:fsim::InGameAppState	typeref:typename:void
 setPos	button.cpp	/^	void Button::setPos(Vector2 pos){$/;"	f	class:fsim::Button	typeref:typename:void
