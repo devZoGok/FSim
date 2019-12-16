@@ -4,7 +4,7 @@ project(fsim)
 set(CMAKE_BUILD_TYPE Debug)
 cmake_policy(SET CMP0015 NEW)
 
-include_directories(/home/dominykas/c++/vb01)
+include_directories(../vb01)
 include_directories(/usr/include/freetype2)
 include_directories(/usr/include/GLFW)
 include_directories(/usr/include/boost)
