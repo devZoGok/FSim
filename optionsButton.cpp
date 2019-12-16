@@ -110,13 +110,17 @@ namespace fsim{
 							int sumBinds=0;
 							for(int i=0;i<numStates;i++)
 								sumBinds+=numBinds[i];
+
 							vector<string> lines;
 							readFile(PATH+"../options.cfg",lines);	
+
 							for(int i=0;i<sumBinds;i++)
 								for(int j=0;j<lines[i].length();j++)
 									if(lines[i].c_str()[j]==':')
 										lines[i]=lines[i].substr(0,j+1);
+
 							int numListboxes=options.listboxes.size(),numTextboxes=options.textboxes.size();
+
 							for(int i=0;i<numListboxes;i++){
 								for(int j=0;j<options.listboxes[i]->getNumLines();j++)
 									if(options.listboxes[i]->getType()==Listbox::CONTROLS){
@@ -129,6 +133,7 @@ namespace fsim{
 										delete data;
 									}
 							}
+
 							writeFile(PATH+"../options.cfg",lines);
 						}
 						void setOptions(Options o){this->options=o;}
@@ -170,6 +175,12 @@ namespace fsim{
 					guiState->addListbox(resolutionListbox);
 					guiState->addListbox(textureListbox);
 
+					Options options;
+					options.listboxes.push_back(resolutionListbox);
+					options.listboxes.push_back(textureListbox);
+					okButton->setOptions(options);
+					defaultsButton->setOptions(options);
+
 					guiState->removeButton(this);
 				}
 			private:
@@ -179,6 +190,26 @@ namespace fsim{
 						void onClick(){
 							vector<string> lines;
 							readFile(PATH+"../options.cfg",lines);	
+
+							int sumBinds=0;
+							for(int i=0;i<numStates;i++)
+								sumBinds+=numBinds[i];
+
+							for(int i=sumBinds;i<sumBinds+3;i++)
+								for(int j=0;j<lines[i].length();j++)
+									if(lines[i].c_str()[j]==':')
+										lines[i]=lines[i].substr(0,j+1);
+
+							int so1=options.listboxes[0]->getSelectedOption();
+							int so2=options.listboxes[1]->getSelectedOption();
+							int comma=0;
+							string resolutionLine=options.listboxes[0]->getContents()[so1];
+							for(int i=0;i<resolutionLine.length();i++)
+								if(resolutionLine.c_str()[i]==',')
+									comma=i;
+							lines[sumBinds]+=resolutionLine.substr(0,comma);
+							lines[sumBinds+1]+=resolutionLine.substr(comma+1,string::npos);
+							lines[sumBinds+2]+=to_string(so2);
 
 							writeFile(PATH+"../options.cfg",lines);
 						}
