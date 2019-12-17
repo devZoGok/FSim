@@ -7,6 +7,9 @@
 #include"gameManager.h"
 #include"stateManager.h"
 #include"textbox.h"
+#include<node.h>
+#include<mesh.h>
+#include<material.h>
 
 using namespace vb01;
 using namespace std;
@@ -45,5 +48,23 @@ namespace fsim{
 		guiState->addButton(new MainMenuButton(gm,Vector2(100,550),Vector2(100,40)));
 
 		guiState->removeButton(this);
+	}
+
+	void PlayButton::onMouseOver(){
+		Button::onMouseOver();	
+		if(mouseOver){
+			if(textNode)
+				textNode->getText(0)->setColor(Vector4(.1,.1,.1,1));
+			rectNode->getMesh(0)->getMaterial()->setDiffuseColor(Vector4(.8,.8,.8,1));
+		}
+	}
+
+	void PlayButton::onMouseOff(){
+		Button::onMouseOff();	
+		if(!mouseOver){
+			if(textNode)
+				textNode->getText(0)->setColor(Vector4(1,1,1,1));
+			rectNode->getMesh(0)->getMaterial()->setDiffuseColor(Vector4(.6,.6,.6,1));
+		}
 	}
 }

@@ -59,6 +59,14 @@ namespace fsim{
 
 	void Button::update(){}
 
+	void Button::onMouseOver(){
+		mouseOver=true;
+	}
+
+	void Button::onMouseOff(){
+		mouseOver=false;
+	}
+
 	void Button::setPos(Vector2 pos){
 		this->pos=pos;
 		float z1=rectNode->getPosition().z;

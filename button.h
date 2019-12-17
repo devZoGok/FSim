@@ -19,7 +19,8 @@ namespace fsim{
 			Button(GameManager*,vb01::Vector2,vb01::Vector2,std::string,Mapping::Bind=Mapping::NONE,bool=true,std::string="");
 			virtual ~Button();
 			void update();
-			virtual void onMouseOver(){}
+			virtual void onMouseOver();
+			virtual void onMouseOff();
 			virtual void onClick(){}
 			inline vb01::Vector2 getPos(){return pos;}
 			void setPos(vb01::Vector2);
@@ -35,7 +36,7 @@ namespace fsim{
 			void setZOrder(float);
 		protected:
 			GameManager *gm;
-			bool separate,active=true;
+			bool separate,active=true,mouseOver=false;
 			vb01::Quad *rect;
 			vb01::Node *rectNode,*textNode=nullptr,*guiNode;
 			vb01::Vector2 pos,size;

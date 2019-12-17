@@ -7,7 +7,7 @@
 namespace fsim{
 	class Airfield : public Building{
 		public:
-			Airfield(GameManager*,int,int,vb01::Vector3,vb01::Quaternion,int,vb01::Vector3*,vb01::Vector3*,int,vb01::Vector3*);
+			Airfield(GameManager*,int,int,vb01::Vector3,vb01::Quaternion);
 			void update();
 			inline vb01::Vector3 getRunwayPos(int i){return runwayPos[i];}
 			inline vb01::Vector3 getHelipadPos(int i){return helipadPos[i];}

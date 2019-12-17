@@ -16,12 +16,17 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
-	Airfield::Airfield(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot, int numRunways, Vector3 *runwayPos, Vector3 *runwayDirs,int numHelipads, Vector3 *helipadPos) : Building(gm,id,faction,pos,rot) {
-		this->numRunways=numRunways;
-		this->numHelipads=numHelipads;
-		this->runwayPos=runwayPos;
-		this->runwayDirs=runwayDirs;
-		this->helipadPos=helipadPos;
+	Airfield::Airfield(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot) : Building(gm,id,faction,pos,rot) {
+		this->numRunways=1;
+		this->numHelipads=1;
+
+		runwayPos=new Vector3[1];
+		runwayPos[0]=Vector3(0,0,0);
+		helipadPos=new Vector3[1];
+		helipadPos[0]=Vector3(2,0,0);
+		runwayDirs=new Vector3[1];
+		runwayDirs[0]=Vector3(0,0,-1);
+
 		model=(Model*)new Node(pos,rot);
 		rootNode->attachChild(model);
 

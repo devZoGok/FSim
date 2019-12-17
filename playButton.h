@@ -9,6 +9,8 @@ namespace fsim{
 			PlayButton(GameManager*,vb01::Vector2,vb01::Vector2);
 			void onClick();
 		private:
+			void onMouseOver();
+			void onMouseOff();
 	};
 }
 

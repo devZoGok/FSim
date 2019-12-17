@@ -10,16 +10,26 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
+	double *x,*y;
+
 	GuiAppState::GuiAppState(GameManager *gm) : AbstractAppState(gm){
 		this->gm=gm;
 		type=Type::GUI_STATE;
+		x=new double,y=new double;
 	}
 
 	GuiAppState::~GuiAppState(){}
 
 	void GuiAppState::update(){
-		for(Button *b : buttons)
+		for(Button *b : buttons){
+			Vector2 pos=b->getPos(),size=b->getSize();
 			b->update();
+			glfwGetCursorPos(gm->getRoot()->getWindow(),x,y);
+			if((pos.x<=*x&&*x<=pos.x+size.x)&&(pos.y<=*y&&*y<=pos.y+size.y))
+				b->onMouseOver();
+			else
+				b->onMouseOff();
+		}
 		for(Listbox *l : listboxes)
 			l->update();
 		for(Textbox *t : textboxes)
@@ -169,7 +179,6 @@ namespace fsim{
 	}
 
 	void GuiAppState::onAction(Mapping::Bind bind, bool isPressed){
-		double *x=new double,*y=new double;
 		glfwGetCursorPos(gm->getRoot()->getWindow(),x,y);
 		switch(bind){
 			case Mapping::MOUSE_CLICK:
@@ -195,7 +204,6 @@ namespace fsim{
 				if(isPressed&&bind!=Mapping::NONE)
 					activateBoundButton(bind);
 		}
-		delete x,y;
 	}
 
 	void GuiAppState::onRawKeyButton(short ch){
