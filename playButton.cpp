@@ -15,20 +15,24 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
-	string flags[]{"chineseInsignia.jpg","japaneseInsignia.jpg","koreanInsignia.jpg"};
+	string flags[]{"chineseInsignia","japaneseInsignia","koreanInsignia"};
 
 	PlayButton::PlayButton(GameManager *gm,Vector2 pos, Vector2 size):Button(gm,pos,size,"Play",Mapping::PLAY){}
 
 	void PlayButton::onClick(){
 		class FactionButton : public Button{
 			public:
-				FactionButton(GameManager *gm, Vector2 pos, Vector2 size,OkButton *okButton, int faction):Button(gm,pos,size,to_string(faction),Mapping::NONE,true,PATH+"Textures/"+flags[faction]){
+				FactionButton(GameManager *gm, Vector2 pos, Vector2 size,OkButton *okButton, int faction):Button(gm,pos,size,to_string(faction),Mapping::NONE,true,PATH+"Textures/"+flags[faction]+".jpg"){
 					this->okButton=okButton;
 					this->faction=faction;
+					insigniaBase=flags[faction];
 				}
-				void onClick(){okButton->setFaction(faction);}
+				void onClick(){
+					okButton->setFaction(faction);
+				}
 			private:
 				int faction;
+				string insigniaBase;
 				OkButton *okButton;
 		};
 
@@ -40,7 +44,7 @@ namespace fsim{
 		Textbox *t=new Textbox(gm,Vector2(300,550),Vector2(150,40));
 		guiState->addTextbox(t);
 		OkButton *okButton=new OkButton(gm,Vector2(480,550),Vector2(100,40),t);
-		int width=200,factionId=0;
+		int width=200;
 		for(int i=0;i<3;i++)
 			guiState->addButton(new FactionButton(gm,Vector2(50+i*(width+10),10),Vector2(width,400),okButton,i));
 		guiState->getButton("0")->onClick();

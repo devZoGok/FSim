@@ -66,7 +66,7 @@ namespace fsim{
 
 		if(saveId==-1){
 			inGameState->addStructure(new Airfield(gm,Type::AIRFIELD,0,Vector3(0,-20,10),Quaternion(1,0,0,0)));
-			inGameState->addStructure(new Helicopter(gm,Type::HELICOPTER,2,Vector3(20,0,0),Quaternion(1,0,0,0)));
+			inGameState->addStructure(new Helicopter(gm,Type::CHINESE_HELICOPTER,2,Vector3(20,0,0),Quaternion(1,0,0,0)));
 			for(int i=structuresLine+1;i<lines.size();i++){
 				string type;
 				const int numCoords=7;
@@ -102,12 +102,18 @@ namespace fsim{
 					}
 				}
 				switch(unitId){
-					case Type::FIGHTER_BOMBER:
-					case Type::FIGHTER:
-						s=new Jet(gm,unitId,faction,pos,rot,upgrades);
-						break;
-					case Type::HELICOPTER:
+					case Type::CHINESE_HELICOPTER:
+					case Type::JAPANESE_HELICOPTER:
+					case Type::KOREAN_HELICOPTER:
 						s=new Helicopter(gm,unitId,faction,pos,rot,upgrades);
+						break;
+					case Type::CHINESE_FIGHTER:
+					case Type::JAPANESE_FIGHTER:
+					case Type::KOREAN_FIGHTER:
+					case Type::CHINESE_FIGHTER_BOMBER:
+					case Type::JAPANESE_FIGHTER_BOMBER:
+					case Type::KOREAN_FIGHTER_BOMBER:
+						s=new Jet(gm,unitId,faction,pos,rot,upgrades);
 						break;
 					default:
 						s=new Structure(gm,unitId,faction,pos,rot);

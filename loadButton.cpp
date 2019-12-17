@@ -43,7 +43,9 @@ namespace fsim{
 								int level=(int)res[0][2],objective=(int)res[0][3],playerId=(int)res[0][1],unitId=(int)res[playerId][0];
 								stateManager->attachState(new InGameAppState(gm,pilotId,playerId,faction,saveId,level,objective));
 								switch(unitId){
-									case Type::HELICOPTER:
+									case Type::CHINESE_HELICOPTER:
+									case Type::JAPANESE_HELICOPTER:
+									case Type::KOREAN_HELICOPTER:
 										stateManager->attachState(new HelicopterAppState(gm,playerId));
 									break;
 									default:

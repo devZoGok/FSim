@@ -8,10 +8,10 @@ namespace fsim{
 
 	class AircraftSelectionButton : public Button{
 		public:
-			AircraftSelectionButton(GameManager*,vb01::Vector2,vb01::Vector2,std::string,int,Mapping::Bind);
+			AircraftSelectionButton(GameManager*,vb01::Vector2,vb01::Vector2,std::string,int,int,Mapping::Bind);
 			void onClick();
 		private:
-			int aircraftId;
+			int aircraftId,faction;
 	};
 }
 

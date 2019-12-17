@@ -25,7 +25,7 @@ namespace fsim{
 		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
 		vector<Aircraft*> hostileAircraft;
 		for(Structure *s : inGameState->getStructures())
-			if(s->getId()<=Type::HELICOPTER&&s->getFaction()!=faction&&dir.getAngleBetween((s->getPos()-pos).norm())<=3)
+			if(s->getId()<=Type::KOREAN_HELICOPTER&&s->getFaction()!=faction&&dir.getAngleBetween((s->getPos()-pos).norm())<=3)
 				hostileAircraft.push_back((Aircraft*)s);
 		Structure *target=hostileAircraft.size()>0?hostileAircraft[0]:nullptr;
 		if(canPrimaryFire()){

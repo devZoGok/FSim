@@ -160,15 +160,16 @@ namespace fsim{
 						this->tabs[i]=tabs[i];
 				}
 				void onClick(){
-
 					StateManager *stateManager=gm->getStateManager();
 					GuiAppState *guiState=(GuiAppState*)stateManager->getState(AbstractAppState::GUI_STATE);
 					Node *guiNode=gm->getRoot()->getGuiNode();
 
 					for(int i=0;i<5;i++){
-						guiNode->dettachChild(tabs[faction]->getTextNode(i));
-						delete tabs[faction]->getTextNode(i);
+						guiNode->dettachChild(tabs[0]->getTextNode(i));
+						delete tabs[0]->getTextNode(i);
 					}
+					/*
+					*/
 
 					const int numExceptions=!loadFromSave?4:2;
 					int playerUnitId=0,level=1,objective=0;
@@ -179,7 +180,7 @@ namespace fsim{
 					AircraftSelectionButton *selectionButtons[3];
 					string aircraft[]={"Fighter","Fighter-bomber","Helicopter"};
 					for(int i=0;i<3;i++){
-						selectionButtons[i]=new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),aircraft[i],i,Mapping::Bind(Mapping::FIGHTER+i));
+						selectionButtons[i]=new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),aircraft[i],faction*3+i,faction,Mapping::Bind(Mapping::FIGHTER+i));
 						guiState->addButton(selectionButtons[i]);
 					}
 
@@ -234,7 +235,6 @@ namespace fsim{
 			for(int j=0;j<numUpgrades;j++)
 				upgradeLevels[i][j]=atoi(s[i].substr(j,1).c_str());
 		}
-		
 
 		Button *e[]{this};
 		guiState->removeAllGUIElements(false);
