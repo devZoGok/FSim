@@ -9,8 +9,6 @@ namespace fsim{
 			Helicopter(GameManager*,int,int,vb01::Vector3,vb01::Quaternion,int* = nullptr);
 			~Helicopter();
 			void update();
-			void primaryFire();
-			void secondaryFire();
 			inline float getRising(){return rising;}
 			inline float getLanding(){return landing;}
 			inline float getRisingSpeed(){return risingSpeed;}

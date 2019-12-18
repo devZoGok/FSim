@@ -71,6 +71,12 @@ namespace fsim{
 			case Mapping::YAW_HELICOPTER_RIGHT:
 				rightYaw=isPressed;
 				break;
+			case Mapping::PRIMARY_HELICOPTER_FIRE:
+				helicopter->setPrimaryFiring(isPressed);
+				break;
+			case Mapping::SECONDARY_HELICOPTER_FIRE:
+				if(isPressed)helicopter->secondaryFire();
+				break;
 		}
 	}
 

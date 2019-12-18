@@ -85,7 +85,7 @@ namespace fsim{
 
 		Connection conn(false);
 		conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
-		StoreQueryResult res=conn.query("select name,faction from pilots;").store();
+		StoreQueryResult res=conn.query("select p.name,faction from pilots p inner join saves s on p.pid=s.pid;").store();
 		int numPilots=res.num_rows();
 		if(numPilots>0){
 			vector<string> lines;

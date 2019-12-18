@@ -9,6 +9,7 @@ namespace vb01{
 }
 
 namespace fsim{
+	enum AircraftType{FIGHTER,FIGHTER_BOMBER,HELICOPTER};
 	class Aircraft : public Unit{
 		public:
 			Aircraft(GameManager*,int,int,vb01::Vector3,vb01::Quaternion,int*);
@@ -25,18 +26,23 @@ namespace fsim{
 			inline float getYaw(){return yawVal;}
 			inline bool canPrimaryFire(){return primaryAmmo>0&&getTime()-lastPrimaryFire>rateOfPrimaryFire;}
 			inline bool canSecondaryFire(){return secondaryAmmo>0&&getTime()-lastSecondaryFire>rateOfSecondaryFire;}
+			inline int getPrimaryAmmo(){return primaryAmmo;}
+			inline int getSecondaryAmmo(){return secondaryAmmo;}
+			inline int getFuel(){return fuel;}
+			inline AircraftType getType(){return AircraftType(id%3);}
+			inline void setPrimaryFiring(bool firing){this->primaryFiring=firing;}
+			void primaryFire();
+			void secondaryFire();
 			void setPitch(float);
 			void setRoll(float);
 			void setYaw(float);
 		private:
 			vb01::Camera *cam=nullptr;
 		protected:
-			void primaryFire();
-			void secondaryFire();
-
-			s64 rateOfPrimaryFire,rateOfSecondaryFire,lastPrimaryFire=0,lastSecondaryFire=0;
-			int *upgrades,primaryAmmo,secondaryAmmo;
+			s64 rateOfPrimaryFire,rateOfSecondaryFire,rateOfFuelConsumption=5000,lastPrimaryFire=0,lastSecondaryFire=0,lastConsumption=0;
+			int *upgrades,primaryAmmo,secondaryAmmo,fuel;
 			float rollSpeed,yawSpeed,pitchSpeed,pitchVal=0,rollVal=0,yawVal=0;
+			bool primaryFiring=false;
 	};
 }
 

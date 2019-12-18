@@ -80,7 +80,7 @@ namespace fsim{
 				rightRoll=isPressed;
 				break;
 			case Mapping::PRIMARY_FIRE:
-				if(isPressed)playerJet->primaryFire();
+				playerJet->setPrimaryFiring(isPressed);
 				break;
 			case Mapping::SECONDARY_FIRE:
 				if(isPressed)playerJet->secondaryFire();

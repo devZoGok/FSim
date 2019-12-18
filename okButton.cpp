@@ -113,7 +113,7 @@ namespace fsim{
 									UpgradeButton *u=b->getUpgradeButton(id);
 									if(u){
 										b->setUpgradeButton(nullptr,id);
-										delete u;
+										guiState->removeButton(u);
 									}
 								}
 							}
@@ -164,12 +164,15 @@ namespace fsim{
 					GuiAppState *guiState=(GuiAppState*)stateManager->getState(AbstractAppState::GUI_STATE);
 					Node *guiNode=gm->getRoot()->getGuiNode();
 
+					int activeTab=0;
+					for(int i=0;i<3;i++)
+						if(!tabs[i]->isActive())
+							activeTab=i;
+
 					for(int i=0;i<5;i++){
-						guiNode->dettachChild(tabs[0]->getTextNode(i));
-						delete tabs[0]->getTextNode(i);
+						guiNode->dettachChild(tabs[activeTab]->getTextNode(i));
+						delete tabs[activeTab]->getTextNode(i);
 					}
-					/*
-					*/
 
 					const int numExceptions=!loadFromSave?4:2;
 					int playerUnitId=0,level=1,objective=0;

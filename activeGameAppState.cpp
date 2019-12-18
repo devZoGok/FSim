@@ -10,6 +10,7 @@
 #include<root.h>
 #include<quad.h>
 #include<node.h>
+#include<text.h>
 #include<material.h>
 #include<cmath>
 
@@ -33,6 +34,11 @@ namespace fsim{
 		mat->setLightingEnabled(false);
 		quad->setMaterial(mat);
 		minimapNode->attachMesh(quad);
+
+		Text *ammoText=new Text(PATH+"Fonts/batang.ttf","");
+		ammoText->setScale(.3);
+		ammoTextNode=new Node(Vector3(600,500,.5));
+		ammoTextNode->addText(ammoText);
 	}
 
 	ActiveGameAppState::~ActiveGameAppState(){
@@ -47,6 +53,7 @@ namespace fsim{
 	void ActiveGameAppState::onAttached(){
 		AbstractAppState::onAttached();
 		guiNode->attachChild(minimapNode);
+		guiNode->attachChild(ammoTextNode);
 		for(Node *i : structureIconNodes)
 			if(!i->getParent())
 				guiNode->attachChild(i);
@@ -55,11 +62,14 @@ namespace fsim{
 	void ActiveGameAppState::onDettached(){
 		AbstractAppState::onDettached();
 		guiNode->dettachChild(minimapNode);
+		guiNode->dettachChild(ammoTextNode);
 		for(Node *i : structureIconNodes)
 			guiNode->dettachChild(i);
 	}
 
 	void ActiveGameAppState::update(){
+		ammoTextNode->getText(0)->setText(to_string(aircraft->getFuel())+"|"+to_string(aircraft->getPrimaryAmmo())+"|"+to_string(aircraft->getSecondaryAmmo()));
+
 		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
 		vector<Structure*> &structures=inGameState->getStructures();
 		for(int i=0;i<structures.size();i++){

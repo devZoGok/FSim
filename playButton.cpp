@@ -22,7 +22,7 @@ namespace fsim{
 	void PlayButton::onClick(){
 		class FactionButton : public Button{
 			public:
-				FactionButton(GameManager *gm, Vector2 pos, Vector2 size,OkButton *okButton, int faction):Button(gm,pos,size,to_string(faction),Mapping::NONE,true,PATH+"Textures/"+flags[faction]+".jpg"){
+				FactionButton(GameManager *gm, Vector2 pos, Vector2 size,OkButton *okButton, int faction):Button(gm,pos,size,to_string(faction),Mapping::Bind(Mapping::SELECT_CHINA+faction),true,PATH+"Textures/"+flags[faction]+".jpg"){
 					this->okButton=okButton;
 					this->faction=faction;
 				}

@@ -9,15 +9,18 @@ namespace fsim{
 
 	const static int numStates=4,numBinds[numStates]{0,1,8,10};
 
-	const static int buttonTriggers[8]{
+	const static int buttonTriggers[11]{
 		GLFW_KEY_P,
+		GLFW_KEY_1,
+		GLFW_KEY_2,
+		GLFW_KEY_3,
 		GLFW_KEY_L,
 		GLFW_KEY_O,
 		GLFW_KEY_C,
 		GLFW_KEY_V,
 		GLFW_KEY_1,
 		GLFW_KEY_2,
-		GLFW_KEY_3,
+		GLFW_KEY_3
 	};
 }
 

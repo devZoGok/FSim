@@ -30,7 +30,7 @@ namespace fsim{
 			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.001,minimapRadius=200,lineOfSight=100,iconSize=20;
 			int playerId;
 			vb01::Vector3 minimapPos=vb01::Vector3(100,400,.5);
-			vb01::Node *guiNode,*minimapNode;
+			vb01::Node *guiNode,*minimapNode,*ammoTextNode;
 			std::vector<vb01::Node*> structureIconNodes;
 	};
 }

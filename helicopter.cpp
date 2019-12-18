@@ -20,10 +20,4 @@ namespace fsim{
 		Vector3 deltaPos=Vector3(0,-weight,0)-up*(landing-rising);
 		pos=pos+deltaPos;
 	}
-
-	void Helicopter::primaryFire(){
-	}
-
-	void Helicopter::secondaryFire(){
-	}
 }
