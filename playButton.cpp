@@ -25,14 +25,20 @@ namespace fsim{
 				FactionButton(GameManager *gm, Vector2 pos, Vector2 size,OkButton *okButton, int faction):Button(gm,pos,size,to_string(faction),Mapping::NONE,true,PATH+"Textures/"+flags[faction]+".jpg"){
 					this->okButton=okButton;
 					this->faction=faction;
-					insigniaBase=flags[faction];
 				}
 				void onClick(){
+					GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
+					for(int i=0;i<3;i++){
+						Button *b=guiState->getButton(to_string(i));
+						if(i==faction)
+							b->setImage(PATH+"Textures/"+flags[i]+".jpg");
+						else
+							b->setImage(PATH+"Textures/"+flags[i]+"Gray.jpg");
+					}
 					okButton->setFaction(faction);
 				}
 			private:
 				int faction;
-				string insigniaBase;
 				OkButton *okButton;
 		};
 

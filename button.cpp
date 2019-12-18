@@ -5,6 +5,7 @@
 #include<node.h>
 #include<material.h>
 #include<text.h>
+#include<texture.h>
 #include"defConfigs.h"
 
 using namespace std;
@@ -17,6 +18,7 @@ namespace fsim{
 		this->size=size;
 		this->name=name;
 		this->separate=separate;
+		this->imagePath=imagePath;
 
 		mapping.bind=bind;
 		mapping.trigger=buttonTriggers[(int)bind-(int)Mapping::NONE-1];
@@ -34,6 +36,7 @@ namespace fsim{
 		else{
 			mat->setTexturingEnabled(true);
 			mat->addDiffuseMap(imagePath);
+			textures.push_back(mat->getDiffuseMap(0));
 		}
 		rect->setMaterial(mat);
 		rectNode->attachMesh(rect);
@@ -94,5 +97,20 @@ namespace fsim{
 			Vector3 textPos=textNode->getPosition();	
 			textNode->setPosition(Vector3(textPos.x,textPos.y,zOrder-.1));
 		}
+	}
+
+	void Button::setImage(string image){
+		int texId=-1;
+		Material *mat=rect->getMaterial();
+		for(int i=0;i<textures.size();i++)
+			if(textures[i]->getPath()==image)
+				texId=i;
+		if(texId==-1){
+			textures.push_back(new Texture(image));
+			mat->setDiffuseMap(textures[textures.size()-1],0);
+		}
+		else
+			mat->setDiffuseMap(textures[texId],0);
+		this->imagePath=image;
 	}
 }

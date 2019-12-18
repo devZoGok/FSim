@@ -2,6 +2,7 @@
 #define BUTTON_H
 
 #include<vector.h>
+#include<vector>
 #include<string>
 #include"mapping.h"
 
@@ -9,6 +10,7 @@ namespace vb01{
 	class Quad;
 	class Node;
 	class Text;
+	class Texture;
 }
 
 namespace fsim{
@@ -34,6 +36,7 @@ namespace fsim{
 			inline Mapping* getMapping(){return &mapping;}
 			void setColor(vb01::Vector4);
 			void setZOrder(float);
+			void setImage(std::string);
 		protected:
 			GameManager *gm;
 			bool separate,active=true,mouseOver=false;
@@ -41,7 +44,8 @@ namespace fsim{
 			vb01::Node *rectNode,*textNode=nullptr,*guiNode;
 			vb01::Vector2 pos,size;
 			vb01::Text *text=nullptr;
-			std::string name;
+			std::string name,imagePath;
+			std::vector<vb01::Texture*> textures;
 			Mapping mapping;
 			vb01::Vector4 color=vb01::Vector4(.6,.6,.6,1);
 	};

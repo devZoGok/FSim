@@ -23,8 +23,8 @@ namespace fsim{
 			inline float getPitch(){return pitchVal;}
 			inline float getRoll(){return rollVal;}
 			inline float getYaw(){return yawVal;}
-			inline bool canPrimaryFire(){return getTime()-lastPrimaryFire>rateOfPrimaryFire;}
-			inline bool canSecondaryFire(){return getTime()-lastSecondaryFire>rateOfSecondaryFire;}
+			inline bool canPrimaryFire(){return primaryAmmo>0&&getTime()-lastPrimaryFire>rateOfPrimaryFire;}
+			inline bool canSecondaryFire(){return secondaryAmmo>0&&getTime()-lastSecondaryFire>rateOfSecondaryFire;}
 			void setPitch(float);
 			void setRoll(float);
 			void setYaw(float);
@@ -35,7 +35,7 @@ namespace fsim{
 			void secondaryFire();
 
 			s64 rateOfPrimaryFire,rateOfSecondaryFire,lastPrimaryFire=0,lastSecondaryFire=0;
-			int *upgrades;
+			int *upgrades,primaryAmmo,secondaryAmmo;
 			float rollSpeed,yawSpeed,pitchSpeed,pitchVal=0,rollVal=0,yawVal=0;
 	};
 }

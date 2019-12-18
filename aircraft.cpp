@@ -25,6 +25,8 @@ namespace fsim{
 		this->pitchSpeed=.05;
 		this->rateOfPrimaryFire=aircraftData::rateOfPrimaryFire[id];
 		this->rateOfSecondaryFire=aircraftData::rateOfSecondaryFire[id];
+		this->primaryAmmo=aircraftData::primaryAmmo[id];
+		this->secondaryAmmo=aircraftData::secondaryAmmo[id];
 		/*
 		Quad *quad=new Quad(Vector3(100,100,.5),false,true);
 		Material *mat=new Material(Material::MATERIAL_GUI);
