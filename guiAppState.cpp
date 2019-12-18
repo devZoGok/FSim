@@ -135,6 +135,7 @@ namespace fsim{
 		int targetId=0;
 		while(targetId!=buttons.size()){
 			if(!isException(exceptions,numExceptions,buttons[targetId])){
+				removeMapping(buttons[targetId]->getMapping()->bind);
 				delete buttons[targetId];	
 				buttons.erase(buttons.begin()+targetId);
 			}

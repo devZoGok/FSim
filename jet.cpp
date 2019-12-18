@@ -30,6 +30,7 @@ namespace fsim{
 		Structure *target=hostileAircraft.size()>0?hostileAircraft[0]:nullptr;
 		if(canPrimaryFire()){
 			inGameState->addProjectile(new Missile(gm,projectileData::AAM,this,pos,rot,target));
+			primaryAmmo--;
 			lastPrimaryFire=getTime();
 		}
 	}
@@ -38,6 +39,7 @@ namespace fsim{
 		if(canSecondaryFire()){
 			InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
 			inGameState->addProjectile(new Bomb(gm,projectileData::BOMB,this,pos,rot,.1));
+			secondaryAmmo--;
 			lastSecondaryFire=getTime();
 		}
 	}

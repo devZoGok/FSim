@@ -96,7 +96,7 @@ namespace fsim{
 				if(i==playerId){
 					upgrades=new int[numUpgrades];
 					StoreQueryResult upgradesResults=conn.query("select fighter_upgrades,fighter_bomber_upgrades,helicopter_upgrades from pilots where pid="+to_string(pilotId)+";").store();
-					string upgradesString=(string)upgradesResults[0][unitId];
+					string upgradesString=(string)upgradesResults[0][unitId%3];
 					for(int j=0;j<upgradesString.length();j++){
 						upgrades[j]=atoi(upgradesString.substr(j,1).c_str());
 					}
