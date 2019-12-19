@@ -46,6 +46,8 @@ namespace fsim{
 		vector<Structure*> &structures=inGameState->getStructures();
 		structures.erase(structures.begin()+playerId);	
 		inGameState->setPlayerId(structures.size());
+		for(Node *s : structureIconNodes)
+			delete s;
 		delete aircraft;
 		delete minimapNode;
 	}

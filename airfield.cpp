@@ -60,16 +60,16 @@ namespace fsim{
 			Aircraft *aircraft=activeState->getAircraft();
 			bool landed=false;
 			string aircraftTypes[]={"Fighter","Fighter-bomber","Helicopter"};
-			int width=60,aircraftId=aircraft->getId();
+			int width=60;
 			if(aircraft->getFaction()==faction){
-				if(aircraftId==Type::CHINESE_HELICOPTER||aircraftId==Type::JAPANESE_HELICOPTER||aircraftId==Type::KOREAN_HELICOPTER){
+				if(aircraft->getType()==AircraftType::HELICOPTER){
 					float minHeliDistance=12;
 					for(int i=0;i<numHelipads&&!landed;i++){
 						if((aircraft->getPos()-(pos+helipadPos[i])).getLength()<=minHeliDistance){
 							landed=true;
 							stateManager->dettachState(AbstractAppState::HELICOPTER_STATE);
 							for(int j=0;j<3;j++)
-								guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*j,100),Vector2(width,100),aircraftTypes[j],j,faction,Mapping::Bind(Mapping::FIGHTER+i)));
+								guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*j,100),Vector2(width,100),aircraftTypes[j],faction*3+j,faction,Mapping::Bind(Mapping::FIGHTER+j)));
 							delete helicopterState;
 						}
 					}
@@ -86,7 +86,7 @@ namespace fsim{
 							landed=true;
 							stateManager->dettachState(AbstractAppState::JET_STATE);
 							for(int j=0;j<3;j++)
-								guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*j,100),Vector2(width,100),aircraftTypes[j],j,faction,Mapping::Bind(Mapping::FIGHTER+i)));
+								guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*j,100),Vector2(width,100),aircraftTypes[j],faction*3+j,faction,Mapping::Bind(Mapping::FIGHTER+j)));
 							delete jetState;
 						}
 					}

@@ -65,8 +65,8 @@ namespace fsim{
 		}
 
 		if(saveId==-1){
-			inGameState->addStructure(new Airfield(gm,Type::AIRFIELD,0,Vector3(0,-20,10),Quaternion(1,0,0,0)));
-			inGameState->addStructure(new Helicopter(gm,Type::CHINESE_HELICOPTER,2,Vector3(20,0,0),Quaternion(1,0,0,0)));
+			inGameState->addStructure(new Airfield(gm,Type::AIRFIELD,1,Vector3(0,-20,10),Quaternion(1,0,0,0)));
+			inGameState->addStructure(new Helicopter(gm,Type::CHINESE_HELICOPTER,0,Vector3(20,0,0),Quaternion(1,0,0,0)));
 			for(int i=structuresLine+1;i<lines.size();i++){
 				string type;
 				const int numCoords=7;

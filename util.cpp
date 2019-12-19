@@ -96,6 +96,7 @@ namespace fsim{
 		GLFW_MOUSE_BUTTON_MIDDLE
 	};
 
+	/*
 	bool isSuchFile(boost::filesystem::path path){
 		bool found=false,foundFileName=false;
 		string fileName;
@@ -124,6 +125,7 @@ namespace fsim{
 				getRecDirs(itr->path(),list,showFiles,showDirs,rec);
 		}
 	}
+	*/
         
 	void readFile(string path,std::vector<string> &lines,int firstLine,int lastLine){
 		std::ifstream inFile(path);

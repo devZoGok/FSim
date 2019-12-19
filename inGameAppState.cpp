@@ -121,7 +121,7 @@ namespace fsim{
 								Connection conn(false);
 								conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
 								int pilotId=inGameState->getPilotId(),playerId=inGameState->getPlayerId(),level=map->getLevel(),objectiveId=map->getObjective();
-								int numSaves=(int)conn.query("select count(*) from saves where pid="+to_string(pilotId)+";").store()[0][0];
+								int numSaves=(int)conn.query("select count(*) from saves;").store()[0][0];
 								conn.query("insert into saves values("+to_string(numSaves)+",'"+name+"',"+to_string(pilotId)+","+to_string(playerId)+","+to_string(level)+","+to_string(objectiveId)+");").store();
 								for(int i=0;i<inGameState->getNumStructures();i++){
 									Structure *s=inGameState->getStructures()[i];

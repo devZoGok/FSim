@@ -38,8 +38,10 @@ namespace fsim{
 								conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
 								StateManager *stateManager=gm->getStateManager();
 
-								int saveId=l->getSelectedOption(),faction=(int)conn.query("select faction from pilots where pid="+to_string(pilotId)+";").store()[0][0];
-								StoreQueryResult res=conn.query("select uid,puid,lid,oid from pilots p inner join saves s inner join save_units su on p.pid=s.pid and s.sid=su.sid where p.pid="+to_string(pilotId)+" and s.sid="+to_string(saveId)+";").store();
+								StoreQueryResult res=conn.query("select s.sid,p.faction from pilots p inner join saves s on p.pid=s.pid where p.pid="+to_string(pilotId)+";").store();
+								int saveId=(int)res[l->getSelectedOption()][0],faction=(int)res[0][1];
+
+								res=conn.query("select uid,puid,lid,oid from pilots p inner join saves s inner join save_units su on p.pid=s.pid and s.sid=su.sid where p.pid="+to_string(pilotId)+" and s.sid="+to_string(saveId)+";").store();
 								int level=(int)res[0][2],objective=(int)res[0][3],playerId=(int)res[0][1],unitId=(int)res[playerId][0];
 								stateManager->attachState(new InGameAppState(gm,pilotId,playerId,faction,saveId,level,objective));
 								switch(unitId){
@@ -85,7 +87,7 @@ namespace fsim{
 
 		Connection conn(false);
 		conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
-		StoreQueryResult res=conn.query("select p.name,faction from pilots p inner join saves s on p.pid=s.pid;").store();
+		StoreQueryResult res=conn.query("select name,faction from pilots;").store();
 		int numPilots=res.num_rows();
 		if(numPilots>0){
 			vector<string> lines;
