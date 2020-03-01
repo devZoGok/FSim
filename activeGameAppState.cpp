@@ -37,7 +37,7 @@ namespace fsim{
 
 		Text *ammoText=new Text(PATH+"Fonts/batang.ttf","");
 		ammoText->setScale(.3);
-		ammoTextNode=new Node(Vector3(600,500,.5));
+		ammoTextNode=new Node(Vector3(550,500,-.95));
 		ammoTextNode->addText(ammoText);
 	}
 
@@ -70,7 +70,7 @@ namespace fsim{
 	}
 
 	void ActiveGameAppState::update(){
-		ammoTextNode->getText(0)->setText(to_string(aircraft->getFuel())+"|"+to_string(aircraft->getPrimaryAmmo())+"|"+to_string(aircraft->getSecondaryAmmo()));
+		ammoTextNode->getText(0)->setText(to_string(aircraft->getFuel())+"|"+to_string(aircraft->getPrimaryAmmo())+"|"+to_string(aircraft->getSecondaryAmmo())+"|"+to_string(aircraft->getChaff()));
 
 		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
 		vector<Structure*> &structures=inGameState->getStructures();
@@ -83,7 +83,7 @@ namespace fsim{
 				bool friendly=structures[i]->getFaction()==aircraft->getFaction();
 				angle*=(left?-1:1);
 				structureIconNodes[i]->setVisible(i!=playerId&&dist<lineOfSight);
-				structureIconNodes[i]->setPosition(Vector3(cos(angle+PI/2),-sin(angle+PI/2),0)*(dist/lineOfSight*minimapRadius)+Vector3(minimapPos.x+minimapRadius/2-iconSize/2,minimapPos.y+minimapRadius/2-iconSize/2,.4-i*.01));
+				structureIconNodes[i]->setPosition(Vector3(cos(angle+PI/2),-sin(angle+PI/2),0)*(dist/lineOfSight*minimapRadius)+Vector3(minimapPos.x+minimapRadius/2-iconSize/2,minimapPos.y+minimapRadius/2-iconSize/2,-.8-i*.01));
 				structureIconNodes[i]->getMesh(0)->getMaterial()->setDiffuseColor(Vector4(!friendly,friendly,0,1));
 			}
 		}
@@ -91,7 +91,7 @@ namespace fsim{
 
 	void ActiveGameAppState::addStructureIcon(int id){
 		Quad *quad=new Quad(Vector3(iconSize,iconSize,0),false);
-		Node *iconNode=new Node(Vector3(0,0,0));
+		Node *iconNode=new Node(Vector3(0,0,.0));
 		Material *mat=new Material(Material::MATERIAL_GUI);
 		mat->addDiffuseMap(PATH+"Icons/Minimap/"+iconPath[id]);
 		mat->setDiffuseColorEnabled(true);

@@ -1,0 +1,4 @@
+for i in $(ls *.png)
+do
+	convert -transparent black -fuzz 10% $i $i
+done

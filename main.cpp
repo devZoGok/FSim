@@ -4,6 +4,7 @@
 #include<node.h>
 #include<text.h>
 #include<string>
+#include<model.h>
 #include"gameManager.h"
 #include"guiAppState.h"
 #include"stateManager.h"

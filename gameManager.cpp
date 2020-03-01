@@ -47,6 +47,9 @@ namespace fsim{
 		conn.query(savesQuery).store();
 		conn.query(saveUnitsQuery).store();
 		conn.query(statsQuery).store();
+		root->setHDREnabled(true);
+		root->setBloom(true);
+		root->setBlurLevel(10);
 	}
 
 	GameManager::~GameManager(){}

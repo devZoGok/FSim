@@ -1,11 +1,50 @@
 #include"missile.h"
 #include"structure.h"
+#include"defConfigs.h"
+#include<particleEmitter.h>
+#include<node.h>
+#include<material.h>
+#include<model.h>
 
 using namespace vb01;
 
 namespace fsim{
 	Missile::Missile(GameManager *gm,int id,Structure *structure,Vector3 pos,Quaternion rot,Structure *target) : Projectile(gm,id,structure,pos,rot){
 		this->target=target;
+
+		gas=new ParticleEmitter(50);
+		Node *gasNode=new Node(Vector3(0,0,-.5));
+		Material *gasMat=new Material(Material::MATERIAL_PARTICLE);
+		gasMat->addDiffuseMap(PATH+"Textures/Smoke/smoke00.png");
+		gas->setMaterial(gasMat);
+		gasNode->attachParticleEmitter(gas);
+		mesh->attachChild(gasNode);
+
+		gas->setStartColor(Vector4(1,1,0,1));
+		gas->setEndColor(Vector4(.8,.8,0,1));
+		gas->setStartSize(Vector2(.1,.1));
+		gas->setEndSize(Vector2(1,1));
+		gas->setLowLife(.1);
+		gas->setHighLife(.15);
+		gas->setSpread(1);
+		gas->setDirection(Vector3(0,0,-.4));
+
+		smoke=new ParticleEmitter(100);
+		Node *smokeNode=new Node(Vector3(0,0,-.5));
+		Material *smokeMat=new Material(Material::MATERIAL_PARTICLE);
+		smokeMat->addDiffuseMap(PATH+"Textures/Smoke/smoke00.png");
+		smoke->setMaterial(smokeMat);
+		smokeNode->attachParticleEmitter(smoke);
+		mesh->attachChild(smokeNode);
+
+		smoke->setStartColor(Vector4(.7,.7,.7,1));
+		smoke->setEndColor(Vector4(.7,.7,.7,.4));
+		smoke->setStartSize(Vector2(.1,.1));
+		smoke->setEndSize(Vector2(3,3));
+		smoke->setLowLife(.1);
+		smoke->setHighLife(1);
+		smoke->setSpread(20);
+		smoke->setDirection(Vector3(0,0,-.1));
 	}
 
 	Missile::~Missile(){
@@ -26,5 +65,9 @@ namespace fsim{
 				}
 			}
 		}
+		//gas->getNode()->setPosition(pos-dir*2);
+		gas->setDirection(-dir*.4);
+		//smoke->getNode()->setPosition(pos-dir*2);
+		smoke->setDirection(-dir*.1);
 	}
 }

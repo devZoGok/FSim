@@ -3,6 +3,10 @@
 
 #include"projectile.h"
 
+namespace vb01{
+	class ParticleEmitter;
+}
+
 namespace fsim{
 	class Missile : public Projectile{
 		public:
@@ -10,6 +14,7 @@ namespace fsim{
 			~Missile();
 			void update();
 		private:
+			vb01::ParticleEmitter *gas=nullptr,*smoke=nullptr;
 			Structure *target=nullptr;
 	};
 }

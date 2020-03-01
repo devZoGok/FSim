@@ -28,9 +28,20 @@ namespace fsim{
 		this->objective=objective;
 		rootNode=gm->getRoot()->getRootNode();
 
+		string t[]={
+			path+"top.jpg",
+			path+"bottom.jpg",
+			path+"left.jpg",
+			path+"right.jpg",
+			path+"front.jpg",
+			path+"back.jpg"
+		};
+		gm->getRoot()->createSkybox(t);
+
 		mapModel=new Model(path+"level.obj");
 		Material *mat=new Material();
 		mat->addDiffuseMap(path+"defaultTexture.jpg");
+		mat->setLightingEnabled(true);
 		mapModel->setMaterial(mat);
 		rootNode->attachChild(mapModel);
 
@@ -44,29 +55,30 @@ namespace fsim{
 				structuresLine=i;
 
 		for(int i=lightsLine+1;i<structuresLine;i++){
-			Light *light=new Light();
-			Light::Type t;
 			string type;
 			const int numCoords=6;
 			float coords[numCoords];
 			getCoords(lines[i],type,coords,numCoords);
-			if(type=="directional"){
-				t=Light::DIRECTIONAL;
-				Vector3 dir=Vector3(coords[0],coords[1],coords[2]);
+				Light *light=new Light(Light::DIRECTIONAL);
+				Vector3 dir=Vector3(coords[0],coords[1],coords[2]).norm();
+				//Vector3 color=Vector3(1,1,1);
 				Vector3 color=Vector3(coords[3],coords[4],coords[5]);
 				light->setDirection(dir);
+				light->setPosition(Vector3(0,25,0));
+				light->setAttenuationValues(.0001,.00001,1);
 				light->setColor(color);
-				//rootNode->addLight(light);
+				rootNode->addLight(light);
+			if(type=="directional"){
 			}
 			else if(type=="point"){
-				t=Light::POINT;
+				//t=Light::POINT;
 			}
-
 		}
 
+
 		if(saveId==-1){
-			inGameState->addStructure(new Airfield(gm,Type::AIRFIELD,1,Vector3(0,-20,10),Quaternion(1,0,0,0)));
-			inGameState->addStructure(new Helicopter(gm,Type::CHINESE_HELICOPTER,0,Vector3(20,0,0),Quaternion(1,0,0,0)));
+			inGameState->addStructure(new Airfield(gm,Type::AIRFIELD,1,Vector3(0,-20,7),Quaternion(1,0,0,0)));
+			inGameState->addStructure(new Helicopter(gm,Type::CHINESE_HELICOPTER,0,Vector3(10,20,0),Quaternion(1,0,0,0)));
 			for(int i=structuresLine+1;i<lines.size();i++){
 				string type;
 				const int numCoords=7;
@@ -124,15 +136,6 @@ namespace fsim{
 		}
 
 
-		string t[]={
-			path+"top.jpg",
-			path+"bottom.jpg",
-			path+"left.jpg",
-			path+"right.jpg",
-			path+"front.jpg",
-			path+"back.jpg"
-		};
-		gm->getRoot()->createSkybox(t);
 	}
 
 	Map::~Map(){}

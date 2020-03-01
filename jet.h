@@ -3,6 +3,10 @@
 
 #include"aircraft.h"
 
+namespace vb01{
+	class ParticleEmitter;
+}
+
 namespace fsim{
 	class Jet : public Aircraft{
 		public:
@@ -10,6 +14,7 @@ namespace fsim{
 			~Jet();
 			void update();
 		private:
+			vb01::ParticleEmitter *gas=nullptr,*smoke=nullptr;
 	};
 }
 

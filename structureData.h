@@ -45,6 +45,19 @@ namespace fsim{
 		"Models/Buildings/SAMSite/samSite",
 		""
 	};
+	static const std::string hitboxPath[numStructures]={
+		"Models/Aircraft/FighterBombers/fighterBomberHitbox00",
+		"Models/Aircraft/FighterBombers/fighterBomberHitbox00",
+		"Models/Aircraft/Helicopters/helicopterHitbox00",
+		"Models/Aircraft/Fighters/fighterHitbox01",
+		"Models/Aircraft/FighterBombers/fighterBomberHitbox01",
+		"Models/Aircraft/Helicopters/helicopterHitbox01",
+		"Models/Aircraft/Fighters/fighterHitbox02",
+		"Models/Aircraft/FighterBombers/fighterBomberHitbox02",
+		"Models/Aircraft/Helicopters/helicopterHitbox02",
+		"Models/Buildings/SAMSite/samSiteHitbox",
+		""
+	};
 	static const std::string iconPath[numStructures]={
 		"jet.png",
 		"jet.png",

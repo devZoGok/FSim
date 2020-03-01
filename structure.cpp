@@ -27,10 +27,21 @@ namespace fsim{
 			model=new Model(PATH+path[id]+".obj");
 			mat=new Material();
 			mat->addDiffuseMap(defaultTexture);
+			mat->setLightingEnabled(true);
 			model->setMaterial(mat);
 			model->setPosition(pos);
 			model->setOrientation(rot);
+			model->setCastShadow(true);
 			rootNode->attachChild(model);
+
+			hitbox=new Model(PATH+hitboxPath[id]+".obj");
+			hitbox->setWireframe(true);
+			Material *mat=new Material();
+			mat->setTexturingEnabled(false);
+			mat->setDiffuseColor(Vector4(0,0,1,1));
+			hitbox->setMaterial(mat);
+			hitbox->setVisible(false);
+			model->attachChild(hitbox);
 		}
 	}
 
@@ -42,5 +53,9 @@ namespace fsim{
 	}
 
 	void Structure::update(){
+		/*
+		hitbox->setPosition(pos);
+		hitbox->setOrientation(rot);
+		*/
 	}
 }

@@ -20,6 +20,8 @@
 #include<quad.h>
 #include<node.h>
 #include<material.h>
+#include<particleEmitter.h>
+#include<algorithm>
 
 using namespace std;
 using namespace mysqlpp;
@@ -75,6 +77,16 @@ namespace fsim{
 				structures[i]->update();
 			for(int i=0;i<projectiles.size();i++)
 				projectiles[i]->update();
+			for(int i=0;i<fx.size();i++)
+				if(getTime()-fx[i].initTime>fx[i].timeToLive){
+					int lastId=fx.size()-1;
+					swap(fx[i],fx[lastId]);
+					Node *node=fx[lastId].emitters[0]->getNode();
+					//delete[] fx[lastId].emitters;
+					Root::getSingleton()->getRootNode()->dettachChild(node);
+					fx.pop_back();
+					//delete node;
+				}
 		}
 	}
 

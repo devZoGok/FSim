@@ -77,6 +77,9 @@ namespace fsim{
 			case Mapping::SECONDARY_HELICOPTER_FIRE:
 				if(isPressed)helicopter->secondaryFire();
 				break;
+			case Mapping::DEPLOY_HELICOPTER_CHAFF:
+				if(isPressed)helicopter->deployChaff();
+				break;
 		}
 	}
 

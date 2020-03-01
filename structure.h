@@ -27,12 +27,13 @@ namespace fsim{
 			inline vb01::Vector3 getDir(){return dir;}
 			inline vb01::Vector3 getLeft(){return left;}
 			inline vb01::Vector3 getUp(){return up;}
+			inline vb01::Model* getHitbox(){return hitbox;}
 		protected:
 			GameManager *gm;
 			int id,faction;
-			vb01::Vector3 pos,dir=vb01::Vector3(0,0,-1),left=vb01::Vector3(1,0,0),up=vb01::Vector3(0,1,0);
+			vb01::Vector3 pos,dir=vb01::Vector3(0,0,1),left=vb01::Vector3(1,0,0),up=vb01::Vector3(0,1,0);
 			vb01::Quaternion rot;
-			vb01::Model *model;
+			vb01::Model *model,*hitbox=nullptr;
 			vb01::Node *rootNode,*guiNode;
 			vb01::Material *mat;
 	};

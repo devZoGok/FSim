@@ -3,6 +3,7 @@
 
 #include"abstractAppState.h"
 #include"playerData.h"
+#include"fx.h"
 #include<vector>
 
 namespace vb01{
@@ -32,6 +33,7 @@ namespace fsim{
 			inline int getPlayerId(){return playerId;}
 			void addStructure(Structure*);
 			inline void addProjectile(Projectile *p){projectiles.push_back(p);}
+			inline void addFx(Fx f){this->fx.push_back(f);}
 			inline void setPlayerId(int id){this->playerId=id;}
 			inline Map* getMap(){return map;}
 			inline std::vector<Structure*>& getStructures(){return structures;}
@@ -48,6 +50,7 @@ namespace fsim{
 			GuiAppState *guiState;
 			std::vector<Structure*> structures;
 			std::vector<Projectile*> projectiles;
+			std::vector<Fx> fx;
 	};
 }
 

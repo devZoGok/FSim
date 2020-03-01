@@ -106,7 +106,8 @@ namespace fsim{
 			if(textures[i]->getPath()==image)
 				texId=i;
 		if(texId==-1){
-			textures.push_back(new Texture(image));
+			string p[]{image};
+			textures.push_back(new Texture(p,1));
 			mat->setDiffuseMap(textures[textures.size()-1],0);
 		}
 		else

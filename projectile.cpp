@@ -25,7 +25,7 @@ namespace fsim{
 		mesh->setMaterial(mat);
 		rootNode->attachChild(mesh);
 
-		Vector3 initDir=Vector3(0,0,-1);
+		Vector3 initDir=Vector3(0,0,1);
 		Vector3 initLeft=Vector3(1,0,0);
 		Vector3 initUp=Vector3(0,1,0);
 		this->dir=rot*initDir;

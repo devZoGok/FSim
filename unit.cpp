@@ -10,6 +10,7 @@ namespace fsim{
 	Unit::~Unit(){}
 
 	void Unit::update(){
+		Structure::update();
 		rot=rot.norm();
 		model->setPosition(pos);
 		model->setOrientation(rot);

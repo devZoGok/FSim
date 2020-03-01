@@ -7,11 +7,18 @@
 #include"defConfigs.h"
 #include"projectileData.h"
 #include"missile.h"
+#include"map.h"
 #include"bomb.h"
+#include<iostream>
 #include<camera.h>
 #include<model.h>
 #include<quad.h>
 #include<root.h>
+#include<ray.h>
+#include<box.h>
+#include<particleEmitter.h>
+#include<material.h>
+#include<light.h>
 
 using namespace vb01;
 using namespace std;
@@ -31,11 +38,33 @@ namespace fsim{
 		this->pitchSpeed=.05;
 		this->rateOfPrimaryFire=aircraftData::rateOfPrimaryFire[id];
 		this->rateOfSecondaryFire=aircraftData::rateOfSecondaryFire[id];
+		this->rateOfChaff=aircraftData::rateOfChaff[id];
 		this->primaryAmmo=aircraftData::primaryAmmo[id];
 		this->secondaryAmmo=aircraftData::secondaryAmmo[id];
+		this->chaff=aircraftData::chaff[id];
 		this->fuel=aircraftData::fuelCapacity[id];
 
+		muzzleFlash=new ParticleEmitter(50);
+		Node *node=new Node(Vector3(0,0,2));
+		Material *mat=new Material(Material::MATERIAL_PARTICLE);
+		mat->addDiffuseMap(PATH+"Textures/Smoke/smoke00.png");
+		node->attachParticleEmitter(muzzleFlash);
+		muzzleFlash->setMaterial(mat);
+		node->setVisible(false);
+		model->attachChild(node);
+		muzzleFlash->setStartSize(Vector2(.5,.5));
+		muzzleFlash->setEndSize(Vector2(.9,.9));
+		muzzleFlash->setStartColor(Vector4(1,1,1,1));
+		muzzleFlash->setEndColor(Vector4(1,1,0,1));
+
+
 		/*
+		muzzleLight=new Light(Light::POINT);
+		muzzleLight->setColor(Vector3(1,1,0));
+		muzzleLight->setAttenuationValues(.0007,.007,1);
+		muzzleLight->setPosition(pos+dir*2);
+		rootNode->addLight(muzzleLight);
+
 		Quad *quad=new Quad(Vector3(100,100,.5),false,true);
 		Material *mat=new Material(Material::MATERIAL_GUI);
 		mat->addDiffuseMap(PATH+"Icons/Hitmarker/hitmarker.png");
@@ -51,7 +80,7 @@ namespace fsim{
 	void Aircraft::update(){
 		Unit::update();
 		if(cam){
-			cam->setPosition(pos-dir*10);
+			cam->setPosition(pos-dir*6);
 			cam->lookAt(dir,up);
 		}
 		if(primaryFiring)
@@ -60,11 +89,43 @@ namespace fsim{
 			fuel--;
 			lastConsumption=getTime();
 		}
+		if(getTime()-lastPrimaryFire>30){
+			muzzleFlash->getNode()->setVisible(false);
+		}
+		muzzleFlash->setDirection(dir*-.1);
+		for(int i=0;i<fx.size();i++){
+			if(getTime()-fx[i].initTime>fx[i].timeToLive){
+			}
+			else{
+				float g=9.8,speed=1,t=(float)(getTime()-fx[i].initTime)/1000;
+				//x=x0+t*cos(v),y=y0+t*sin(v)-g*t^2/2;
+				for(int j=0;j<fx[i].numEmitters;j++){
+					Vector3 baseDir=fx[i].emitters[j]->getDirection();
+					//fx[i].emitters[j]->setPosition(baseDir*t*cos(speed)+Vector3(0,t*sin(speed)-g*t*t/2,0));
+				}
+			}
+		}
 	}
 
 	void Aircraft::primaryFire(){
 		if(canPrimaryFire()){
-			primaryAmmo--;
+			InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
+
+			vector<CollisionResult> results;
+			Model *m=inGameState->getMap()->getMapModel();
+			//retrieveCollisions(pos,dir,m,results);
+			/*
+			*/
+			for(Structure *s : inGameState->getStructures()){
+				Model *hitbox=s->getHitbox();
+				if(s!=this&&hitbox)
+					retrieveCollisions(pos,dir,s->getHitbox(),results);
+			}
+			sortResults(results);
+
+			cout<<results.size()<<"\n";
+			//primaryAmmo--;
+			muzzleFlash->getNode()->setVisible(true);
 			lastPrimaryFire=getTime();
 		}
 	}
@@ -91,6 +152,40 @@ namespace fsim{
 			inGameState->addProjectile(projectile);
 			secondaryAmmo--;
 			lastSecondaryFire=getTime();
+		}
+	}
+
+	void Aircraft::deployChaff(){
+		if(canDeployChaff()){
+			InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
+			const int numChaffSources=1;
+			ParticleEmitter **chaffSources=new ParticleEmitter*[numChaffSources];
+			Node *node=new Node(pos);
+			rootNode->attachChild(node);
+
+			for(int i=0;i<numChaffSources;i++){
+				chaffSources[i]=new ParticleEmitter(10);
+				Material *mat=new Material(Material::MATERIAL_PARTICLE);
+				mat->addDiffuseMap(PATH+"Textures/Smoke/smoke00.png");
+				chaffSources[i]->setMaterial(mat);
+				node->attachParticleEmitter(chaffSources[i]);
+				chaffSources[i]->setLowLife(1);
+				chaffSources[i]->setHighLife(2);
+				chaffSources[i]->setStartSize(Vector2(1,1));
+				chaffSources[i]->setStartSize(Vector2(2,2));
+				chaffSources[i]->setStartColor(Vector4(1,1,1,1));
+				chaffSources[i]->setEndColor(Vector4(1,1,1,.1));
+				chaffSources[i]->setDirection(dir*-.1);
+				node->attachParticleEmitter(chaffSources[i]);
+			}
+
+			Fx fx;
+			fx.emitters=chaffSources;
+			fx.pos=pos;
+			fx.timeToLive=2000;
+			fx.initTime=getTime();
+			inGameState->addFx(fx);
+			chaff--;
 		}
 	}
 
@@ -132,5 +227,4 @@ namespace fsim{
 			yawVal=yawVal/yawVal*yawSpeed;
 		yaw(y);
 	}
-
 }

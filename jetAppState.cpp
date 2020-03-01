@@ -85,6 +85,9 @@ namespace fsim{
 			case Mapping::SECONDARY_FIRE:
 				if(isPressed)playerJet->secondaryFire();
 				break;
+			case Mapping::DEPLOY_CHAFF:
+				if(isPressed)playerJet->deployChaff();
+				break;
 		}
 	}
 
@@ -92,7 +95,7 @@ namespace fsim{
 		switch(bind){
 			case Mapping::PITCH_UP:
 			case Mapping::PITCH_DOWN:
-				playerJet->pitch(playerJet->getPitchSpeed()*str);
+				playerJet->pitch(-playerJet->getPitchSpeed()*str);
 				break;
 			case Mapping::YAW_LEFT:
 			case Mapping::YAW_RIGHT:
