@@ -13,7 +13,6 @@ namespace fsim{
 		private:
 			s64 initTime;
 			float initAngle=0;
-			vb01::Vector3 baseDir;
 	};
 }
 

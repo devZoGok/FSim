@@ -8,6 +8,7 @@
 #include<material.h>
 
 using namespace vb01;
+using namespace fsim::structureData;
 
 namespace fsim{
 	Structure::Structure(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot){
@@ -16,6 +17,7 @@ namespace fsim{
 		this->pos=pos;
 		this->rot=rot;	
 		this->faction=faction;
+		this->hp=structureData::hp[id];
 		rootNode=gm->getRoot()->getRootNode();
 		guiNode=gm->getRoot()->getGuiNode();
 
@@ -31,7 +33,7 @@ namespace fsim{
 			model->setMaterial(mat);
 			model->setPosition(pos);
 			model->setOrientation(rot);
-			model->setCastShadow(true);
+			model->setCastShadow(false);
 			rootNode->attachChild(model);
 
 			hitbox=new Model(PATH+hitboxPath[id]+".obj");

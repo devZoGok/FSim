@@ -93,7 +93,7 @@ namespace fsim{
 		Quad *quad=new Quad(Vector3(iconSize,iconSize,0),false);
 		Node *iconNode=new Node(Vector3(0,0,.0));
 		Material *mat=new Material(Material::MATERIAL_GUI);
-		mat->addDiffuseMap(PATH+"Icons/Minimap/"+iconPath[id]);
+		mat->addDiffuseMap(PATH+"Icons/Minimap/"+structureData::iconPath[id]);
 		mat->setDiffuseColorEnabled(true);
 		quad->setMaterial(mat);
 		iconNode->attachMesh(quad);

@@ -17,6 +17,7 @@
 #include<mysql++.h>
 #include"util.h"
 
+using namespace fsim::structureData;
 using namespace std;
 using namespace vb01;
 using namespace mysqlpp;

@@ -73,19 +73,30 @@ namespace fsim{
 	void InGameAppState::update(){
 		map->update();
 		if(!paused){
-			for(int i=0;i<structures.size();i++)
-				structures[i]->update();
-			for(int i=0;i<projectiles.size();i++)
-				projectiles[i]->update();
+			for(int i=0;i<structures.size();i++){
+				if(structures[i]->getHp()>0)
+					structures[i]->update();
+				else{
+					delete structures[i];
+					structures.erase(structures.begin()+i);
+				}
+			}
+			for(int i=0;i<projectiles.size();i++){
+				if(!projectiles[i]->isExploded())
+					projectiles[i]->update();
+				else{
+					delete projectiles[i];
+					projectiles.erase(projectiles.begin()+i);
+				}
+			}
 			for(int i=0;i<fx.size();i++)
-				if(getTime()-fx[i].initTime>fx[i].timeToLive){
-					int lastId=fx.size()-1;
-					swap(fx[i],fx[lastId]);
-					Node *node=fx[lastId].emitters[0]->getNode();
-					//delete[] fx[lastId].emitters;
+				if(getTime()-fx[i].initTime>fx[i].timeToLive&&fx[i].allive){
+					Node *node=fx[i].emitters[0]->getNode();
 					Root::getSingleton()->getRootNode()->dettachChild(node);
-					fx.pop_back();
+					//delete[] fx[lastId].emitters;
+					fx[i].allive=false;
 					//delete node;
+					fx.erase(fx.begin()+i);
 				}
 		}
 	}

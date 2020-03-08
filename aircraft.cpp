@@ -22,6 +22,7 @@
 
 using namespace vb01;
 using namespace std;
+using namespace fsim::structureData;
 
 namespace fsim{
 	Aircraft::Aircraft(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot, int *upgrades) : Unit(gm,id,faction,pos,rot){
@@ -57,6 +58,19 @@ namespace fsim{
 		muzzleFlash->setStartColor(Vector4(1,1,1,1));
 		muzzleFlash->setEndColor(Vector4(1,1,0,1));
 
+		engineSmoke=new ParticleEmitter(50);
+		Node *engineSmokeNode=new Node(Vector3(0,0,2));
+		Material *m=new Material(Material::MATERIAL_PARTICLE);
+		m->addDiffuseMap(PATH+"Textures/Smoke/smoke00.png");
+		engineSmokeNode->attachParticleEmitter(engineSmoke);
+		engineSmoke->setMaterial(m);
+		engineSmokeNode->setVisible(false);
+		model->attachChild(engineSmokeNode);
+		engineSmoke->setStartSize(Vector2(.5,.5));
+		engineSmoke->setEndSize(Vector2(.9,.9));
+		engineSmoke->setStartColor(Vector4(1,1,1,1));
+		engineSmoke->setEndColor(Vector4(1,1,0,1));
+
 
 		/*
 		muzzleLight=new Light(Light::POINT);
@@ -75,10 +89,21 @@ namespace fsim{
 		*/
 	}
 
-	Aircraft::~Aircraft(){}
+	Aircraft::~Aircraft(){
+		Node *muzzleFlashNode=muzzleFlash->getNode();
+		Node *engineSmokeNode=engineSmoke->getNode();
+		model->dettachChild(muzzleFlashNode);
+		model->dettachChild(engineSmokeNode);
+		delete muzzleFlashNode;
+		delete engineSmokeNode;
+		/*
+		*/
+	}
 
 	void Aircraft::update(){
 		Unit::update();
+		if(hp<50)
+			engineSmoke->getNode()->setVisible(true);
 		if(cam){
 			cam->setPosition(pos-dir*6);
 			cam->lookAt(dir,up);
@@ -113,15 +138,22 @@ namespace fsim{
 
 			vector<CollisionResult> results;
 			Model *m=inGameState->getMap()->getMapModel();
-			//retrieveCollisions(pos,dir,m,results);
-			/*
-			*/
 			for(Structure *s : inGameState->getStructures()){
 				Model *hitbox=s->getHitbox();
 				if(s!=this&&hitbox)
 					retrieveCollisions(pos,dir,s->getHitbox(),results);
 			}
 			sortResults(results);
+			for(CollisionResult r : results){
+				for(Structure *s : inGameState->getStructures()){
+					Model *hitbox=s->getHitbox();
+					if(hitbox&&hitbox->getChild(0)->getMesh(0)==r.mesh){
+						int hp=s->getHp();
+						hp-=10;
+						s->setHp(hp);
+					}
+				}
+			}
 
 			cout<<results.size()<<"\n";
 			//primaryAmmo--;
@@ -144,13 +176,13 @@ namespace fsim{
 							hostileTargets.push_back((Aircraft*)s);
 					}
 				Structure *target=hostileTargets.size()>0?hostileTargets[0]:nullptr;
-				projectile=new Missile(gm,type==FIGHTER?projectileData::AAM:projectileData::ASM,this,pos,rot,target);
+				projectile=new Missile(gm,type==FIGHTER?projectileData::AAM:projectileData::ASM,this,pos-up*1,rot,target);
 			}
 			else{
-				projectile=new Bomb(gm,projectileData::BOMB,this,pos,rot,.1);
+				projectile=new Bomb(gm,projectileData::BOMB,this,pos-up,rot,.1);
 			}
 			inGameState->addProjectile(projectile);
-			secondaryAmmo--;
+			//secondaryAmmo--;
 			lastSecondaryFire=getTime();
 		}
 	}

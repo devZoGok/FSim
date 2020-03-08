@@ -2,11 +2,13 @@
 #include"projectile.h"
 #include"projectileData.h"
 #include"gameManager.h"
+#include<iostream>
 #include<root.h>
 #include<model.h>
 #include<material.h>
 
 using namespace vb01;
+using namespace std;
 
 namespace fsim{
 	Projectile::Projectile(GameManager *gm,int id,Structure *structure,Vector3 pos,Quaternion rot){
@@ -17,6 +19,7 @@ namespace fsim{
 		this->rot=rot;
 		this->speed=projectileData::speed[id];
 		this->turnSpeed=projectileData::turnSpeed[id];
+		this->length=projectileData::length[id];
 		
 		Node *rootNode=gm->getRoot()->getRootNode();
 		mesh=new Model(PATH+"Models/Projectiles/"+projectileData::meshPath[id]);
@@ -34,6 +37,8 @@ namespace fsim{
 	}
 	
 	Projectile::~Projectile(){
+		mesh->getParent()->dettachChild(mesh);
+		delete mesh;
 	}
 
 	void Projectile::update(){
@@ -42,5 +47,9 @@ namespace fsim{
 	}
 
 	void Projectile::checkForCollision(){
+	}
+
+	void Projectile::explode(){
+		exploded=true;
 	}
 }

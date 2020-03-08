@@ -1,12 +1,17 @@
 #include"missile.h"
 #include"structure.h"
 #include"defConfigs.h"
+#include"inGameAppState.h"
+#include"gameManager.h"
+#include"stateManager.h"
 #include<particleEmitter.h>
 #include<node.h>
 #include<material.h>
 #include<model.h>
+#include<ray.h>
 
 using namespace vb01;
+using namespace std;
 
 namespace fsim{
 	Missile::Missile(GameManager *gm,int id,Structure *structure,Vector3 pos,Quaternion rot,Structure *target) : Projectile(gm,id,structure,pos,rot){
@@ -48,10 +53,28 @@ namespace fsim{
 	}
 
 	Missile::~Missile(){
+		Node *gasNode=gas->getNode(),*smokeNode=smoke->getNode();
+		mesh->dettachChild(gasNode);
+		mesh->dettachChild(smokeNode);
+		delete gasNode;
+		delete smokeNode;
+		/*
+		*/
 	}
 
 	void Missile::update(){
 		Projectile::update();
+
+		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
+		vector<CollisionResult> res;
+
+		for(Structure *s : inGameState->getStructures()){
+			Model *hitbox=s->getHitbox();
+			if(hitbox)
+				retrieveCollisions(pos,dir,s->getHitbox(),res,length);
+		}
+		if(!res.empty())
+			explode();
 		pos=pos+dir*speed;
 		if(target){
 			Vector3 targetVec=(target->getPos()-pos).norm();

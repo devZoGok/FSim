@@ -17,6 +17,7 @@ namespace fsim{
 		};
 
 		static const float speed[numProjectiles]{.2,.1,.1,.1};
+		static const float length[numProjectiles]{2,2,2,.3};
 		static const float turnSpeed[numProjectiles]{.5,.1,.1,0};
 	}
 }

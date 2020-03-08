@@ -9,6 +9,7 @@
 #include"stateManager.h"
 #include"structureData.h"
 
+using namespace fsim::structureData;
 using namespace vb01;
 using namespace std;
 

@@ -4,6 +4,7 @@
 #include<string>
 
 namespace fsim{
+	namespace structureData{
 	const int numStructures=11;
 
 	enum Type{
@@ -18,6 +19,20 @@ namespace fsim{
 		KOREAN_HELICOPTER,
 		SAM_SITE,
 		AIRFIELD
+	};
+
+	static const int hp[numStructures]={
+		100,
+		100,
+		100,
+		100,
+		100,
+		100,
+		100,
+		100,
+		100,
+		100,
+		100
 	};
 	static const bool singleModel[numStructures]={
 		1,
@@ -71,6 +86,7 @@ namespace fsim{
 		"samSite.png",
 		"airbase.png"
 	};
+	}
 }
 
 #endif

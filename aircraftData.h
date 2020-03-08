@@ -2,6 +2,9 @@
 #define AIRCRAFT_DATA_H
 
 #include"structureData.h"
+
+using namespace fsim::structureData;
+
 namespace fsim{
 	namespace aircraftData{
 		static const int rateOfPrimaryFire[numStructures]{100,100,100,100,100,100,100,100,100};		

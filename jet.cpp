@@ -22,6 +22,7 @@ namespace fsim{
 		gasMat->addDiffuseMap(PATH+"Textures/Smoke/smoke00.png");
 		gas->setMaterial(gasMat);
 		gasNode->attachParticleEmitter(gas);
+		gasNode->setVisible(false);
 		model->attachChild(gasNode);
 
 		gas->setStartColor(Vector4(1,1,0,1));

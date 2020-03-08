@@ -14,6 +14,7 @@ namespace fsim{
 		vb01::ParticleEmitter **emitters=nullptr;
 		vb01::Light **lights=nullptr;
 		vb01::Vector3 pos;
+		bool allive=true;
 		int numEmitters;
 		s64 initTime,timeToLive;
 	};

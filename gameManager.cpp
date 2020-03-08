@@ -47,8 +47,8 @@ namespace fsim{
 		conn.query(savesQuery).store();
 		conn.query(saveUnitsQuery).store();
 		conn.query(statsQuery).store();
-		root->setHDREnabled(true);
-		root->setBloom(true);
+		root->setHDREnabled(false);
+		root->setBloom(false);
 		root->setBlurLevel(10);
 	}
 

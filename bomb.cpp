@@ -1,11 +1,20 @@
 #include"bomb.h"
+#include"map.h"
+#include<ray.h>
+#include<model.h>
+#include"structure.h"
+#include"gameManager.h"
+#include"stateManager.h"
+#include"inGameAppState.h"
+#include<vector>
 
 using namespace vb01;
+using namespace std;
 
 namespace fsim{
 	Bomb::Bomb(GameManager *gm,int id,Structure *structure,Vector3 pos,Quaternion rot,float speed) : Projectile(gm,id,structure,pos,rot){
 		this->speed=speed;	
-		this->baseDir=Vector3(dir.x,0,dir.z).norm();
+		Vector3 baseDir=Vector3(dir.x,0,dir.z).norm();
 		initAngle=dir.norm().getAngleBetween(baseDir)*(dir.y>0?1:-1);
 		this->initTime=getTime();
 	}
@@ -15,14 +24,36 @@ namespace fsim{
 
 	void Bomb::update(){
 		Projectile::update();
-		baseDir=Vector3(dir.x,0,dir.z).norm();
-		float time=float(getTime()-initTime)/1000,g=.9;
+		Vector3 baseDir=Vector3(dir.x,0,dir.z).norm();
+		float time=float(getTime()-initTime)/1000,g=.09;
 		pos=pos+baseDir*speed*cos(initAngle)*time+Vector3(0,speed*sin(initAngle)*time-g*time*time*.5,0);
 		float angle=atan((speed*sin(initAngle)-g*time)/(speed*cos(initAngle)));
-		Quaternion rotQuat=Quaternion(angle,left);
-		dir=rotQuat*dir;
-		rot=rotQuat;
+
+		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
+		Map *map=inGameState->getMap();
+		vector<CollisionResult> results;
+		retrieveCollisions(pos,dir,(Node*)map->getMapModel(),results,length);
+		for(Structure *s : inGameState->getStructures()){
+			Model *hitbox=s->getHitbox();
+			if(hitbox)
+				retrieveCollisions(pos,dir,s->getHitbox(),results);
+		}
+		for(CollisionResult r : results){
+			for(Structure *s : inGameState->getStructures()){
+				Model *hitbox=s->getHitbox();
+				if(hitbox&&hitbox->getChild(0)->getMesh(0)==r.mesh){
+					int hp=s->getHp();
+					hp-=100;
+					s->setHp(hp);
+				}
+			}
+		}
+		if(!results.empty())
+			explode();
 		/*
+		Quaternion rotQuat=Quaternion(angle,left);
+		dir=rotQuat*baseDir;
+		rot=rotQuat;
 		*/
 	}
 }

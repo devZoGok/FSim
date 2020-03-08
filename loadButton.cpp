@@ -16,6 +16,7 @@
 using namespace vb01;
 using namespace std;
 using namespace mysqlpp;
+using namespace fsim::structureData;
 
 namespace fsim{
 	LoadButton::LoadButton(GameManager *gm,Vector2 pos, Vector2 size):Button(gm,pos,size,"Load",Mapping::LOAD){}

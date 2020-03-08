@@ -49,7 +49,7 @@ namespace fsim{
 			int *upgrades,primaryAmmo,secondaryAmmo,fuel,chaff;
 			float rollSpeed,yawSpeed,pitchSpeed,pitchVal=0,rollVal=0,yawVal=0;
 			bool primaryFiring=false;
-			vb01::ParticleEmitter *muzzleFlash;
+			vb01::ParticleEmitter *muzzleFlash,*engineSmoke;
 			vb01::Light *muzzleLight;
 			std::vector<Fx> fx;
 	};
