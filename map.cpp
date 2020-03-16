@@ -48,12 +48,14 @@ namespace fsim{
 
 		vector<string> lines;
 		readFile(path+"level.cfg",lines);
-		int lightsLine=0,structuresLine=0;
+		int lightsLine=0,structuresLine=0,objectivesLine=0;
 		for(int i=0;i<lines.size();i++)
 			if(lines[i]=="Lighting:")
 				lightsLine=i;
 			else if(lines[i]=="Structures:")
 				structuresLine=i;
+			else if(lines[i]=="Objectives:")
+				objectivesLine=i;
 
 		for(int i=lightsLine+1;i<structuresLine;i++){
 			string type;
@@ -75,11 +77,25 @@ namespace fsim{
 				//t=Light::POINT;
 			}
 		}
+		for(int i=structuresLine+1;i<lines.size();i++){
+		}
 
 
 		if(saveId==-1){
+			Helicopter *heli=new Helicopter(gm,Type::CHINESE_HELICOPTER,0,Vector3(10,20,0),Quaternion(1,0,0,0));
+
+			Objective::Condition *c=new Objective::Condition;
+			c->type=Objective::DESTROY;
+			c->initTime=getTime();
+			c->time=10000;
+			c->pos=Vector3(10,0,0);
+			c->targets.push_back(heli);
+			Objective o;
+			o.success=c;
+			objectives.push_back(o);
+
 			inGameState->addStructure(new Airfield(gm,Type::AIRFIELD,1,Vector3(0,-20,7),Quaternion(1,0,0,0)));
-			inGameState->addStructure(new Helicopter(gm,Type::CHINESE_HELICOPTER,0,Vector3(10,20,0),Quaternion(1,0,0,0)));
+			inGameState->addStructure(heli);
 			for(int i=structuresLine+1;i<lines.size();i++){
 				string type;
 				const int numCoords=7;
@@ -141,7 +157,57 @@ namespace fsim{
 
 	Map::~Map(){}
 
-	void Map::update(){}
+	void Map::foo(int i){
+		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
+		int playerId=inGameState->getPlayerId();
+		Aircraft *playerAircraft=nullptr;
+		if(playerId!=-1)
+			playerAircraft=(Aircraft*)inGameState->getStructure(playerId);
+		Objective::Condition c=*(i==0?objectives[0].failure:objectives[0].success);
+		switch(c.type){
+			case Objective::DESTROY:
+				{
+					for(int j=0;j<c.targets.size();j++){
+						int targId=-1;
+						for(Structure *s : inGameState->getStructures()){
+							if(s==c.targets[j])
+								targId=j;
+						}
+						if(targId==-1)
+							c.targets.erase(c.targets.begin()+j);
+					}
+					if(c.targets.empty())
+						objectives[0].status=(i==0?Objective::FAILURE:Objective::SUCCESS);
+					break;
+				}
+			case Objective::MOVE_TO:
+				if(playerAircraft){
+					float maxDist=3;
+					Vector3 pos=playerAircraft->getPos(),destPos=c.pos;
+					if(Vector2(pos.x,pos.z).getDistanceFrom(Vector2(destPos.x,destPos.z))<=maxDist)
+						objectives[0].status=(i==0?Objective::FAILURE:Objective::SUCCESS);
+				}
+				break;
+			case Objective::WAIT:
+				if(getTime()-c.initTime>c.time)
+					objectives[0].status=(i==0?Objective::FAILURE:Objective::SUCCESS);
+				break;
+		}
+	}
+
+	void Map::update(){
+		if(!objectives.empty())
+			if(objectives[0].status==Objective::PENDING){
+				if(objectives[0].failure)
+					foo(0);
+				if(objectives[0].success)
+					foo(1);
+			}
+			else{
+				objectives.erase(objectives.begin());
+				objective++;
+			}
+	}
 
 	void Map::getCoords(string line, string &type, float *coords,const int numCoords){
 		int colonId,dotId=-1;

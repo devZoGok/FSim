@@ -43,7 +43,7 @@ namespace fsim{
 			
 			vb01::Node *pauseOverlay=nullptr;
 			ActiveGameAppState *activeState=nullptr;
-			int pilotId,playerId;
+			int pilotId,playerId=-1;
 			bool paused=false;
 			Map *map;
 			Faction faction;

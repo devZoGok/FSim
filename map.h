@@ -3,6 +3,8 @@
 
 #include<string>
 #include<vector>
+#include<vector.h>
+#include"util.h"
 
 namespace vb01{
 	class Model;
@@ -13,6 +15,7 @@ namespace vb01{
 namespace fsim{
 	class GameManager;
 	class InGameAppState;
+	class Structure;
 
 	class Map{
 		public:
@@ -23,6 +26,19 @@ namespace fsim{
 			inline int getLevel(){return level;}
 			inline vb01::Model* getMapModel(){return mapModel;}
 		private:
+			struct Objective{
+				enum Status{SUCCESS,FAILURE,PENDING};
+				enum Type{DESTROY,MOVE_TO,WAIT};
+				struct Condition{
+					Type type;
+					std::vector<Structure*> targets;
+					s64 initTime,time;
+					vb01::Vector3 pos;
+				};
+				Condition *success=nullptr,*failure=nullptr;
+				Status status=PENDING;
+				std::string text;
+			};
 			void getCoords(std::string,std::string&,float*,const int);
 
 			int objective,level;
@@ -30,6 +46,9 @@ namespace fsim{
 			vb01::Model* mapModel;
 			vb01::Node *rootNode;
 			std::vector<vb01::Light*> lights;
+			std::vector<Objective> objectives;
+
+			void foo(int);
 	};
 }
 
