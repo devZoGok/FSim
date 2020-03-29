@@ -39,9 +39,9 @@ namespace fsim{
 			helicopter->setYaw(-helicopter->getYawSpeed());
 		if(rising)
 			helicopter->setRising(helicopter->getRising()+riseIncrement*(rising?1:-1));
+		/*
 		if(landing)
 			helicopter->setLanding(helicopter->getLanding()+landIncrement*(landing?1:-1));
-		/*
 		*/
 	}
 
@@ -87,7 +87,7 @@ namespace fsim{
 		switch(bind){
 			case Mapping::PITCH_HELICOPTER_UP:
 			case Mapping::PITCH_HELICOPTER_DOWN:
-				helicopter->setPitch(helicopter->getPitchSpeed()*str);
+				helicopter->setPitch(-helicopter->getPitchSpeed()*str);
 				break;
 			case Mapping::ROLL_HELICOPTER_LEFT:
 			case Mapping::ROLL_HELICOPTER_RIGHT:
@@ -97,7 +97,7 @@ namespace fsim{
 				helicopter->setRising(helicopter->getRisingSpeed()*(-str));
 				break;
 			case Mapping::LAND:
-				helicopter->setLanding(helicopter->getLandingSpeed()*(str));
+				//helicopter->setLanding(helicopter->getLandingSpeed()*(str));
 				break;
 			case Mapping::YAW_HELICOPTER_LEFT:
 			case Mapping::YAW_HELICOPTER_RIGHT:

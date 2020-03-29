@@ -13,9 +13,11 @@ namespace vb01{
 
 namespace fsim{
 	enum AircraftType{FIGHTER,FIGHTER_BOMBER,HELICOPTER};
+	class AIPilot;
+
 	class Aircraft : public Unit{
 		public:
-			Aircraft(GameManager*,int,int,vb01::Vector3,vb01::Quaternion,int*);
+			Aircraft(GameManager*,int,int,vb01::Vector3,vb01::Quaternion,int*,bool);
 			virtual ~Aircraft();
 			virtual void update();
 			virtual void yaw(float);
@@ -27,6 +29,7 @@ namespace fsim{
 			inline float getPitch(){return pitchVal;}
 			inline float getRoll(){return rollVal;}
 			inline float getYaw(){return yawVal;}
+			inline float getWeight(){return weight;}
 			inline bool canPrimaryFire(){return primaryAmmo>0&&getTime()-lastPrimaryFire>rateOfPrimaryFire;}
 			inline bool canSecondaryFire(){return secondaryAmmo>0&&getTime()-lastSecondaryFire>rateOfSecondaryFire;}
 			inline bool canDeployChaff(){return chaff>0&&getTime()-lastChaff>rateOfChaff;}
@@ -34,8 +37,8 @@ namespace fsim{
 			inline int getSecondaryAmmo(){return secondaryAmmo;}
 			inline int getChaff(){return chaff;}
 			inline int getFuel(){return fuel;}
-			inline AircraftType getType(){return AircraftType(id%3);}
 			inline void setPrimaryFiring(bool firing){this->primaryFiring=firing;}
+			AircraftType getType();
 			void primaryFire();
 			void secondaryFire();
 			void deployChaff();
@@ -44,10 +47,11 @@ namespace fsim{
 			void setYaw(float);
 		private:
 			vb01::Camera *cam=nullptr;
+			AIPilot *aiPilot=nullptr;
 		protected:
 			s64 rateOfPrimaryFire,rateOfSecondaryFire,rateOfChaff,rateOfFuelConsumption=5000,lastPrimaryFire=0,lastSecondaryFire=0,lastChaff=0,lastConsumption=0;
 			int *upgrades,primaryAmmo,secondaryAmmo,fuel,chaff;
-			float rollSpeed,yawSpeed,pitchSpeed,pitchVal=0,rollVal=0,yawVal=0;
+			float rollSpeed,yawSpeed,pitchSpeed,pitchVal=0,rollVal=0,yawVal=0,weight;
 			bool primaryFiring=false;
 			vb01::ParticleEmitter *muzzleFlash,*engineSmoke;
 			vb01::Light *muzzleLight;

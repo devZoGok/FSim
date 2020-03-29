@@ -15,7 +15,7 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
-	Jet::Jet(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot,int *upgrades) : Aircraft(gm,id,faction,pos,rot,upgrades){
+	Jet::Jet(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot,bool ai,int *upgrades) : Aircraft(gm,id,faction,pos,rot,upgrades,ai){
 		gas=new ParticleEmitter(100);
 		Node *gasNode=new Node(Vector3(0,0,-1));
 		Material *gasMat=new Material(Material::MATERIAL_PARTICLE);

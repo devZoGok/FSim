@@ -26,8 +26,8 @@ namespace fsim{
 		int playerId=inGameState->getNumStructures();
 		Vector3 pos=Vector3(0,20,-20);
 		bool helicopter=(aircraftId==CHINESE_HELICOPTER||aircraftId==JAPANESE_HELICOPTER||aircraftId==KOREAN_HELICOPTER);
-		Aircraft *aircraft=helicopter?(Aircraft*)new Helicopter(gm,aircraftId,faction,pos,Quaternion(1,0,0,0)):
-		(Aircraft*)new Jet(gm,aircraftId,faction,pos,Quaternion(1,0,0,0));
+		Aircraft *aircraft=helicopter?(Aircraft*)new Helicopter(gm,aircraftId,faction,pos,Quaternion(1,0,0,0),false):
+		(Aircraft*)new Jet(gm,aircraftId,faction,pos,Quaternion(1,0,0,0),false);
 		inGameState->addStructure(aircraft);
 
 		stateManager->attachState(helicopter?(AbstractAppState*)new HelicopterAppState(gm,playerId):(AbstractAppState*)new JetAppState(gm,playerId));

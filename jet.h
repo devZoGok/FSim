@@ -10,7 +10,7 @@ namespace vb01{
 namespace fsim{
 	class Jet : public Aircraft{
 		public:
-			Jet(GameManager*,int,int,vb01::Vector3,vb01::Quaternion,int* = nullptr);
+			Jet(GameManager*,int,int,vb01::Vector3,vb01::Quaternion,bool,int* = nullptr);
 			~Jet();
 			void update();
 		private:

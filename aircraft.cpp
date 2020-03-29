@@ -9,6 +9,7 @@
 #include"missile.h"
 #include"map.h"
 #include"bomb.h"
+#include"aiPilot.h"
 #include<iostream>
 #include<camera.h>
 #include<model.h>
@@ -25,7 +26,7 @@ using namespace std;
 using namespace fsim::structureData;
 
 namespace fsim{
-	Aircraft::Aircraft(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot, int *upgrades) : Unit(gm,id,faction,pos,rot){
+	Aircraft::Aircraft(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot, int *upgrades, bool ai) : Unit(gm,id,faction,pos,rot){
 		if(!upgrades){
 			this->upgrades=new int[numUpgrades];
 			for(int i=0;i<numUpgrades;i++)
@@ -33,10 +34,14 @@ namespace fsim{
 		}
 		else
 			this->upgrades=upgrades;
+		if(ai)
+			aiPilot=new AIPilot(gm,this);
+
 		cam=gm->getRoot()->getCamera();
 		this->rollSpeed=.05;
 		this->yawSpeed=.05;
 		this->pitchSpeed=.05;
+		this->weight=.1;
 		this->rateOfPrimaryFire=aircraftData::rateOfPrimaryFire[id];
 		this->rateOfSecondaryFire=aircraftData::rateOfSecondaryFire[id];
 		this->rateOfChaff=aircraftData::rateOfChaff[id];
@@ -90,6 +95,8 @@ namespace fsim{
 	}
 
 	Aircraft::~Aircraft(){
+		if(aiPilot)
+			delete aiPilot;
 		Node *muzzleFlashNode=muzzleFlash->getNode();
 		Node *engineSmokeNode=engineSmoke->getNode();
 		model->dettachChild(muzzleFlashNode);
@@ -102,6 +109,8 @@ namespace fsim{
 
 	void Aircraft::update(){
 		Unit::update();
+		if(aiPilot)
+			aiPilot->update();
 		if(hp<50)
 			engineSmoke->getNode()->setVisible(true);
 		if(cam){
@@ -182,7 +191,7 @@ namespace fsim{
 				projectile=new Bomb(gm,projectileData::BOMB,this,pos-up,rot,.1);
 			}
 			inGameState->addProjectile(projectile);
-			//secondaryAmmo--;
+			secondaryAmmo--;
 			lastSecondaryFire=getTime();
 		}
 	}
@@ -258,5 +267,27 @@ namespace fsim{
 		if(abs(yawVal)>yawSpeed)
 			yawVal=yawVal/yawVal*yawSpeed;
 		yaw(y);
+	}
+
+	AircraftType Aircraft::getType(){
+		AircraftType t;
+		switch(id){
+			case CHINESE_FIGHTER:
+			case JAPANESE_FIGHTER:
+			case KOREAN_FIGHTER:
+				t=FIGHTER;
+				break;
+			case CHINESE_FIGHTER_BOMBER:
+			case JAPANESE_FIGHTER_BOMBER:
+			case KOREAN_FIGHTER_BOMBER:
+				t=FIGHTER_BOMBER;
+				break;
+			case CHINESE_HELICOPTER:
+			case JAPANESE_HELICOPTER:
+			case KOREAN_HELICOPTER:
+				t=HELICOPTER;;
+				break;
+		}
+		return t;
 	}
 }

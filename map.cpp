@@ -82,7 +82,7 @@ namespace fsim{
 
 
 		if(saveId==-1){
-			Helicopter *heli=new Helicopter(gm,Type::CHINESE_HELICOPTER,0,Vector3(10,20,0),Quaternion(1,0,0,0));
+			Helicopter *heli=new Helicopter(gm,Type::KOREAN_HELICOPTER,2,Vector3(0,20,10),Quaternion(1,0,0,0),true);
 
 			Objective::Condition *c=new Objective::Condition;
 			c->type=Objective::DESTROY;
@@ -94,7 +94,7 @@ namespace fsim{
 			o.success=c;
 			objectives.push_back(o);
 
-			inGameState->addStructure(new Airfield(gm,Type::AIRFIELD,1,Vector3(0,-20,7),Quaternion(1,0,0,0)));
+			//inGameState->addStructure(new Airfield(gm,Type::AIRFIELD,1,Vector3(0,-20,7),Quaternion(1,0,0,0)));
 			inGameState->addStructure(heli);
 			for(int i=structuresLine+1;i<lines.size();i++){
 				string type;
