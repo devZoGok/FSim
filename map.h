@@ -4,6 +4,7 @@
 #include<string>
 #include<vector>
 #include<vector.h>
+#include<quaternion.h>
 #include"util.h"
 
 namespace vb01{
@@ -39,7 +40,10 @@ namespace fsim{
 				Status status=PENDING;
 				std::string text;
 			};
-			void getCoords(std::string,std::string&,float*,const int);
+			template<typename T>
+			void getLineData(std::string,T*,int,int=0);
+			void createStructure(InGameAppState*,int,int,vb01::Vector3,vb01::Quaternion,int*,bool);
+			void createObjective(InGameAppState*,Objective::Condition*,std::string,int);
 
 			int objective,level;
 			GameManager *gm;

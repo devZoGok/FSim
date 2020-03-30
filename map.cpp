@@ -58,56 +58,70 @@ namespace fsim{
 				objectivesLine=i;
 
 		for(int i=lightsLine+1;i<structuresLine;i++){
-			string type;
-			const int numCoords=6;
+			const int numCoords=7;
 			float coords[numCoords];
-			getCoords(lines[i],type,coords,numCoords);
+			getLineData(lines[i],coords,numCoords);
 				Light *light=new Light(Light::DIRECTIONAL);
-				Vector3 dir=Vector3(coords[0],coords[1],coords[2]).norm();
+				Vector3 dir=Vector3(coords[1],coords[2],coords[3]).norm();
 				//Vector3 color=Vector3(1,1,1);
-				Vector3 color=Vector3(coords[3],coords[4],coords[5]);
+				Vector3 color=Vector3(coords[4],coords[5],coords[6]);
 				light->setDirection(dir);
 				light->setPosition(Vector3(0,25,0));
 				light->setAttenuationValues(.0001,.00001,1);
 				light->setColor(color);
 				rootNode->addLight(light);
+				/*
 			if(type=="directional"){
 			}
 			else if(type=="point"){
 				//t=Light::POINT;
 			}
+			*/
 		}
-		for(int i=structuresLine+1;i<lines.size();i++){
-		}
-
 
 		if(saveId==-1){
-			Helicopter *heli=new Helicopter(gm,Type::KOREAN_HELICOPTER,2,Vector3(0,20,10),Quaternion(1,0,0,0),true);
-
-			Objective::Condition *c=new Objective::Condition;
-			c->type=Objective::DESTROY;
-			c->initTime=getTime();
-			c->time=10000;
-			c->pos=Vector3(10,0,0);
-			c->targets.push_back(heli);
-			Objective o;
-			o.success=c;
-			objectives.push_back(o);
-
-			//inGameState->addStructure(new Airfield(gm,Type::AIRFIELD,1,Vector3(0,-20,7),Quaternion(1,0,0,0)));
-			inGameState->addStructure(heli);
-			for(int i=structuresLine+1;i<lines.size();i++){
-				string type;
-				const int numCoords=7;
+			for(int i=structuresLine+1;i<objectivesLine;i++){
+				const int numCoords=9;
 				float coords[numCoords];
-				getCoords(lines[i],type,coords,numCoords);
-				Vector3 pos=Vector3(coords[0],coords[1],coords[2]);
-				Quaternion rot=Quaternion(coords[3],coords[4],coords[5],coords[6]);
+				getLineData(lines[i],coords,numCoords);
+				int structureId=coords[0],faction=coords[1];
+				Vector3 pos=Vector3(coords[2],coords[3],coords[4]);
+				Quaternion rot=Quaternion(coords[5],coords[6],coords[7],coords[8]);
+				createStructure(inGameState,structureId,faction,pos,rot,nullptr,true);
+			}
+			for(int i=objectivesLine+1;i<lines.size();i++){
+				int coords[2];
+				getLineData(lines[i],coords,2);
+				bool failureCondition=coords[0];
 
-				int structureId,faction=0;
-				if(type=="samSite")
-					structureId=SAM_SITE;
-				inGameState->addStructure(new Structure(gm,structureId,faction,pos,rot));
+				Objective::Condition *success=new Objective::Condition,*failure=nullptr;
+				success->type=(Objective::Type)coords[1];
+				createObjective(inGameState,success,lines[i],1);
+				if(failureCondition){
+					int offset;
+					failure=new Objective::Condition;
+					switch(success->type){
+						case Objective::DESTROY:
+							int numTargets[1];
+							getLineData(lines[i],numTargets,1,2);
+							offset=3+numTargets[0];
+							break;
+						case Objective::MOVE_TO:
+							offset=5;
+							break;
+						case Objective::WAIT:
+							offset=3;
+							break;
+					}
+					int t[1];
+					getLineData(lines[i],t,1,offset);
+					failure->type=(Objective::Type)t[0];
+					createObjective(inGameState,failure,lines[i],offset);
+				}
+				Objective o;
+				o.success=success;
+				o.failure=failure;
+				objectives.push_back(o);
 			}
 		}
 		else{
@@ -120,7 +134,6 @@ namespace fsim{
 				int unitId=(int)res[i][0],faction=(int)res[i][1];
 				Vector3 pos=Vector3((float)res[i][2],(float)res[i][3],(float)res[i][4]);
 				Quaternion rot=Quaternion((float)res[i][5],(float)res[i][6],(float)res[i][7],(float)res[i][8]);
-				Structure *s;
 				int *upgrades=nullptr;
 				if(i==playerId){
 					upgrades=new int[numUpgrades];
@@ -130,29 +143,9 @@ namespace fsim{
 						upgrades[j]=atoi(upgradesString.substr(j,1).c_str());
 					}
 				}
-				switch(unitId){
-					case Type::CHINESE_HELICOPTER:
-					case Type::JAPANESE_HELICOPTER:
-					case Type::KOREAN_HELICOPTER:
-						s=new Helicopter(gm,unitId,faction,pos,rot,upgrades);
-						break;
-					case Type::CHINESE_FIGHTER:
-					case Type::JAPANESE_FIGHTER:
-					case Type::KOREAN_FIGHTER:
-					case Type::CHINESE_FIGHTER_BOMBER:
-					case Type::JAPANESE_FIGHTER_BOMBER:
-					case Type::KOREAN_FIGHTER_BOMBER:
-						s=new Jet(gm,unitId,faction,pos,rot,upgrades);
-						break;
-					default:
-						s=new Structure(gm,unitId,faction,pos,rot);
-						break;
-				}
-				inGameState->addStructure(s);
+				createStructure(inGameState,unitId,faction,pos,rot,upgrades,i!=playerId);
 			}
 		}
-
-
 	}
 
 	Map::~Map(){}
@@ -209,27 +202,76 @@ namespace fsim{
 			}
 	}
 
-	void Map::getCoords(string line, string &type, float *coords,const int numCoords){
-		int colonId,dotId=-1;
-		for(int j=0;j<line.length();j++){
-			if(line.c_str()[j]==':')
-				colonId=j;
-			else if(line.c_str()[j]=='.')
-				dotId=j;
-		}
-		int c1=colonId+1,c2=c1;
-		for(int j=0;j<numCoords;j++){
-			for(int z=c1;z<line.length();z++)	
-				if(line.c_str()[z]==','){
-					c2=z;
+	template<typename T>
+	void Map::getLineData(string line,T *data,int numData,int offset){
+		int offsetComma=0,c1=0;
+		for(int i=0;i<line.length()&&offsetComma<offset;i++)
+			if(line.c_str()[i]==','){
+				c1=i+1;
+				offsetComma++;
+			}
+		int c2=c1;
+		for(int i=0;i<numData;i++){
+			for(int j=c1;j<line.length();j++)	
+				if(line.c_str()[j]==','){
+					c2=j;
 					break;
 				}
-			coords[j]=atof(line.substr(c1,c2-c1).c_str());
+			data[i]=atof(line.substr(c1,c2-c1).c_str());
 			c2++;
 			c1=c2;
 		}
-		type=line.substr(0,colonId);
-		if(dotId!=-1)
-			type=type.substr(0,dotId);
+	}
+
+	void Map::createStructure(InGameAppState *inGameState,int id,int faction,Vector3 pos,Quaternion rot,int *upgrades,bool ai){
+		Structure *s;
+		switch(id){
+			case Type::CHINESE_HELICOPTER:
+			case Type::JAPANESE_HELICOPTER:
+			case Type::KOREAN_HELICOPTER:
+				s=new Helicopter(gm,id,faction,pos,rot,ai,upgrades);
+				break;
+			case Type::CHINESE_FIGHTER:
+			case Type::JAPANESE_FIGHTER:
+			case Type::KOREAN_FIGHTER:
+			case Type::CHINESE_FIGHTER_BOMBER:
+			case Type::JAPANESE_FIGHTER_BOMBER:
+			case Type::KOREAN_FIGHTER_BOMBER:
+				s=new Jet(gm,id,faction,pos,rot,ai,upgrades);
+				break;
+			default:
+				s=new Structure(gm,id,faction,pos,rot);
+				break;
+		}
+		inGameState->addStructure(s);
+	}
+
+	void Map::createObjective(InGameAppState *inGameState,Objective::Condition *c,string line,int successOffset){
+		switch(c->type){
+			case Objective::DESTROY:{
+				int numTargets[1];
+				getLineData(line,numTargets,1,1+successOffset);
+				const int num=numTargets[0];
+				int targets[num];
+				getLineData(line,targets,num,2+successOffset);
+				for(int j=0;j<num;j++)
+					c->targets.push_back(inGameState->getStructure(targets[j]));
+				break;
+			}
+			case Objective::MOVE_TO:{
+				float data[3];
+				getLineData(line,data,3,1+successOffset);
+				Vector3 destination=Vector3(data[0],data[1],data[2]);
+				c->pos=destination;
+				break;
+			}
+			case Objective::WAIT:{
+				int data[1];
+				getLineData(line,data,1,1+successOffset);
+				c->initTime=getTime();
+				c->time=(s64)data[0];
+				break;
+			}
+		}
 	}
 }
