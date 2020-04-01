@@ -161,6 +161,10 @@ namespace fsim{
 						this->tabs[i]=tabs[i];
 				}
 				void onClick(){
+					Connection conn(false);
+					conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
+					StoreQueryResult res=conn.query("select level from pilots where pid="+to_string(pilotId)+";").store();
+
 					StateManager *stateManager=gm->getStateManager();
 					GuiAppState *guiState=(GuiAppState*)stateManager->getState(AbstractAppState::GUI_STATE);
 					Node *guiNode=gm->getRoot()->getGuiNode();
@@ -176,7 +180,7 @@ namespace fsim{
 					}
 
 					const int numExceptions=!loadFromSave?4:2;
-					int playerUnitId=0,level=1,objective=0;
+					int playerUnitId=0,level=(int)res[0][0],objective=0;
 					Button *exceptions[numExceptions];
 					exceptions[0]=this;
 
@@ -208,17 +212,10 @@ namespace fsim{
 		conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
 		if(textbox){
 			pilotId=(int)conn.query("select count(*) from pilots;").store()[0][0];
-			string playerName=textbox->getText(),queryText="insert into pilots values("+to_string(pilotId)+","+to_string(faction)+",'"+playerName+"'";
-			for(int i=0;i<3;i++){
-				queryText+=",'";
-			for(int j=0;j<numUpgrades;j++)
-				queryText+="0";
-				queryText+="'";
-			}
-			queryText+=");";
+			string playerName=textbox->getText(),queryText="insert into pilots values("+to_string(pilotId)+","+to_string(faction)+",1,0,'"+playerName+"','00000','00000','00000');";
 			conn.query(queryText).store();
 	
-			conn.query("insert into stats values("+to_string(pilotId)+",0,0,0,0,0,0);").store();
+			conn.query("insert into stats values("+to_string(pilotId)+",0,0,0,0,0);").store();
 		}
 		StoreQueryResult res=conn.query("select fighter_upgrades,fighter_bomber_upgrades,helicopter_upgrades from pilots where pid="+to_string(pilotId)+";").store();
 		string s[3]={
@@ -228,7 +225,7 @@ namespace fsim{
 		};
 
 		int *score=new int;
-		*score=(int)conn.query("select score from stats where pid="+to_string(pilotId)+";").store()[0][0];
+		*score=(int)conn.query("select score from pilots where pid="+to_string(pilotId)+";").store()[0][0];
 		int **upgradeLevels=new int*[3];
 		for(int i=0;i<3;i++)
 			upgradeLevels[i]=new int[numUpgrades];

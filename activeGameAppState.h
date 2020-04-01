@@ -23,6 +23,7 @@ namespace fsim{
 			virtual void update();
 			virtual void onAction(Mapping::Bind,bool){}
 			inline Aircraft* getAircraft(){return aircraft;}
+			inline void setAircraft(Aircraft *aircraft){this->aircraft=aircraft;}
 			inline void setPlayerId(int playerId){this->playerId=playerId;}
 			void addStructureIcon(int);
 		private:

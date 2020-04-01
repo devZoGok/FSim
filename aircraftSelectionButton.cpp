@@ -30,8 +30,9 @@ namespace fsim{
 		(Aircraft*)new Jet(gm,aircraftId,faction,pos,Quaternion(1,0,0,0),false);
 		inGameState->addStructure(aircraft);
 		inGameState->setSelectingAircraft(false);
-
-		stateManager->attachState(helicopter?(AbstractAppState*)new HelicopterAppState(gm,playerId):(AbstractAppState*)new JetAppState(gm,playerId));
+		ActiveGameAppState *activeState=helicopter?(ActiveGameAppState*)new HelicopterAppState(gm,playerId):(ActiveGameAppState*)new JetAppState(gm,playerId);
+		stateManager->attachState((AbstractAppState*)activeState);
+		inGameState->setActiveState(activeState);
 		guiState->removeAllButtons(nullptr);
 	}
 }

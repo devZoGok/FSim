@@ -7,7 +7,7 @@
 namespace fsim{
 	const static std::string PATH="../Assets/",defaultTexture=PATH+"Textures/defaultTexture.jpg";
 
-	const static int numStates=4,numBinds[numStates]{0,1,9,11};
+	const static int numStates=4,numBinds[numStates]{0,1,9,11},maxNumLevels=1;
 
 	const static int buttonTriggers[11]{
 		GLFW_KEY_P,

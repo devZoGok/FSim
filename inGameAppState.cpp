@@ -116,6 +116,11 @@ namespace fsim{
 						playerId--;
 						activeState->setPlayerId(playerId);
 					}
+					else if(i==playerId){
+						activeState->setAircraft(nullptr);
+						gm->getStateManager()->dettachState(activeState);
+						endLevel(false);
+					}
 				}
 			}
 			for(int i=0;i<projectiles.size();i++){
@@ -150,6 +155,12 @@ namespace fsim{
 							}
 						private:
 					};
+					Connection conn(false);
+					conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
+					int level=map->getLevel()+1;
+					if(level<maxNumLevels)
+						conn.query("update pilots set level="+to_string(level)+" where pid="+to_string(pilotId)+";").store();
+
 					ContinueButton *continueButton=new ContinueButton(gm,Vector2(100,340),Vector2(100,50),pilotId);
 					continueButton->setFaction(structures[playerId]->getFaction());
 					guiState->addButton(continueButton);
@@ -170,10 +181,7 @@ namespace fsim{
 	void InGameAppState::restart(){
 		Node *guiNode=gm->getRoot()->getGuiNode();
 		string mapPath=map->getPath(),aircraftTypes[]={"Fighter","Fighter-bomber","Helicopter"};
-		int level=map->getLevel(),objective=map->getObjective(),
-			width=60;
-		Aircraft *playerAircraft=(Aircraft*)structures[playerId];
-		int faction=playerAircraft->getFaction();
+		int level=map->getLevel(),objective=map->getObjective(),width=60;
 
 		pauseOverlay->setVisible(false);
 		paused=false;
@@ -185,7 +193,23 @@ namespace fsim{
 		playerId=structures.size();
 		guiState->removeAllButtons(nullptr);
 		for(int i=0;i<3;i++)
-			guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),aircraftTypes[i],faction*3+i,faction,Mapping::Bind(Mapping::FIGHTER+i)));
+			guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),aircraftTypes[i],(int)faction*3+i,(int)faction,Mapping::Bind(Mapping::FIGHTER+i)));
+	}
+
+	void InGameAppState::save(string name){
+		Connection conn(false);
+		conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
+		int level=map->getLevel(),objectiveId=map->getObjective();
+		int numSaves=(int)conn.query("select count(*) from saves;").store()[0][0];
+		conn.query("insert into saves values("+to_string(numSaves)+",'"+name+"',"+to_string(pilotId)+","+to_string(playerId)+","+to_string(level)+","+to_string(objectiveId)+");").store();
+		for(int i=0;i<structures.size();i++){
+			Structure *s=structures[i];
+			int id=s->getId(),faction=s->getFaction();
+			Vector3 pos=s->getPos();
+			Quaternion rot=s->getRot();
+			string values=to_string(numSaves)+","+to_string(id)+","+to_string(faction)+","+to_string(pos.x)+","+to_string(pos.y)+","+to_string(pos.z)+","+to_string(rot.w)+","+to_string(rot.x)+","+to_string(rot.y)+","+to_string(rot.z);
+			conn.query("insert into save_units values("+values+");").store();
+		}
 	}
 
 	void InGameAppState::togglePause(){
@@ -226,21 +250,7 @@ namespace fsim{
 							}
 							void onClick(){
 								InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
-								Map *map=inGameState->getMap();
-								string name=textbox->getText();
-								Connection conn(false);
-								conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
-								int pilotId=inGameState->getPilotId(),playerId=inGameState->getPlayerId(),level=map->getLevel(),objectiveId=map->getObjective();
-								int numSaves=(int)conn.query("select count(*) from saves;").store()[0][0];
-								conn.query("insert into saves values("+to_string(numSaves)+",'"+name+"',"+to_string(pilotId)+","+to_string(playerId)+","+to_string(level)+","+to_string(objectiveId)+");").store();
-								for(int i=0;i<inGameState->getNumStructures();i++){
-									Structure *s=inGameState->getStructures()[i];
-									int id=s->getId(),faction=s->getFaction();
-									Vector3 pos=s->getPos();
-									Quaternion rot=s->getRot();
-									string values=to_string(numSaves)+","+to_string(id)+","+to_string(faction)+","+to_string(pos.x)+","+to_string(pos.y)+","+to_string(pos.z)+","+to_string(rot.w)+","+to_string(rot.x)+","+to_string(rot.y)+","+to_string(rot.z);
-									conn.query("insert into save_units values("+values+");").store();
-								}
+								inGameState->save(textbox->getText());
 							}
 						private:
 							Textbox *textbox;

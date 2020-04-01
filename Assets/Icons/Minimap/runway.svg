@@ -16,7 +16,7 @@
    id="svg8"
    inkscape:version="0.92.4 5da689c313, 2019-01-14"
    sodipodi:docname="airbase.svg"
-   inkscape:export-filename="/home/dominykas/c++/FSim/Assets/Icons/Minimap/airbase.png"
+   inkscape:export-filename="/home/dominykas/c++/FSim/Assets/Icons/Minimap/runway.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96">
   <defs
@@ -29,8 +29,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="363.16839"
-     inkscape:cy="627.86372"
+     inkscape:cx="274.02243"
+     inkscape:cy="648.06677"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -47,7 +47,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -90,18 +90,5 @@
        height="8.9116688"
        x="105.57604"
        y="150.51962" />
-    <rect
-       style="fill:none;fill-opacity:1;stroke:#1b1b1b;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers stroke fill"
-       id="rect815-35"
-       width="10.508652"
-       height="16.672394"
-       x="118.72623"
-       y="123.48821" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 122.29892,126.13114 c 0,0 2.008,0.117 2.008,5.45703 0,5.22192 -2.008,5.45703 -2.008,5.45703 h 0.87407 c 0,0 2.008,0.14286 2.008,-5.45703 0,-5.38728 -2.008,-5.45703 -2.008,-5.45703 z"
-       id="path925"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="csccscc" />
   </g>
 </svg>

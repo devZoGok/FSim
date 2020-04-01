@@ -30,6 +30,7 @@ namespace fsim{
 			void update();
 			void endLevel(bool);
 			void restart();
+			void save(std::string);
 			void onAction(Mapping::Bind,bool);
 			void onAnalog(Mapping::Bind,float);
 			inline int getNumStructures(){return structures.size();}
@@ -40,6 +41,7 @@ namespace fsim{
 			inline void addFx(Fx f){this->fx.push_back(f);}
 			inline void setPlayerId(int id){this->playerId=id;}
 			inline void setSelectingAircraft(bool selecting){this->selectingAircraft=selecting;}
+			inline void setActiveState(ActiveGameAppState *activeState){this->activeState=activeState;}
 			inline std::vector<Structure*>& getStructures(){return structures;}
 			inline std::vector<Projectile*>& getProjectiles(){return projectiles;}
 			inline std::vector<Fx>& getFxs(){return fx;}

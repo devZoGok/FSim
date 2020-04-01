@@ -17,7 +17,7 @@ namespace fsim{
 	JetAppState::JetAppState(GameManager *gm, int playerId) : ActiveGameAppState(gm,playerId){
 		type=AbstractAppState::JET_STATE;
 		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
-		playerJet=(Jet*)(inGameState->getStructure(playerId));
+		playerJet=(Jet*)getAircraft();
 	}
 	
 	JetAppState::~JetAppState(){}

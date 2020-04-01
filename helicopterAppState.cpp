@@ -10,7 +10,7 @@ namespace fsim{
 	HelicopterAppState::HelicopterAppState(GameManager *gm, int playerId) : ActiveGameAppState(gm,playerId){
 		type=AbstractAppState::HELICOPTER_STATE;	
 		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
-		helicopter=(Helicopter*)(inGameState->getStructure(playerId));
+		helicopter=(Helicopter*)getAircraft();
 	}
 
 	HelicopterAppState::~HelicopterAppState(){}

@@ -7,7 +7,8 @@
 #include"inGameAppState.h"
 #include"jet.h"
 #include"helicopter.h"
-#include"airfield.h"
+#include"runway.h"
+#include"helipad.h"
 #include"structureData.h"
 #include<model.h>
 #include<root.h>
@@ -259,6 +260,12 @@ namespace fsim{
 			case Type::JAPANESE_FIGHTER_BOMBER:
 			case Type::KOREAN_FIGHTER_BOMBER:
 				s=new Jet(gm,id,faction,pos,rot,ai,upgrades);
+				break;
+			case Type::RUNWAY:
+				s=new Runway(gm,faction,pos,rot);
+				break;
+			case Type::HELIPAD:
+				s=new Helipad(gm,faction,pos);
 				break;
 			default:
 				s=new Structure(gm,id,faction,pos,rot);

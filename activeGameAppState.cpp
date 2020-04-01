@@ -43,11 +43,13 @@ namespace fsim{
 
 	ActiveGameAppState::~ActiveGameAppState(){
 		vector<Structure*> &structures=inGameState->getStructures();
-		structures.erase(structures.begin()+playerId);	
+		if(structures.size()>playerId){
+			delete aircraft;
+			structures.erase(structures.begin()+playerId);	
+		}
 		inGameState->setPlayerId(structures.size());
 		for(Node *s : structureIconNodes)
 			delete s;
-		delete aircraft;
 		delete minimapNode;
 	}
 
