@@ -1,6 +1,7 @@
 #define MYSQLPP_MYSQL_HEADERS_BURIED
 
 #include<mysql++.h>
+#include"aircraftSelectionButton.h"
 #include"inGameAppState.h"
 #include"jetAppState.h"
 #include"helicopterAppState.h"
@@ -8,14 +9,16 @@
 #include"gameManager.h"
 #include"stateManager.h"
 #include"map.h"
+#include"aircraft.h"
 #include"defConfigs.h"
-#include"structure.h"
 #include"unit.h"
+#include"okButton.h"
 #include"exitButton.h"
 #include"optionsButton.h"
 #include"mainMenuButton.h"
 #include"textbox.h"
 #include"projectile.h"
+#include<text.h>
 #include<root.h>
 #include<quad.h>
 #include<node.h>
@@ -28,8 +31,16 @@ using namespace mysqlpp;
 using namespace vb01;
 
 namespace fsim{
+	InGameAppState::RestartButton::RestartButton(GameManager *gm,Vector2 pos,Vector2 size):Button(gm,pos,size,"Restart"){}
+
+	void InGameAppState::RestartButton::onClick(){
+		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
+		inGameState->restart();
+	}
+
 	InGameAppState::InGameAppState(GameManager *gm,int pilotId,int playerId,int faction,int saveId,int level,int objective) : AbstractAppState(gm){
 		type=AbstractAppState::IN_GAME_STATE;
+		Node *guiNode=gm->getRoot()->getGuiNode();
 		this->faction=(Faction)faction;
 		this->pilotId=pilotId;
 
@@ -58,9 +69,24 @@ namespace fsim{
 		mat->setDiffuseColor(Vector4(0,0,0,.5));
 		quad->setMaterial(mat);
 		pauseOverlay->attachMesh(quad);
+		pauseOverlay->setVisible(false);
+		guiNode->attachChild(pauseOverlay);
+
+		Text *levelEnding=new Text(PATH+"Fonts/batang.ttf","");
+		levelEnding->setScale(.3);
+		levelEndingNode=new Node(Vector3(300,300,-.95));
+		levelEndingNode->addText(levelEnding);
+		guiNode->attachChild(levelEndingNode);
 	}
 
-	InGameAppState::~InGameAppState(){}
+	InGameAppState::~InGameAppState(){
+		Node *guiNode=gm->getRoot()->getGuiNode();
+		clearMap();
+		guiNode->dettachChild(levelEndingNode);
+		guiNode->dettachChild(pauseOverlay);
+		delete levelEndingNode;
+		delete pauseOverlay;
+	}
 
 	void InGameAppState::onAttached(){
 		AbstractAppState::onAttached();
@@ -71,14 +97,25 @@ namespace fsim{
 	}
 
 	void InGameAppState::update(){
-		map->update();
+		if(!activeState){
+			StateManager *stateManager=gm->getStateManager();
+			JetAppState *jetState=(JetAppState*)stateManager->getState(AbstractAppState::JET_STATE);
+			HelicopterAppState *helicopterState=(HelicopterAppState*)stateManager->getState(AbstractAppState::HELICOPTER_STATE);
+			activeState=(jetState?(ActiveGameAppState*)jetState:(ActiveGameAppState*)helicopterState);
+		}
 		if(!paused){
+			if(levelStatus==ONGOING)
+				map->update();
 			for(int i=0;i<structures.size();i++){
 				if(structures[i]->getHp()>0)
 					structures[i]->update();
 				else{
 					delete structures[i];
 					structures.erase(structures.begin()+i);
+					if(i<playerId){
+						playerId--;
+						activeState->setPlayerId(playerId);
+					}
 				}
 			}
 			for(int i=0;i<projectiles.size();i++){
@@ -98,7 +135,57 @@ namespace fsim{
 					//delete node;
 					fx.erase(fx.begin()+i);
 				}
+			if(levelStatus!=ONGOING&&getTime()-levelEndTime>4000){
+				guiState->addButton(new RestartButton(gm,Vector2(100,280),Vector2(100,50)));
+				if(levelStatus==VICTORY){
+					class ContinueButton : public OkButton{
+						public:
+							ContinueButton(GameManager *gm, Vector2 pos,Vector2 size,int pilotId) : OkButton(gm,pos,size,nullptr,-1,pilotId){}
+							void onClick(){
+								StateManager *stateManager=gm->getStateManager();
+								InGameAppState *inGameState=(InGameAppState*)stateManager->getState(AbstractAppState::IN_GAME_STATE);
+								stateManager->dettachState(inGameState);
+								delete inGameState;
+								OkButton::onClick();
+							}
+						private:
+					};
+					ContinueButton *continueButton=new ContinueButton(gm,Vector2(100,340),Vector2(100,50),pilotId);
+					continueButton->setFaction(structures[playerId]->getFaction());
+					guiState->addButton(continueButton);
+				}
+				pauseOverlay->setVisible(true);
+				paused=true;
+			}
 		}
+	}
+
+	void InGameAppState::endLevel(bool win){
+		levelStatus=win?VICTORY:DEFEAT;
+		((Text*)levelEndingNode->getText(0))->setText(win?"Mission accomplished!":"Mission failed");
+		levelEndingNode->setVisible(true);
+		levelEndTime=getTime();
+	}
+
+	void InGameAppState::restart(){
+		Node *guiNode=gm->getRoot()->getGuiNode();
+		string mapPath=map->getPath(),aircraftTypes[]={"Fighter","Fighter-bomber","Helicopter"};
+		int level=map->getLevel(),objective=map->getObjective(),
+			width=60;
+		Aircraft *playerAircraft=(Aircraft*)structures[playerId];
+		int faction=playerAircraft->getFaction();
+
+		pauseOverlay->setVisible(false);
+		paused=false;
+		levelStatus=ONGOING;
+		levelEndingNode->setVisible(false);
+
+		clearMap();
+		map=new Map(gm,mapPath,this,-1,level,objective,pilotId);
+		playerId=structures.size();
+		guiState->removeAllButtons(nullptr);
+		for(int i=0;i<3;i++)
+			guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),aircraftTypes[i],faction*3+i,faction,Mapping::Bind(Mapping::FIGHTER+i)));
 	}
 
 	void InGameAppState::togglePause(){
@@ -170,41 +257,53 @@ namespace fsim{
 				}
 			private:
 		};
+
 		StateManager *stateManager=gm->getStateManager();
 		Node *guiNode=gm->getRoot()->getGuiNode();
-		if(!activeState){
-			JetAppState *jetState=(JetAppState*)stateManager->getState(AbstractAppState::JET_STATE);
-			HelicopterAppState *helicopterState=(HelicopterAppState*)stateManager->getState(AbstractAppState::HELICOPTER_STATE);
-			activeState=(jetState?(ActiveGameAppState*)jetState:(ActiveGameAppState*)helicopterState);
-		}
+		pauseOverlay->setVisible(!paused);
 		if(!paused){
-			guiNode->attachChild(pauseOverlay);
 			stateManager->dettachState(activeState);
 			guiState->addButton(new ResumeButton(gm,Vector2(100,100),Vector2(100,50)));
 			guiState->addButton(new SaveButton(gm,Vector2(100,160),Vector2(100,50)));
 			guiState->addButton(new OptionsButton(gm,Vector2(100,220),Vector2(100,50)));
-			guiState->addButton(new MainMenuButton(gm,Vector2(100,280),Vector2(100,50)));
-			guiState->addButton(new ExitButton(gm,Vector2(100,340),Vector2(100,50)));
+			guiState->addButton(new RestartButton(gm,Vector2(100,280),Vector2(100,50)));
+			guiState->addButton(new MainMenuButton(gm,Vector2(100,340),Vector2(100,50)));
+			guiState->addButton(new ExitButton(gm,Vector2(100,400),Vector2(100,50)));
 		}
 		else{
-			guiNode->dettachChild(pauseOverlay);
 			guiState->removeAllGUIElements();
 			stateManager->attachState(activeState);
 		}
 		paused=!paused;
 	}
 
+	void InGameAppState::clearMap(){
+		gm->getStateManager()->dettachState(activeState);
+		delete activeState;
+		activeState=nullptr;
+		while(!structures.empty()){
+			delete structures[0];
+			structures.erase(structures.begin());
+		}
+		while(!projectiles.empty()){
+			delete projectiles[0];
+			projectiles.erase(projectiles.begin());
+		}
+		while(!fx.empty())
+			fx.pop_back();
+		delete map;
+	}
+
 	void InGameAppState::onAction(Mapping::Bind bind, bool isPressed){
 		switch(bind){
 			case Mapping::MAIN_MENU:
-				if(isPressed)togglePause();
+				if(isPressed&&!selectingAircraft)togglePause();
 				break;	
 		}
 	}
 
 	void InGameAppState::onAnalog(Mapping::Bind bind, float str){
 		switch(bind){
-		
 		}
 	}
 

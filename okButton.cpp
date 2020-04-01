@@ -29,6 +29,7 @@ using namespace mysqlpp;
 namespace fsim{
 	OkButton::OkButton(GameManager *gm,Vector2 pos, Vector2 size,Textbox *textbox,int saveId,int pilotId) : Button(gm,pos,size,"Ok"){
 		this->textbox=textbox;
+		this->pilotId=pilotId;
 	}
 
 	void OkButton::onClick(){
@@ -205,18 +206,20 @@ namespace fsim{
 
 		Connection conn(false);					
 		conn.connect("fsim","localhost",gm->getOptions().databaseUser.c_str(),"");
-		int pilotId=(int)conn.query("select count(*) from pilots;").store()[0][0];
-		string playerName=textbox->getText(),queryText="insert into pilots values("+to_string(pilotId)+","+to_string(faction)+",'"+playerName+"'";
-		for(int i=0;i<3;i++){
-			queryText+=",'";
-		for(int j=0;j<numUpgrades;j++)
-			queryText+="0";
-			queryText+="'";
+		if(textbox){
+			pilotId=(int)conn.query("select count(*) from pilots;").store()[0][0];
+			string playerName=textbox->getText(),queryText="insert into pilots values("+to_string(pilotId)+","+to_string(faction)+",'"+playerName+"'";
+			for(int i=0;i<3;i++){
+				queryText+=",'";
+			for(int j=0;j<numUpgrades;j++)
+				queryText+="0";
+				queryText+="'";
+			}
+			queryText+=");";
+			conn.query(queryText).store();
+	
+			conn.query("insert into stats values("+to_string(pilotId)+",0,0,0,0,0,0);").store();
 		}
-		queryText+=");";
-		conn.query(queryText).store();
-
-		conn.query("insert into stats values("+to_string(pilotId)+",0,0,0,0,0,0);").store();
 		StoreQueryResult res=conn.query("select fighter_upgrades,fighter_bomber_upgrades,helicopter_upgrades from pilots where pid="+to_string(pilotId)+";").store();
 		string s[3]={
 			(string)res[0][0],
@@ -251,7 +254,7 @@ namespace fsim{
 			tabs[i]=tab;
 		}
 		guiState->getButton("Fighter")->onClick();
-		guiState->addButton(new StartButton(gm,Vector2(500,500),Vector2(100,50),tabs,pilotId,faction,textbox==nullptr));
+		guiState->addButton(new StartButton(gm,Vector2(500,500),Vector2(100,50),tabs,pilotId,faction,false));// vėliau patikrint
 		
 		guiState->removeButton(this);
 	}

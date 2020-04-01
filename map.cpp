@@ -27,8 +27,10 @@ namespace fsim{
 		this->gm=gm;
 		this->level=level;
 		this->objective=objective;
+		this->path=path;
 		rootNode=gm->getRoot()->getRootNode();
 
+		Root *root=gm->getRoot();
 		string t[]={
 			path+"top.jpg",
 			path+"bottom.jpg",
@@ -37,7 +39,7 @@ namespace fsim{
 			path+"front.jpg",
 			path+"back.jpg"
 		};
-		gm->getRoot()->createSkybox(t);
+		root->createSkybox(t);
 
 		mapModel=new Model(path+"level.obj");
 		Material *mat=new Material();
@@ -69,6 +71,7 @@ namespace fsim{
 				light->setPosition(Vector3(0,25,0));
 				light->setAttenuationValues(.0001,.00001,1);
 				light->setColor(color);
+				lights.push_back(light);
 				rootNode->addLight(light);
 				/*
 			if(type=="directional"){
@@ -148,7 +151,16 @@ namespace fsim{
 		}
 	}
 
-	Map::~Map(){}
+	Map::~Map(){
+		gm->getRoot()->removeSkybox();
+		rootNode->dettachChild(mapModel);
+		delete mapModel;
+		while(!lights.empty()){
+			rootNode->removeLight(0);
+			delete lights[0];
+			lights.erase(lights.begin());
+		}
+	}
 
 	void Map::foo(int i){
 		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
@@ -197,6 +209,15 @@ namespace fsim{
 					foo(1);
 			}
 			else{
+				InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
+				if(objectives[0].status==Objective::SUCCESS&&objectives.size()==1){
+					inGameState->endLevel(true);
+					return;
+				}
+				else if(objectives[0].status==Objective::FAILURE){
+					inGameState->endLevel(false);
+					return;
+				}
 				objectives.erase(objectives.begin());
 				objective++;
 			}

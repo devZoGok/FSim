@@ -42,7 +42,6 @@ namespace fsim{
 	}
 
 	ActiveGameAppState::~ActiveGameAppState(){
-		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
 		vector<Structure*> &structures=inGameState->getStructures();
 		structures.erase(structures.begin()+playerId);	
 		inGameState->setPlayerId(structures.size());
@@ -70,9 +69,10 @@ namespace fsim{
 	}
 
 	void ActiveGameAppState::update(){
+		if(!inGameState)
+			inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
 		ammoTextNode->getText(0)->setText(to_string(aircraft->getFuel())+"|"+to_string(aircraft->getPrimaryAmmo())+"|"+to_string(aircraft->getSecondaryAmmo())+"|"+to_string(aircraft->getChaff()));
 
-		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
 		vector<Structure*> &structures=inGameState->getStructures();
 		for(int i=0;i<structures.size();i++){
 			if(i!=playerId){

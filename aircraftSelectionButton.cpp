@@ -29,6 +29,7 @@ namespace fsim{
 		Aircraft *aircraft=helicopter?(Aircraft*)new Helicopter(gm,aircraftId,faction,pos,Quaternion(1,0,0,0),false):
 		(Aircraft*)new Jet(gm,aircraftId,faction,pos,Quaternion(1,0,0,0),false);
 		inGameState->addStructure(aircraft);
+		inGameState->setSelectingAircraft(false);
 
 		stateManager->attachState(helicopter?(AbstractAppState*)new HelicopterAppState(gm,playerId):(AbstractAppState*)new JetAppState(gm,playerId));
 		guiState->removeAllButtons(nullptr);

@@ -13,7 +13,7 @@ namespace fsim{
 			inline void setFaction(int f){this->faction=f;}
 		private:
 			Textbox *textbox;
-			int faction;
+			int faction,pilotId;
 	};
 }
 

@@ -9,6 +9,7 @@
 #include"helicopterAppState.h"
 #include"helicopter.h"
 #include"guiAppState.h"
+#include"inGameAppState.h"
 #include"aircraftSelectionButton.h"
 #include"structureData.h"
 
@@ -52,6 +53,7 @@ namespace fsim{
 	void Airfield::update(){
 		StateManager *stateManager=gm->getStateManager();
 		GuiAppState *guiState=(GuiAppState*)stateManager->getState(AbstractAppState::GUI_STATE);
+		InGameAppState *inGameState=(InGameAppState*)stateManager->getState(AbstractAppState::IN_GAME_STATE);
 		JetAppState *jetState=(JetAppState*)stateManager->getState(AbstractAppState::JET_STATE);
 		HelicopterAppState *helicopterState=(HelicopterAppState*)stateManager->getState(AbstractAppState::HELICOPTER_STATE);
 
@@ -67,6 +69,7 @@ namespace fsim{
 					for(int i=0;i<numHelipads&&!landed;i++){
 						if((aircraft->getPos()-(pos+helipadPos[i])).getLength()<=minHeliDistance){
 							landed=true;
+							inGameState->setSelectingAircraft(true);
 							stateManager->dettachState(AbstractAppState::HELICOPTER_STATE);
 							for(int j=0;j<3;j++)
 								guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*j,100),Vector2(width,100),aircraftTypes[j],faction*3+j,faction,Mapping::Bind(Mapping::FIGHTER+j)));
@@ -84,6 +87,7 @@ namespace fsim{
 							(-runwayDirs[i]).getAngleBetween(Vector3(jetDir.x,0,jetDir.z).norm())<=minDirAngle&&
 							runwayDirs[i].getAngleBetween((jetPos-rp).norm())<=minPosAngle){
 							landed=true;
+							inGameState->setSelectingAircraft(true);
 							stateManager->dettachState(AbstractAppState::JET_STATE);
 							for(int j=0;j<3;j++)
 								guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*j,100),Vector2(width,100),aircraftTypes[j],faction*3+j,faction,Mapping::Bind(Mapping::FIGHTER+j)));

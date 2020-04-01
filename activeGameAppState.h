@@ -12,6 +12,7 @@ namespace fsim{
 	class Structure;
 	class GameManager;
 	class Aircraft;
+	class InGameAppState;
 
 	class ActiveGameAppState : public AbstractAppState{
 		public:
@@ -22,9 +23,11 @@ namespace fsim{
 			virtual void update();
 			virtual void onAction(Mapping::Bind,bool){}
 			inline Aircraft* getAircraft(){return aircraft;}
+			inline void setPlayerId(int playerId){this->playerId=playerId;}
 			void addStructureIcon(int);
 		private:
 			Aircraft *aircraft;
+			InGameAppState *inGameState=nullptr;
 		protected:
 			bool forwPitch=false,backPitch=false,leftRoll=false,rightRoll=false;
 			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.001,minimapRadius=200,lineOfSight=100,iconSize=20;

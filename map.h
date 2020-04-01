@@ -26,6 +26,7 @@ namespace fsim{
 			inline int getObjective(){return objective;}
 			inline int getLevel(){return level;}
 			inline vb01::Model* getMapModel(){return mapModel;}
+			inline std::string getPath(){return path;}
 		private:
 			struct Objective{
 				enum Status{SUCCESS,FAILURE,PENDING};
@@ -40,19 +41,20 @@ namespace fsim{
 				Status status=PENDING;
 				std::string text;
 			};
+
 			template<typename T>
 			void getLineData(std::string,T*,int,int=0);
 			void createStructure(InGameAppState*,int,int,vb01::Vector3,vb01::Quaternion,int*,bool);
 			void createObjective(InGameAppState*,Objective::Condition*,std::string,int);
+			void foo(int);
 
 			int objective,level;
 			GameManager *gm;
+			std::string path;
 			vb01::Model* mapModel;
 			vb01::Node *rootNode;
 			std::vector<vb01::Light*> lights;
 			std::vector<Objective> objectives;
-
-			void foo(int);
 	};
 }
 
