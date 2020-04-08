@@ -12,6 +12,8 @@ namespace fsim{
 			void update();
 		private:
 			s64 initTime;
+			vb01::Vector3 initDir;
+			vb01::Quaternion initRot;
 			float initAngle=0;
 	};
 }

@@ -39,6 +39,7 @@ namespace fsim{
 			OPTIONS,
 			CONTROLS,
 			VIDEO,
+			RESTART,
 			FIGHTER,
 			FIGHTER_BOMBER,
 			HELICOPTER

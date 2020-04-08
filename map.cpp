@@ -9,6 +9,7 @@
 #include"helicopter.h"
 #include"runway.h"
 #include"helipad.h"
+#include"sam.h"
 #include"structureData.h"
 #include<model.h>
 #include<root.h>
@@ -248,6 +249,9 @@ namespace fsim{
 	void Map::createStructure(InGameAppState *inGameState,int id,int faction,Vector3 pos,Quaternion rot,int *upgrades,bool ai){
 		Structure *s;
 		switch(id){
+			case Type::SAM_SITE:
+				s=new SAM(gm,faction,pos,rot);
+				break;
 			case Type::CHINESE_HELICOPTER:
 			case Type::JAPANESE_HELICOPTER:
 			case Type::KOREAN_HELICOPTER:

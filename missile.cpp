@@ -73,8 +73,10 @@ namespace fsim{
 			if(hitbox)
 				retrieveCollisions(pos,dir,s->getHitbox(),res,length);
 		}
+		/*
 		if(!res.empty())
 			explode();
+			*/
 		pos=pos+dir*speed;
 		if(target){
 			Vector3 targetVec=(target->getPos()-pos).norm();

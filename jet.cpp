@@ -16,7 +16,7 @@ using namespace std;
 
 namespace fsim{
 	Jet::Jet(GameManager *gm, int id, int faction, Vector3 pos, Quaternion rot,bool ai,int *upgrades) : Aircraft(gm,id,faction,pos,rot,upgrades,ai){
-		gas=new ParticleEmitter(100);
+		gas=new ParticleEmitter(500);
 		Node *gasNode=new Node(Vector3(0,0,-1));
 		Material *gasMat=new Material(Material::MATERIAL_PARTICLE);
 		gasMat->addDiffuseMap(PATH+"Textures/Smoke/smoke00.png");
@@ -34,7 +34,7 @@ namespace fsim{
 		gas->setSpread(1);
 		gas->setDirection(Vector3(0,0,-.4));
 
-		smoke=new ParticleEmitter(100);
+		smoke=new ParticleEmitter(500);
 		Node *smokeNode=new Node(Vector3(0,0,-1));
 		Material *smokeMat=new Material(Material::MATERIAL_PARTICLE);
 		smokeMat->addDiffuseMap(PATH+"Textures/Smoke/smoke00.png");

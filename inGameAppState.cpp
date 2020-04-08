@@ -31,7 +31,7 @@ using namespace mysqlpp;
 using namespace vb01;
 
 namespace fsim{
-	InGameAppState::RestartButton::RestartButton(GameManager *gm,Vector2 pos,Vector2 size):Button(gm,pos,size,"Restart"){}
+	InGameAppState::RestartButton::RestartButton(GameManager *gm,Vector2 pos,Vector2 size):Button(gm,pos,size,"Restart",Mapping::RESTART){}
 
 	void InGameAppState::RestartButton::onClick(){
 		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
@@ -110,6 +110,37 @@ namespace fsim{
 				if(structures[i]->getHp()>0)
 					structures[i]->update();
 				else{
+					const int numFrames=14;
+					string paths[numFrames];
+					for(int j=0;j<numFrames;j++){
+						string numString=j<10?"0"+to_string(j):to_string(j);
+						paths[j]=PATH+"Textures/Explosion/explosion"+numString+".png";
+					}
+
+					ParticleEmitter *explosion=new ParticleEmitter(1);
+					Node *explosionNode=new Node(structures[i]->getPos());
+					explosionNode->attachParticleEmitter(explosion);
+					Material *mat=new Material(Material::MATERIAL_PARTICLE);
+					mat->addDiffuseMap(new Texture(paths,numFrames,30));
+					explosion->setStartSize(Vector2(20,20));
+					explosion->setEndSize(Vector2(20,20));
+					explosion->setStartColor(Vector4(1,1,1,1));
+					explosion->setEndColor(Vector4(1,.5,0,1));
+					explosion->setDirection(Vector3(0.,.0,0.));
+					explosion->setMaterial(mat);
+					explosion->setSpread(1);
+					explosion->setLowLife(.5);
+					explosion->setHighLife(.5);
+					gm->getRoot()->getRootNode()->attachChild(explosionNode);
+
+					Fx fx;
+					fx.emitters=new ParticleEmitter*;
+					fx.emitters[0]=explosion;
+					fx.pos=structures[i]->getPos();
+					fx.timeToLive=500;
+					fx.initTime=getTime();
+					addFx(fx);
+
 					delete structures[i];
 					structures.erase(structures.begin()+i);
 					if(i<playerId){

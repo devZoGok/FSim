@@ -17,7 +17,7 @@ namespace fsim{
 	AIPilot::AIPilot(GameManager *gm,Aircraft *aircraft){
 		this->gm=gm;
 		this->aircraft=aircraft;
-		waypoint=Vector3(30,20,60);
+		//waypoint=Vector3(30,20,60);
 	}
 
 	AIPilot::~AIPilot(){}
