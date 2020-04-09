@@ -10,7 +10,7 @@ namespace fsim{
 			Bomb(GameManager*,int,Structure*,vb01::Vector3,vb01::Quaternion,float);
 			~Bomb();
 			void update();
-		private:
+		protected:
 			s64 initTime;
 			vb01::Vector3 initDir;
 			vb01::Quaternion initRot;

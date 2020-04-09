@@ -6,11 +6,13 @@
 #include"gameManager.h"
 #include"stateManager.h"
 #include"inGameAppState.h"
+#include"projectileData.h"
 #include<vector>
 #include<iostream>
 
 using namespace vb01;
 using namespace std;
+using namespace fsim::projectileData;
 
 namespace fsim{
 	Bomb::Bomb(GameManager *gm,int id,Structure *structure,Vector3 pos,Quaternion rot,float speed) : Projectile(gm,id,structure,pos,rot){
@@ -28,7 +30,7 @@ namespace fsim{
 	void Bomb::update(){
 		Projectile::update();
 		Vector3 baseDir=Vector3(dir.x,0,dir.z).norm();
-		float time=float(getTime()-initTime)/1000,g=.1;
+		float time=float(getTime()-initTime)/1000;
 		pos=pos+initDir*speed*cos(initAngle)*time+Vector3(0,speed*sin(initAngle)*time-g*time*time*.5,0);
 		float angle=atan((speed*sin(initAngle)-g*time)/(speed*cos(initAngle)));
 		Quaternion rotQuat=Quaternion(angle,-left);

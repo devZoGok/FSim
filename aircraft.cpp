@@ -8,7 +8,7 @@
 #include"projectileData.h"
 #include"missile.h"
 #include"map.h"
-#include"bomb.h"
+#include"gpsBomb.h"
 #include"aiPilot.h"
 #include<iostream>
 #include<camera.h>
@@ -188,7 +188,18 @@ namespace fsim{
 				projectile=new Missile(gm,type==FIGHTER?projectileData::AAM:projectileData::ASM,this,pos-up*1,rot,target);
 			}
 			else{
-				projectile=new Bomb(gm,projectileData::BOMB,this,pos-up*.25,rot,.1);
+				if(id==Type::KOREAN_FIGHTER_BOMBER){
+					vector<Structure*> targets;
+					Vector3 targetPos=Vector3::VEC_ZERO;
+					for(Structure *s : inGameState->getStructures())
+						if(s->getFaction()!=faction&&s->getId()>Type::KOREAN_HELICOPTER)
+							targets.push_back(s);
+					if(!targets.empty())
+						targetPos=targets[0]->getPos();
+					projectile=new GPSBomb(gm,this,targetPos,pos-up*.25,rot,.1);
+				}
+				else
+					projectile=new Bomb(gm,projectileData::BOMB,this,pos-up*.25,rot,.1);
 			}
 			inGameState->addProjectile(projectile);
 			secondaryAmmo--;
