@@ -9,6 +9,10 @@ namespace vb01{
 	class Light;
 }
 
+namespace sf{
+	class Sound;
+}
+
 namespace fsim{
 	struct Fx{
 		vb01::ParticleEmitter **emitters=nullptr;
@@ -16,6 +20,7 @@ namespace fsim{
 		vb01::Vector3 pos;
 		bool allive=true;
 		int numEmitters;
+		sf::Sound *sfx=nullptr;
 		s64 initTime,timeToLive;
 	};
 }

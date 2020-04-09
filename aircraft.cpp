@@ -20,6 +20,7 @@
 #include<particleEmitter.h>
 #include<material.h>
 #include<light.h>
+#include<SFML/Audio.hpp>
 
 using namespace vb01;
 using namespace std;
@@ -76,6 +77,20 @@ namespace fsim{
 		engineSmoke->setStartColor(Vector4(1,1,1,1));
 		engineSmoke->setEndColor(Vector4(1,1,0,1));
 
+		primaryFireSfxBuffer=new sf::SoundBuffer();
+		primaryFireSfxBuffer->loadFromFile(PATH+"Sounds/shot.ogg");
+		primaryFireSfx=new sf::Sound();
+		primaryFireSfx->setBuffer(*primaryFireSfxBuffer);
+		primaryFireSfx->setMinDistance(5);
+		primaryFireSfx->setAttenuation(5);
+		if(getType()!=FIGHTER_BOMBER){
+			secondaryFireSfxBuffer=new sf::SoundBuffer();
+			secondaryFireSfxBuffer->loadFromFile(PATH+"Sounds/missile.ogg");
+			secondaryFireSfx=new sf::Sound();
+			secondaryFireSfx->setBuffer(*secondaryFireSfxBuffer);
+			secondaryFireSfx->setMinDistance(5);
+			secondaryFireSfx->setAttenuation(5);
+		}
 
 		/*
 		muzzleLight=new Light(Light::POINT);
@@ -103,8 +118,12 @@ namespace fsim{
 		model->dettachChild(engineSmokeNode);
 		delete muzzleFlashNode;
 		delete engineSmokeNode;
-		/*
-		*/
+		delete primaryFireSfxBuffer;
+		delete primaryFireSfx;
+		if(getType()!=FIGHTER_BOMBER){
+			delete secondaryFireSfxBuffer;
+			delete secondaryFireSfx;
+		}
 	}
 
 	void Aircraft::update(){
@@ -164,6 +183,7 @@ namespace fsim{
 				}
 			}
 
+			primaryFireSfx->play();
 			cout<<results.size()<<"\n";
 			//primaryAmmo--;
 			muzzleFlash->getNode()->setVisible(true);
@@ -201,6 +221,8 @@ namespace fsim{
 				else
 					projectile=new Bomb(gm,projectileData::BOMB,this,pos-up*.25,rot,.1);
 			}
+			if(secondaryFireSfx)
+				secondaryFireSfx->play();
 			inGameState->addProjectile(projectile);
 			secondaryAmmo--;
 			lastSecondaryFire=getTime();

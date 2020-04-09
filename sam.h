@@ -4,6 +4,11 @@
 #include"building.h"
 #include<util.h>
 
+namespace sf{
+	class SoundBuffer;
+	class Sound;
+}
+
 namespace fsim{
 	class Aircraft;
 
@@ -18,6 +23,8 @@ namespace fsim{
 			void fire();
 			inline bool canFire(){return vb01::getTime()-lastFire>rateOfFire;}
 
+			sf::SoundBuffer *sfxBuffer;
+			sf::Sound *sfx;
 			vb01::s64 rateOfFire=3000,lastFire=0;
 			vb01::Vector3 horDir,vertDir;
 			float horAngle=0,vertAngle=0;

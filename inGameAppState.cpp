@@ -25,6 +25,7 @@
 #include<material.h>
 #include<particleEmitter.h>
 #include<algorithm>
+#include<SFML/Audio.hpp>
 
 using namespace std;
 using namespace mysqlpp;
@@ -133,12 +134,22 @@ namespace fsim{
 					explosion->setHighLife(.5);
 					gm->getRoot()->getRootNode()->attachChild(explosionNode);
 
+					int explosionSfx=rand()%4;
+					sf::SoundBuffer *sfxBuffer=new sf::SoundBuffer();
+					sfxBuffer->loadFromFile(PATH+"Sounds/Explosions/explosion0"+to_string(explosionSfx)+".ogg");
+					sf::Sound *sfx=new sf::Sound();
+					sfx->setBuffer(*sfxBuffer);
+					sfx->setMinDistance(5);
+					sfx->setAttenuation(5);
+					sfx->play();
+
 					Fx fx;
 					fx.emitters=new ParticleEmitter*;
 					fx.emitters[0]=explosion;
 					fx.pos=structures[i]->getPos();
-					fx.timeToLive=500;
+					fx.timeToLive=1500;
 					fx.initTime=getTime();
+					fx.sfx=sfx;
 					addFx(fx);
 
 					delete structures[i];
@@ -166,6 +177,11 @@ namespace fsim{
 				if(getTime()-fx[i].initTime>fx[i].timeToLive&&fx[i].allive){
 					Node *node=fx[i].emitters[0]->getNode();
 					Root::getSingleton()->getRootNode()->dettachChild(node);
+					if(fx[i].sfx){
+						fx[i].sfx->stop();
+						delete fx[i].sfx->getBuffer();
+						delete fx[i].sfx;
+					}
 					//delete[] fx[lastId].emitters;
 					fx[i].allive=false;
 					//delete node;

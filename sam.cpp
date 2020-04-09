@@ -9,6 +9,7 @@
 #include<iostream>
 #include<cmath>
 #include<algorithm>
+#include<SFML/Audio.hpp>
 
 using namespace std;
 using namespace vb01;
@@ -18,9 +19,19 @@ namespace fsim{
 	SAM::SAM(GameManager *gm,int faction,Vector3 pos,Quaternion rot) : Building(gm,SAM_SITE,faction,pos,rot){
 		horDir=left;
 		vertDir=dir;
+
+		sfxBuffer=new sf::SoundBuffer();
+		sfxBuffer->loadFromFile(PATH+"Sounds/missile.ogg");
+		sfx=new sf::Sound();
+		sfx->setBuffer(*sfxBuffer);
+		sfx->setMinDistance(5);
+		sfx->setAttenuation(5);
 	}
 
-	SAM::~SAM(){}
+	SAM::~SAM(){
+		delete sfxBuffer;
+		delete sfx;
+	}
 
 	void SAM::update(){
 		Building::update();

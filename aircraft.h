@@ -11,6 +11,11 @@ namespace vb01{
 	class Light;
 }
 
+namespace sf{
+	class SoundBuffer;
+	class Sound;
+}
+
 namespace fsim{
 	enum AircraftType{FIGHTER,FIGHTER_BOMBER,HELICOPTER};
 	class AIPilot;
@@ -55,6 +60,8 @@ namespace fsim{
 			bool primaryFiring=false;
 			vb01::ParticleEmitter *muzzleFlash,*engineSmoke;
 			vb01::Light *muzzleLight;
+			sf::SoundBuffer *primaryFireSfxBuffer=nullptr,*secondaryFireSfxBuffer;
+			sf::Sound *primaryFireSfx=nullptr,*secondaryFireSfx=nullptr;
 			std::vector<Fx> fx;
 	};
 }
