@@ -102,7 +102,8 @@ namespace fsim{
 		if(canFire()){
 			Quaternion rotQuat=Quaternion(vertAngle,horDir)*(Quaternion(horAngle,Vector3(0,1,0)));
 			InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
-			inGameState->addProjectile(new Missile(gm,(int)projectileData::SAM,this,pos,rotQuat,nullptr));
+			inGameState->addProjectile(new Missile(gm,(int)projectileData::SAM,this,pos+vertDir.norm()*1,rotQuat,target));
+			sfx->play();
 			lastFire=getTime();
 		}
 	}

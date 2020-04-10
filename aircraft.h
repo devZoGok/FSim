@@ -18,7 +18,9 @@ namespace sf{
 
 namespace fsim{
 	enum AircraftType{FIGHTER,FIGHTER_BOMBER,HELICOPTER};
+
 	class AIPilot;
+	class Missile;
 
 	class Aircraft : public Unit{
 		public:
@@ -38,6 +40,7 @@ namespace fsim{
 			inline bool canPrimaryFire(){return primaryAmmo>0&&getTime()-lastPrimaryFire>rateOfPrimaryFire;}
 			inline bool canSecondaryFire(){return secondaryAmmo>0&&getTime()-lastSecondaryFire>rateOfSecondaryFire;}
 			inline bool canDeployChaff(){return chaff>0&&getTime()-lastChaff>rateOfChaff;}
+			inline bool isLockedOnto(){return lockedOnto;}
 			inline int getPrimaryAmmo(){return primaryAmmo;}
 			inline int getSecondaryAmmo(){return secondaryAmmo;}
 			inline int getChaff(){return chaff;}
@@ -51,17 +54,18 @@ namespace fsim{
 			void setRoll(float);
 			void setYaw(float);
 		private:
+			std::vector<Missile*> getHomingMissiles();
+
 			vb01::Camera *cam=nullptr;
 			AIPilot *aiPilot=nullptr;
 		protected:
 			s64 rateOfPrimaryFire,rateOfSecondaryFire,rateOfChaff,rateOfFuelConsumption=5000,lastPrimaryFire=0,lastSecondaryFire=0,lastChaff=0,lastConsumption=0;
 			int *upgrades,primaryAmmo,secondaryAmmo,fuel,chaff;
 			float rollSpeed,yawSpeed,pitchSpeed,pitchVal=0,rollVal=0,yawVal=0,weight;
-			bool primaryFiring=false;
+			bool primaryFiring=false,lockedOnto=false;
 			vb01::ParticleEmitter *muzzleFlash,*engineSmoke;
 			vb01::Light *muzzleLight;
-			sf::SoundBuffer *primaryFireSfxBuffer=nullptr,*secondaryFireSfxBuffer;
-			sf::Sound *primaryFireSfx=nullptr,*secondaryFireSfx=nullptr;
+			sf::Sound *primaryFireSfx=nullptr,*secondaryFireSfx=nullptr,*chaffSfx;
 			std::vector<Fx> fx;
 	};
 }

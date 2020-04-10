@@ -2,7 +2,11 @@
 #include"projectile.h"
 #include"projectileData.h"
 #include"gameManager.h"
-#include<iostream>
+#include"stateManager.h"
+#include"map.h"
+#include"structure.h"
+#include"inGameAppState.h"
+#include<ray.h>
 #include<root.h>
 #include<model.h>
 #include<material.h>
@@ -11,10 +15,10 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
-	Projectile::Projectile(GameManager *gm,int id,Structure *structure,Vector3 pos,Quaternion rot){
+	Projectile::Projectile(GameManager *gm,int id,Structure *owner,Vector3 pos,Quaternion rot){
 		this->gm=gm;
 		this->id=id;
-		this->structure=structure;
+		this->owner=owner;
 		this->pos=pos;
 		this->rot=rot;
 		this->speed=projectileData::speed[id];
@@ -44,9 +48,32 @@ namespace fsim{
 	void Projectile::update(){
 		mesh->setPosition(pos);
 		mesh->setOrientation(rot);
+		checkForCollision();
 	}
 
 	void Projectile::checkForCollision(){
+		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
+		Map *map=inGameState->getMap();
+		vector<CollisionResult> results;
+		retrieveCollisions(pos,dir,(Node*)map->getMapModel(),results,length);
+		for(Structure *s : inGameState->getStructures()){
+			Model *hitbox=s->getHitbox();
+			if(hitbox)
+				retrieveCollisions(pos,dir,s->getHitbox(),results,length);
+		}
+		if(!results.empty())
+			sortResults(results);
+		for(CollisionResult r : results){
+			for(Structure *s : inGameState->getStructures()){
+				Model *hitbox=s->getHitbox();
+				if(s!=owner&&hitbox&&hitbox->getChild(0)->getMesh(0)==r.mesh){
+					int hp=s->getHp();
+					hp-=100;
+					s->setHp(hp);
+					explode();
+				}
+			}
+		}
 	}
 
 	void Projectile::explode(){

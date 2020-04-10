@@ -77,20 +77,27 @@ namespace fsim{
 		engineSmoke->setStartColor(Vector4(1,1,1,1));
 		engineSmoke->setEndColor(Vector4(1,1,0,1));
 
-		primaryFireSfxBuffer=new sf::SoundBuffer();
+		sf::SoundBuffer *primaryFireSfxBuffer=new sf::SoundBuffer();
 		primaryFireSfxBuffer->loadFromFile(PATH+"Sounds/shot.ogg");
 		primaryFireSfx=new sf::Sound();
 		primaryFireSfx->setBuffer(*primaryFireSfxBuffer);
 		primaryFireSfx->setMinDistance(5);
 		primaryFireSfx->setAttenuation(5);
 		if(getType()!=FIGHTER_BOMBER){
-			secondaryFireSfxBuffer=new sf::SoundBuffer();
+			sf::SoundBuffer *secondaryFireSfxBuffer=new sf::SoundBuffer();
 			secondaryFireSfxBuffer->loadFromFile(PATH+"Sounds/missile.ogg");
 			secondaryFireSfx=new sf::Sound();
 			secondaryFireSfx->setBuffer(*secondaryFireSfxBuffer);
 			secondaryFireSfx->setMinDistance(5);
 			secondaryFireSfx->setAttenuation(5);
 		}
+
+		sf::SoundBuffer *chaffSfxBuffer=new sf::SoundBuffer();
+		chaffSfxBuffer->loadFromFile(PATH+"Sounds/chaff.ogg");
+		chaffSfx=new sf::Sound();
+		chaffSfx->setBuffer(*chaffSfxBuffer);
+		chaffSfx->setMinDistance(5);
+		chaffSfx->setAttenuation(5);
 
 		/*
 		muzzleLight=new Light(Light::POINT);
@@ -118,12 +125,14 @@ namespace fsim{
 		model->dettachChild(engineSmokeNode);
 		delete muzzleFlashNode;
 		delete engineSmokeNode;
-		delete primaryFireSfxBuffer;
+		delete primaryFireSfx->getBuffer();
 		delete primaryFireSfx;
 		if(getType()!=FIGHTER_BOMBER){
-			delete secondaryFireSfxBuffer;
+			delete secondaryFireSfx->getBuffer();
 			delete secondaryFireSfx;
 		}
+		delete chaffSfx->getBuffer();
+		delete chaffSfx;
 	}
 
 	void Aircraft::update(){
@@ -145,7 +154,9 @@ namespace fsim{
 		if(getTime()-lastPrimaryFire>30){
 			muzzleFlash->getNode()->setVisible(false);
 		}
+		lockedOnto=!getHomingMissiles().empty();
 		muzzleFlash->setDirection(dir*-.1);
+		/*
 		for(int i=0;i<fx.size();i++){
 			if(getTime()-fx[i].initTime>fx[i].timeToLive){
 			}
@@ -158,6 +169,7 @@ namespace fsim{
 				}
 			}
 		}
+		*/
 	}
 
 	void Aircraft::primaryFire(){
@@ -237,40 +249,26 @@ namespace fsim{
 			Node *node=new Node(pos);
 			rootNode->attachChild(node);
 
-			for(int i=0;i<numChaffSources;i++){
-				chaffSources[i]=new ParticleEmitter(25);
-				Material *mat=new Material(Material::MATERIAL_PARTICLE);
-				mat->addDiffuseMap(PATH+"Textures/Smoke/smoke00.png");
-				chaffSources[i]->setMaterial(mat);
-				node->attachParticleEmitter(chaffSources[i]);
-				chaffSources[i]->setLowLife(1);
-				chaffSources[i]->setHighLife(2);
-				chaffSources[i]->setStartSize(Vector2(.4,.4));
-				chaffSources[i]->setStartSize(Vector2(2,2));
-				chaffSources[i]->setStartColor(Vector4(.8,.8,.8,1));
-				chaffSources[i]->setEndColor(Vector4(.8,.8,.8,1));
-				chaffSources[i]->setDirection(dir*.3);
-				node->attachParticleEmitter(chaffSources[i]);
-				/*
-		Vector3 dir=Quaternion(.6*i-PI/2,Vector3(0,0,1))*Vector3(0.,.3,0.);
-		ParticleEmitter *pe=new ParticleEmitter(25);
-		Node *n=new Node(Vector3(0,0,0));
-		n->attachParticleEmitter(pe);
-		Material *mat=new Material(Material::MATERIAL_PARTICLE);
-		mat->addDiffuseMap(new Texture(s2,1,30));
-		//mat->addDiffuseMap(s2[1]);
-		pe->setStartSize(Vector2(2,2));
-		pe->setEndSize(Vector2(5,5));
-		pe->setStartColor(Vector4(.8,.8,.8,1));
-		pe->setEndColor(Vector4(.8,.8,.8,1));
-		pe->setDirection(dir);
-		pe->setMaterial(mat);
-		pe->setSpread(5);
-		pe->setLowLife(1);
-		pe->setHighLife(2);
-		rootNode->attachChild(n);
-				*/
-			}
+			vector<Missile*> homingMissiles=getHomingMissiles();
+			for(Missile *m : homingMissiles)
+				m->setTarget(nullptr);
+
+			chaffSfx->play();
+
+			chaffSources[0]=new ParticleEmitter(100);
+			Material *mat=new Material(Material::MATERIAL_PARTICLE);
+			mat->addDiffuseMap(PATH+"Textures/Smoke/smoke00.png");
+			chaffSources[0]->setMaterial(mat);
+			node->attachParticleEmitter(chaffSources[0]);
+			chaffSources[0]->setLowLife(1);
+			chaffSources[0]->setHighLife(2);
+			chaffSources[0]->setStartSize(Vector2(.1,.1));
+			chaffSources[0]->setEndSize(Vector2(.1,.1));
+			chaffSources[0]->setStartColor(Vector4(.8,.8,.8,1));
+			chaffSources[0]->setEndColor(Vector4(.8,.8,.8,0));
+			chaffSources[0]->setDirection(dir*.1);
+			chaffSources[0]->setSpread(360);
+			node->attachParticleEmitter(chaffSources[0]);
 
 			Fx fx;
 			fx.emitters=chaffSources;
@@ -319,6 +317,20 @@ namespace fsim{
 		if(abs(yawVal)>yawSpeed)
 			yawVal=yawVal/yawVal*yawSpeed;
 		yaw(y);
+	}
+
+	vector<Missile*> Aircraft::getHomingMissiles(){
+		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
+		vector<Missile*> homingMissiles;
+		for(Projectile *p : inGameState->getProjectiles()){
+			int id=p->getId();
+			if(id==projectileData::SAM||id==projectileData::AAM){
+				Missile *m=(Missile*)p;
+				if(m->getTarget()==this&&m->getPos().getDistanceFrom(pos)<=10)
+					homingMissiles.push_back(m);
+			}
+		}
+		return homingMissiles;
 	}
 
 	AircraftType Aircraft::getType(){

@@ -5,14 +5,13 @@
 #include"jet.h"
 #include"helicopter.h"
 #include"structureData.h"
-#include<util.h>
-#include<glfw3.h>
 #include<root.h>
 #include<quad.h>
 #include<node.h>
 #include<text.h>
 #include<material.h>
 #include<cmath>
+#include<SFML/Audio.hpp>
 
 using namespace std;
 using namespace vb01;
@@ -35,10 +34,40 @@ namespace fsim{
 		quad->setMaterial(mat);
 		minimapNode->attachMesh(quad);
 
+		Quad *dangerQuad=new Quad(Vector3(50,50,0),false);
+		dangerNode=new Node(Vector3(700,400,0));
+		Material *dangerMat=new Material(Material::MATERIAL_GUI);
+		dangerMat->addDiffuseMap(PATH+"Icons/Danger/danger.png");
+		dangerMat->setLightingEnabled(false);
+		dangerQuad->setMaterial(dangerMat);
+		dangerNode->attachMesh(dangerQuad);
+
 		Text *ammoText=new Text(PATH+"Fonts/batang.ttf","");
 		ammoText->setScale(.3);
 		ammoTextNode=new Node(Vector3(550,500,-.95));
 		ammoTextNode->addText(ammoText);
+
+		alarmSfxBuffer=new sf::SoundBuffer();
+		alarmSfxBuffer->loadFromFile(PATH+"Sounds/alarm.ogg");
+		alarmSfx=new sf::Sound();
+		alarmSfx->setBuffer(*alarmSfxBuffer);
+
+		/*
+		for(Structure *s : inGameState->getStructures())
+			if(s->getId()<=structureData::KOREAN_HELICOPTER)
+				targets.push_back(s);
+		for(int i=0;i<targets.size();i++){
+			Quad *quad=new Quad(Vector3(50,50,0),false);
+			Node *node=new Node(Vector3(0,0,0));
+			Material *mat=new Material(Material::MATERIAL_GUI);
+			mat->addDiffuseMap(PATH+"Icons/Hitmarker/hitmarker.png");
+			mat->setLightingEnabled(false);
+			quad->setMaterial(mat);
+			node->attachMesh(quad);
+			guiNode->attachChild(node);
+			hitmarkerNodes.push_back(node);
+		}
+		*/
 	}
 
 	ActiveGameAppState::~ActiveGameAppState(){
@@ -51,12 +80,14 @@ namespace fsim{
 		for(Node *s : structureIconNodes)
 			delete s;
 		delete minimapNode;
+		delete dangerNode;
 	}
 
 	void ActiveGameAppState::onAttached(){
 		AbstractAppState::onAttached();
 		guiNode->attachChild(minimapNode);
 		guiNode->attachChild(ammoTextNode);
+		guiNode->attachChild(dangerNode);
 		for(Node *i : structureIconNodes)
 			if(!i->getParent())
 				guiNode->attachChild(i);
@@ -66,6 +97,7 @@ namespace fsim{
 		AbstractAppState::onDettached();
 		guiNode->dettachChild(minimapNode);
 		guiNode->dettachChild(ammoTextNode);
+		guiNode->dettachChild(dangerNode);
 		for(Node *i : structureIconNodes)
 			guiNode->dettachChild(i);
 	}
@@ -75,6 +107,31 @@ namespace fsim{
 			inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
 		ammoTextNode->getText(0)->setText(to_string(aircraft->getFuel())+"|"+to_string(aircraft->getPrimaryAmmo())+"|"+to_string(aircraft->getSecondaryAmmo())+"|"+to_string(aircraft->getChaff()));
 
+		/*
+		Camera *cam=gm->getRoot()->getCamera();
+		Vector3 camPos=cam->getPosition(),dir=cam->getDirection(),up=cam->getUp();
+		int width=gm->getHeight(),height=gm->getHeight();
+
+		for(int i=0;i<targets.size();i++){
+			Vector3 sPos=targets[i]->getPos();
+			//vec4 p=vec4(sPos.x,sPos.y,sPos.z,1);
+			mat4 model=translate(mat4(1.f),vec3(sPos.x,sPos.y,sPos.z));
+			mat4 view=lookAt(vec3(camPos.x,camPos.y,camPos.z),vec3(camPos.x+dir.x,camPos.y+dir.y,camPos.z+dir.z),vec3(up.x,up.y,up.z));
+			mat4 proj=ortho(-1000.f,1000.f,-1000.f,1000.f,.1f,100.f);
+			//mat4 proj=ortho(float(-width)/2,(float)width/2,float(-height)/2,(float)height/2,.1f,100.f);
+			//mat4 proj=perspective(radians(45.f),(float)width/height,.1f,100.f);
+			vec4 p=proj*view*model*vec4(1.f);
+			hitmarkerNodes[i]->setPosition(Vector3(width*p.x,height*p.y,0));
+		}
+		*/
+
+		if(aircraft->isLockedOnto()&&getTime()-lastAlarmTime>rateOfAlarm){
+			alarmSfx->play();
+			dangerNode->setVisible(true);
+			lastAlarmTime=getTime();
+		}
+		else
+			dangerNode->setVisible(false);
 		vector<Structure*> &structures=inGameState->getStructures();
 		for(int i=0;i<structures.size();i++){
 			if(i!=playerId){

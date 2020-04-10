@@ -37,26 +37,9 @@ namespace fsim{
 		rot=rotQuat*initRot;
 		dir=rotQuat*initDir;
 
-		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
-		Map *map=inGameState->getMap();
-		vector<CollisionResult> results;
-		retrieveCollisions(pos,dir,(Node*)map->getMapModel(),results,length);
-		for(Structure *s : inGameState->getStructures()){
-			Model *hitbox=s->getHitbox();
-			if(hitbox)
-				retrieveCollisions(pos,dir,s->getHitbox(),results);
-		}
-		for(CollisionResult r : results){
-			for(Structure *s : inGameState->getStructures()){
-				Model *hitbox=s->getHitbox();
-				if(hitbox&&hitbox->getChild(0)->getMesh(0)==r.mesh){
-					int hp=s->getHp();
-					hp-=100;
-					s->setHp(hp);
-				}
-			}
-		}
+		/*
 		if(!results.empty())
 			explode();
+			*/
 	}
 }

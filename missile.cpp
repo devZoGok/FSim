@@ -65,18 +65,6 @@ namespace fsim{
 	void Missile::update(){
 		Projectile::update();
 
-		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
-		vector<CollisionResult> res;
-
-		for(Structure *s : inGameState->getStructures()){
-			Model *hitbox=s->getHitbox();
-			if(hitbox)
-				retrieveCollisions(pos,dir,s->getHitbox(),res,length);
-		}
-		/*
-		if(!res.empty())
-			explode();
-			*/
 		pos=pos+dir*speed;
 		if(target){
 			Vector3 targetVec=(target->getPos()-pos).norm();
