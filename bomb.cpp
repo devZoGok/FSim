@@ -36,10 +36,5 @@ namespace fsim{
 		Quaternion rotQuat=Quaternion(angle,-left);
 		rot=rotQuat*initRot;
 		dir=rotQuat*initDir;
-
-		/*
-		if(!results.empty())
-			explode();
-			*/
 	}
 }

@@ -36,6 +36,7 @@ namespace fsim{
 		"ScrollLock",
 		"NumLock",
 		"PrintScreen",
+		"Space",
 		"Pause",
 		"Numpad .",
 		"Numpad /",
@@ -75,6 +76,7 @@ namespace fsim{
 		GLFW_KEY_SCROLL_LOCK,
 		GLFW_KEY_NUM_LOCK,
 		GLFW_KEY_PRINT_SCREEN,
+		GLFW_KEY_SPACE,
 		GLFW_KEY_PAUSE,
 		GLFW_KEY_KP_DECIMAL,
 		GLFW_KEY_KP_DIVIDE,
@@ -96,37 +98,6 @@ namespace fsim{
 		GLFW_MOUSE_BUTTON_MIDDLE
 	};
 
-	/*
-	bool isSuchFile(boost::filesystem::path path){
-		bool found=false,foundFileName=false;
-		string fileName;
-		boost::filesystem::path mapDir;
-		int length=path.string().length();
-		for(int i=length;i>=0&&!foundFileName;i--)
-			if(path.string().c_str()[i]=='/'){
-				fileName=path.string().substr(i+1,length-i);
-				mapDir=path.string().substr(0,i);
-				foundFileName=true;
-			}
-		directory_iterator dir;
-		for(directory_iterator itr(mapDir);itr!=dir;itr++){
-			if(itr->path().string()==path.string())
-				found=true;
-		}
-		return found;
-	}
-
-	void getRecDirs(path p,std::vector<string> &list,bool showFiles, bool showDirs, bool rec){
-		directory_iterator dir;
-		for(directory_iterator itr(p);itr!=dir;itr++){
-			if((showFiles&&is_regular_file(itr->path()))||(showDirs&&is_directory(itr->path())))
-				list.push_back((string)itr->path().c_str());
-			if(rec&&is_directory(itr->path()))
-				getRecDirs(itr->path(),list,showFiles,showDirs,rec);
-		}
-	}
-	*/
-        
 	void readFile(string path,std::vector<string> &lines,int firstLine,int lastLine){
 		std::ifstream inFile(path);
 		if(lastLine!=-1)
@@ -212,7 +183,7 @@ namespace fsim{
 			for(int i=0;i<numSpecialKeys;i++)
 				if(data==keyStrings[i]){
 					specialKey=true;
-					output[0]=numSpecialKeys-i<3?Mapping::MOUSE_KEY:Mapping::KEYBOARD;
+					output[0]=numSpecialKeys-i<=3?Mapping::MOUSE_KEY:Mapping::KEYBOARD;
 					output[2]=triggers[i];
 				}
 			if(!specialKey){

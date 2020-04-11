@@ -18,7 +18,7 @@ namespace fsim{
 		private:
 			Helicopter *helicopter;
 			bool leftYaw=0,rightYaw=0,rising=0,landing=0;
-			float riseIncrement=.5,landIncrement=.5;
+			float riseIncrement=.01;
 	};
 }
 

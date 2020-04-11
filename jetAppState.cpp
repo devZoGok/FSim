@@ -59,10 +59,14 @@ namespace fsim{
 			playerJet->pitch(playerJet->getPitchSpeed());
 		if(backPitch)
 			playerJet->pitch(-playerJet->getPitchSpeed());
-		if(leftRoll)
+		if(leftYaw)
 			playerJet->yaw(playerJet->getYawSpeed());
-		if(rightRoll)
+		if(rightYaw)
 			playerJet->yaw(-playerJet->getYawSpeed());
+		if(leftRoll)
+			playerJet->roll(-playerJet->getRollSpeed());
+		if(rightRoll)
+			playerJet->roll(playerJet->getRollSpeed());
 	}
 
 	void JetAppState::onAction(Mapping::Bind bind, bool isPressed){
@@ -74,9 +78,15 @@ namespace fsim{
 				backPitch=isPressed;
 				break;
 			case Mapping::YAW_LEFT:
-				leftRoll=isPressed;
+				leftYaw=isPressed;
 				break;
 			case Mapping::YAW_RIGHT:
+				rightYaw=isPressed;
+				break;
+			case Mapping::ROLL_LEFT:
+				leftRoll=isPressed;
+				break;
+			case Mapping::ROLL_RIGHT:
 				rightRoll=isPressed;
 				break;
 			case Mapping::PRIMARY_FIRE:

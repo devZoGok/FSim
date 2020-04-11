@@ -37,12 +37,12 @@ namespace fsim{
 			helicopter->setYaw(helicopter->getYawSpeed());
 		if(rightYaw)
 			helicopter->setYaw(-helicopter->getYawSpeed());
-		if(rising)
-			helicopter->setRising(helicopter->getRising()+riseIncrement*(rising?1:-1));
-		/*
-		if(landing)
-			helicopter->setLanding(helicopter->getLanding()+landIncrement*(landing?1:-1));
-		*/
+		if(rising||landing){
+			float offset=helicopter->getRising()+riseIncrement;
+			if(landing)
+				offset*=-1;
+			helicopter->setRising(offset);
+		}
 	}
 
 	void HelicopterAppState::onAction(Mapping::Bind bind, bool isPressed){

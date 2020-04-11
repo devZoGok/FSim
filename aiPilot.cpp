@@ -66,8 +66,10 @@ namespace fsim{
 		float diveAngle=.9,angle=Vector3(dir.x,0,dir.z).norm().getAngleBetween(dir);
 		switch(type){
 			case AircraftType::FIGHTER:
+				/*
 				if(target)
 					aircraft->secondaryFire();
+					*/
 				break;
 			case AircraftType::FIGHTER_BOMBER:
 				if(bs==ASCENDING){
@@ -116,8 +118,10 @@ namespace fsim{
 		}
 		if(target){
 			Vector3 tPos=target->getPos();
+			/*
 			if((tPos-pos).norm().getAngleBetween(dir)<.2)
 				aircraft->primaryFire();
+				*/
 		}
 	}
 

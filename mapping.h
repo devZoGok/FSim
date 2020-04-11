@@ -1,7 +1,6 @@
 #ifndef MAPPING_H
 #define MAPPING_H
 
-#include"defConfigs.h"
 
 namespace fsim{
 	struct Mapping{

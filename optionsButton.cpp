@@ -63,10 +63,6 @@ namespace fsim{
 					TabButton::onClick();
 
 					GuiAppState *guiState=(GuiAppState*)gm->getStateManager()->getState(AbstractAppState::GUI_STATE);
-					OkButton *okButton = new OkButton(gm);
-					DefaultsButton *defaultsButton=new DefaultsButton(gm);
-					guiState->addButton(okButton);
-					guiState->addButton(defaultsButton);
 
 					vector<string> lines;
 					int numLines=0;
@@ -84,8 +80,6 @@ namespace fsim{
 							atoi(lines[i].substr(colon+3,1).c_str()),
 							atoi(lines[i].substr(colon+5,string::npos).c_str())
 						};
-						/*
-						*/
 						if(data[0]==Mapping::JOYSTICK_AXIS){
 							data[1]=data[2]%2>0?1:0;
 							data[2]=(data[2]-(data[2]%2>0?1:0))/2;
@@ -94,6 +88,11 @@ namespace fsim{
 					}
 					Listbox *listbox=new Listbox(gm,Vector2(400,200),Vector2(300,20),lines,numLines>10?10:numLines,Listbox::CONTROLS);
 					guiState->addListbox(listbox);
+
+					OkButton *okButton = new OkButton(gm);
+					DefaultsButton *defaultsButton=new DefaultsButton(gm,listbox);
+					guiState->addButton(okButton);
+					guiState->addButton(defaultsButton);
 
 					Options options;
 					options.listboxes.push_back(listbox);
@@ -143,10 +142,52 @@ namespace fsim{
 
 				class DefaultsButton : public Button{
 					public:
-						DefaultsButton(GameManager *gm) : Button(gm,defaultsButtonPos,defaultsButtonSize,"Restore default"){}
-						void onClick(){}
+						DefaultsButton(GameManager *gm,Listbox *listbox) : Button(gm,defaultsButtonPos,defaultsButtonSize,"Restore default"){
+							this->listbox=listbox;
+						}
+						void onClick(){
+							vector<string> lines;
+							readFile(PATH+"../options.cfg",lines);	
+
+							int lineId=0;
+							for(int i=0;i<numStates;i++){
+								for(int j=0;j<numBinds[i];j++){
+									int colon=-1;
+									for(int k=0;k<lines[lineId].length()&&colon==-1;k++)
+										if(lines[lineId].c_str()[k]==':')
+											colon=k;
+									lines[lineId]=lines[lineId].substr(0,colon+1)+to_string(defaultBindTypes[i][j])+","+to_string(action[i][j])+","+to_string(defaultTriggers[i][j]);
+									lineId++;
+								}
+							}
+							writeFile(PATH+"../options.cfg",lines);
+
+							int numLines=0;
+							for(int i=0;i<numStates;i++)
+								numLines+=numBinds[i];
+							readFile(PATH+"../options.cfg",lines,0,numLines);
+							for(int i=0;i<numLines;i++){
+								int colon;
+								for(int j=0;j<lines[i].length();j++)
+									if(lines[i].c_str()[j]==':')
+										colon=j;
+								string bind=lines[i].substr(0,colon+1);
+								int data[]{
+									atoi(lines[i].substr(colon+1,1).c_str()),
+									atoi(lines[i].substr(colon+3,1).c_str()),
+									atoi(lines[i].substr(colon+5,string::npos).c_str())
+								};
+								if(data[0]==Mapping::JOYSTICK_AXIS){
+									data[1]=data[2]%2>0?1:0;
+									data[2]=(data[2]-(data[2]%2>0?1:0))/2;
+								}
+								lines[i]=bind+fromIntToString(data);
+								listbox->changeLine(i,lines[i]);
+							}
+						}
 						void setOptions(Options o){this->options=o;}
 					private:
+						Listbox *listbox;
 						Options options;
 				};
 		};

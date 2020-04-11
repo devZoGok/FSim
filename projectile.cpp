@@ -48,7 +48,7 @@ namespace fsim{
 	void Projectile::update(){
 		mesh->setPosition(pos);
 		mesh->setOrientation(rot);
-		checkForCollision();
+		//checkForCollision();
 	}
 
 	void Projectile::checkForCollision(){

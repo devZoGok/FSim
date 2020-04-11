@@ -9,6 +9,10 @@ namespace sf{
 	class Sound;
 }
 
+namespace vb01{
+	class Model;
+}
+
 namespace fsim{
 	class Aircraft;
 
@@ -25,6 +29,7 @@ namespace fsim{
 
 			sf::SoundBuffer *sfxBuffer;
 			sf::Sound *sfx;
+			vb01::Model *parts[3];
 			vb01::s64 rateOfFire=3000,lastFire=0;
 			vb01::Vector3 horDir,vertDir;
 			float horAngle=0,vertAngle=0;
