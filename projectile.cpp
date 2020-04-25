@@ -48,17 +48,17 @@ namespace fsim{
 	void Projectile::update(){
 		mesh->setPosition(pos);
 		mesh->setOrientation(rot);
-		//checkForCollision();
+		checkForCollision();
 	}
 
 	void Projectile::checkForCollision(){
 		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
 		Map *map=inGameState->getMap();
 		vector<CollisionResult> results;
-		retrieveCollisions(pos,dir,(Node*)map->getMapModel(),results,length);
+		//retrieveCollisions(pos,dir,(Node*)map->getMapModel(),results,length);
 		for(Structure *s : inGameState->getStructures()){
 			Model *hitbox=s->getHitbox();
-			if(hitbox)
+			if(hitbox&&s->getPos().getDistanceFrom(pos)<10*length)
 				retrieveCollisions(pos,dir,s->getHitbox(),results,length);
 		}
 		if(!results.empty())

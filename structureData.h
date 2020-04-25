@@ -5,7 +5,7 @@
 
 namespace fsim{
 	namespace structureData{
-		const int numStructures=12;
+		const int numStructures=15;
 
 		enum Type{
 			CHINESE_FIGHTER,
@@ -17,12 +17,36 @@ namespace fsim{
 			KOREAN_FIGHTER,
 			KOREAN_FIGHTER_BOMBER,
 			KOREAN_HELICOPTER,
+			CARGO_PLANE,
+			CARGO_TRUCK,
+			SSM_TRUCK,
 			SAM_SITE,
 			RUNWAY,
 			HELIPAD
 		};
 
+		static const std::string name[numStructures]{
+			"chineseFighter",
+			"chineseFighterBomber",
+			"chineseHelicopter",
+			"japaneseFighter",
+			"japaneseFighterBomber",
+			"japaneseHelicopter",
+			"koreanFighter",
+			"koreanFighterBomber",
+			"koreanHelicopter",
+			"cargoPlane",
+			"cargoTruck",
+			"ssmTruck",
+			"samSite",
+			"hangar",
+			"helipad"
+		};
+
 		static const int hp[numStructures]={
+			100,
+			100,
+			100,
 			100,
 			100,
 			100,
@@ -46,12 +70,15 @@ namespace fsim{
 			1,
 			1,
 			1,
+			1,
+			1,
+			1,
 			0,
 			1,
 			1
 		};
 		static const std::string path[numStructures]={
-			"Models/Aircraft/FighterBombers/fighterBomber00",
+			"Models/Aircraft/Fighters/fighter00",
 			"Models/Aircraft/FighterBombers/fighterBomber00",
 			"Models/Aircraft/Helicopters/helicopter00",
 			"Models/Aircraft/Fighters/fighter01",
@@ -60,6 +87,9 @@ namespace fsim{
 			"Models/Aircraft/Fighters/fighter02",
 			"Models/Aircraft/FighterBombers/fighterBomber02",
 			"Models/Aircraft/Helicopters/helicopter02",
+			"Models/Aircraft/CargoPlanes/cargoPlane",
+			"Models/Vehicles/cargoTruck",
+			"Models/Vehicles/ssmTruck",
 			"Models/Buildings/SAMSite/samSite",
 			"Models/Buildings/Airfield/hangar",
 			"Models/Buildings/Airfield/helipad"
@@ -74,9 +104,29 @@ namespace fsim{
 			"Models/Aircraft/Fighters/fighterHitbox02",
 			"Models/Aircraft/FighterBombers/fighterBomberHitbox02",
 			"Models/Aircraft/Helicopters/helicopterHitbox02",
+			"Models/Aircraft/CargoPlanes/cargoPlaneHitbox",
+			"Models/Vehicles/cargoTruckHitbox",
+			"Models/Vehicles/ssmTruckHitbox",
 			"Models/Buildings/SAMSite/samSiteHitbox",
 			"Models/Buildings/Airfield/hangarHitbox",
 			"Models/Buildings/Airfield/helipadHitbox"
+		};
+		static const std::string diffusePath[numStructures]={
+			"Models/Aircraft/Fighters/fighter00",
+			"Models/Aircraft/FighterBombers/fighterBomber00",
+			"Models/Aircraft/Helicopters/helicopter00",
+			"Models/Aircraft/Fighters/fighter01",
+			"Models/Aircraft/FighterBombers/fighterBomber01",
+			"Models/Aircraft/Helicopters/helicopter01",
+			"Models/Aircraft/Fighters/fighter02",
+			"Models/Aircraft/FighterBombers/fighterBomber02",
+			"Models/Aircraft/Helicopters/helicopter02",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
 		};
 		static const std::string iconPath[numStructures]={
 			"jet.png",
@@ -88,6 +138,9 @@ namespace fsim{
 			"jet.png",
 			"jet.png",
 			"heli.png",
+			"target.png",
+			"target.png",
+			"target.png",
 			"samSite.png",
 			"runway.png",
 			"helipad.png"

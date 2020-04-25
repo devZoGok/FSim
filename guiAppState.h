@@ -36,6 +36,7 @@ namespace fsim{
 			void onRawMouseButton(short);
 			void onRawJoystickAxis(short,float);
 			void onRawJoystickButton(short);
+			int getNumButtons(bool);
 		private:
 			bool canType(){return getTime()-lastTypeTime>100;}
 			bool isException(Button**,int,Button*);

@@ -8,6 +8,7 @@
 #include<material.h>
 
 using namespace vb01;
+using namespace std;
 using namespace fsim::structureData;
 
 namespace fsim{
@@ -26,9 +27,14 @@ namespace fsim{
 		up=rot*up;
 
 		if(singleModel[id]){
+			string diffusePath=structureData::diffusePath[id];
+			if(diffusePath=="")
+				diffusePath=defaultTexture;
+			else
+				diffusePath=PATH+structureData::diffusePath[id]+"Diffuse.jpg";
 			model=new Model(PATH+path[id]+".obj");
 			mat=new Material();
-			mat->addDiffuseMap(defaultTexture);
+			mat->addDiffuseMap(diffusePath);
 			mat->setLightingEnabled(true);
 			model->setMaterial(mat);
 			model->setPosition(pos);

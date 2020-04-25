@@ -331,4 +331,12 @@ namespace fsim{
 				exception=true;
 		return exception;
 	}
+
+	int GuiAppState::getNumButtons(bool separate){
+		int numButtons=0;
+		for(Button *b : buttons)
+			if((separate&&b->isSeparate())||!separate)
+				numButtons++;
+		return numButtons;
+	}
 }

@@ -36,6 +36,7 @@ namespace fsim{
 			inline int getNumStructures(){return structures.size();}
 			inline int getPilotId(){return pilotId;}
 			inline int getPlayerId(){return playerId;}
+			inline int getFaction(){return (int)faction;}
 			void addStructure(Structure*);
 			inline void addProjectile(Projectile *p){projectiles.push_back(p);}
 			inline void addFx(Fx f){this->fx.push_back(f);}

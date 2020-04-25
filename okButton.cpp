@@ -16,7 +16,10 @@
 #include"helicopterAppState.h"
 #include"jet.h"
 #include"helicopter.h"
+#include"runway.h"
+#include"helipad.h"
 #include"structureData.h"
+#include"map.h"
 #include<root.h>
 #include<node.h>
 #include<mysql++.h>
@@ -179,23 +182,55 @@ namespace fsim{
 						delete tabs[activeTab]->getTextNode(i);
 					}
 
-					const int numExceptions=!loadFromSave?4:2;
-					int playerUnitId=0,level=(int)res[0][0],objective=0;
+					int numExceptions=1,playerUnitId=0,level=(int)res[0][0],objective=0;
 					Button *exceptions[numExceptions];
 					exceptions[0]=this;
+
+					InGameAppState *inGameState=new InGameAppState(gm,pilotId,-1,faction,-1,level,objective);
+					stateManager->attachState(inGameState);	
+					Map *map=inGameState->getMap();
+					Runway *runway=map->getHomeRunway();
+					Helipad *helipad=map->getHomeHelipad();
 
 					int width=60;
 					AircraftSelectionButton *selectionButtons[3];
 					string aircraft[]={"Fighter","Fighter-bomber","Helicopter"};
-					for(int i=0;i<3;i++){
-						selectionButtons[i]=new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),aircraft[i],faction*3+i,faction,Mapping::Bind(Mapping::FIGHTER+i));
-						guiState->addButton(selectionButtons[i]);
+					if(runway){
+						Vector3 runwayPos=runway->getPos();
+						Quaternion runwayRot=runway->getRot();
+						for(int i=0;i<2;i++){
+							selectionButtons[i]=new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),
+									aircraft[i],faction*3+i,faction,Mapping::Bind(Mapping::FIGHTER+i),
+									runwayPos,runwayRot);
+							guiState->addButton(selectionButtons[i]);
+						}
+						exceptions[1]=selectionButtons[0];
+						exceptions[2]=selectionButtons[1];
+						numExceptions+=2;
 					}
-
-					for(int i=1;i<numExceptions;i++)
-						exceptions[i]=selectionButtons[i-1];
-
-					stateManager->attachState(new InGameAppState(gm,pilotId,-1,faction,-1,level,objective));	
+					if(helipad){
+						Vector3 helipadPos=helipad->getPos()+Vector3(0,50,0);
+						Quaternion helipadRot=helipad->getRot();
+						selectionButtons[2]=new AircraftSelectionButton(gm,Vector2(100+(width+10)*2,100),Vector2(width,100),
+								aircraft[2],faction*3+2,faction,Mapping::Bind(Mapping::FIGHTER+2),
+								helipadPos,helipadRot);
+						guiState->addButton(selectionButtons[2]);
+						exceptions[runway?3:1]=selectionButtons[2];
+						numExceptions++;
+					}
+					if(!runway&&!helipad){
+						int aircraftId=map->getAircraftId(),playerId=inGameState->getPlayerId();
+						Vector3 spawnPos=map->getSpawnPos();
+						Quaternion spawnRot=map->getSpawnRot();
+						bool helicopter=(aircraftId==structureData::CHINESE_HELICOPTER||aircraftId==structureData::JAPANESE_HELICOPTER||aircraftId==structureData::KOREAN_HELICOPTER);
+						Aircraft *aircraft=helicopter?(Aircraft*)new Helicopter(gm,aircraftId,faction,spawnPos,spawnRot,false):
+						(Aircraft*)new Jet(gm,aircraftId,faction,spawnPos,spawnRot,false);
+						inGameState->addStructure(aircraft);
+						inGameState->setSelectingAircraft(false);
+						ActiveGameAppState *activeState=helicopter?(ActiveGameAppState*)new HelicopterAppState(gm,playerId):(ActiveGameAppState*)new JetAppState(gm,playerId);
+						stateManager->attachState((AbstractAppState*)activeState);
+						inGameState->setActiveState(activeState);
+					}
 					guiState->removeAllButtons(exceptions,numExceptions);
 					guiState->removeButton(this);
 				}

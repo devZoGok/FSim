@@ -14,9 +14,12 @@ using namespace vb01;
 using namespace std;
 
 namespace fsim{
-	AircraftSelectionButton::AircraftSelectionButton(GameManager *gm, Vector2 pos, Vector2 size, string name,int aircraftId,int faction,Mapping::Bind bind) : Button(gm,pos,size,name,bind){
+	AircraftSelectionButton::AircraftSelectionButton(GameManager *gm,Vector2 pos,Vector2 size,string name,
+			int aircraftId,int faction,Mapping::Bind bind,Vector3 aircraftPos,Quaternion aircraftRot) : Button(gm,pos,size,name,bind){
 		this->aircraftId=aircraftId;
 		this->faction=faction;
+		this->aircraftPos=aircraftPos;
+		this->aircraftRot=aircraftRot;
 	}
 
 	void AircraftSelectionButton::onClick(){
@@ -24,10 +27,10 @@ namespace fsim{
 		GuiAppState *guiState=(GuiAppState*)stateManager->getState(AbstractAppState::GUI_STATE);
 		InGameAppState *inGameState=(InGameAppState*)stateManager->getState(AbstractAppState::IN_GAME_STATE);
 		int playerId=inGameState->getNumStructures();
-		Vector3 pos=Vector3(0,20,-20);
+		//Vector3 pos=Vector3(0,20,-20);
 		bool helicopter=(aircraftId==CHINESE_HELICOPTER||aircraftId==JAPANESE_HELICOPTER||aircraftId==KOREAN_HELICOPTER);
-		Aircraft *aircraft=helicopter?(Aircraft*)new Helicopter(gm,aircraftId,faction,pos,Quaternion(1,0,0,0),false):
-		(Aircraft*)new Jet(gm,aircraftId,faction,pos,Quaternion(1,0,0,0),false);
+		Aircraft *aircraft=helicopter?(Aircraft*)new Helicopter(gm,aircraftId,faction,aircraftPos,aircraftRot,false):
+		(Aircraft*)new Jet(gm,aircraftId,faction,aircraftPos,aircraftRot,false);
 		inGameState->addStructure(aircraft);
 		inGameState->setSelectingAircraft(false);
 		ActiveGameAppState *activeState=helicopter?(ActiveGameAppState*)new HelicopterAppState(gm,playerId):(ActiveGameAppState*)new JetAppState(gm,playerId);

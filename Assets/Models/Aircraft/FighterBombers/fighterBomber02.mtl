@@ -1,7 +1,7 @@
-# Blender MTL File: 'Plane.blend'
+# Blender MTL File: 'j-10.blend'
 # Material Count: 2
 
-newmtl Material.004
+newmtl Bendras
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -10,12 +10,15 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd .
+map_Kd /home/dominykas/c++/FSim/Assets/Models/Aircraft/Naikintuvai/J-10/Textura/Bendras.png
 
-newmtl None
-Ns 500
-Ka 0.8 0.8 0.8
-Kd 0.8 0.8 0.8
-Ks 0.8 0.8 0.8
-d 1
-illum 2
+newmtl Material
+Ns 225.000000
+Ka 0.436364 0.436364 0.436364
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd /home/dominykas/c++/FSim/Assets/Models/Aircraft/Naikintuvai/J-10/Textura/Bendras.png

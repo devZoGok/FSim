@@ -50,6 +50,7 @@ namespace fsim{
 		root->setHDREnabled(false);
 		root->setBloom(false);
 		root->setBlurLevel(10);
+		root->getCamera()->setFarPlane(200);
 	}
 
 	GameManager::~GameManager(){}

@@ -51,8 +51,21 @@ namespace fsim{
 					for(Structure *s : inGameState->getStructures())
 						if(s->getId()==HELIPAD&&s->getPos().getDistanceFrom(pos)<maxDistance)
 							helipad=(Helipad*)s;
+
+					Vector3 aircraftPos[3]{
+						pos,
+						pos,
+						helipad?helipad->getPos()+Vector3(0,50,0):Vector3(0,0,0)
+					};
+					Quaternion aircraftRot[3]{
+						rot,
+						rot,
+						helipad?helipad->getRot():Quaternion(1,0,0,0)
+					};
 					for(int i=0;i<(helipad?3:2);i++)
-						guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),aircraftTypes[i],faction*3+i,faction,Mapping::Bind(Mapping::FIGHTER+i)));
+						guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),
+									aircraftTypes[i],faction*3+i,faction,Mapping::Bind(Mapping::FIGHTER+i),
+								aircraftPos[i],aircraftRot[i]));
 					delete jetState;
 				}
 			}

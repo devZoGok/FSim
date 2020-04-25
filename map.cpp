@@ -5,12 +5,16 @@
 #include"gameManager.h"
 #include"stateManager.h"
 #include"inGameAppState.h"
+#include"guiAppState.h"
+#include"aircraftSelectionButton.h"
 #include"jet.h"
 #include"helicopter.h"
 #include"runway.h"
 #include"helipad.h"
 #include"sam.h"
 #include"structureData.h"
+#include"runway.h"
+#include"helipad.h"
 #include<model.h>
 #include<root.h>
 #include<node.h>
@@ -45,14 +49,14 @@ namespace fsim{
 
 		mapModel=new Model(path+"level.obj");
 		Material *mat=new Material();
-		mat->addDiffuseMap(path+"defaultTexture.jpg");
+		mat->addDiffuseMap(defaultTexture);
 		mat->setLightingEnabled(true);
 		mapModel->setMaterial(mat);
 		rootNode->attachChild(mapModel);
 
 		vector<string> lines;
 		readFile(path+"level.cfg",lines);
-		int lightsLine=0,structuresLine=0,objectivesLine=0;
+		int lightsLine=0,structuresLine=0,objectivesLine=0,spawnLine=0;
 		for(int i=0;i<lines.size();i++)
 			if(lines[i]=="Lighting:")
 				lightsLine=i;
@@ -60,15 +64,17 @@ namespace fsim{
 				structuresLine=i;
 			else if(lines[i]=="Objectives:")
 				objectivesLine=i;
+			else if(lines[i]=="Spawn:")
+				spawnLine=i+1;
 
 		for(int i=lightsLine+1;i<structuresLine;i++){
-			const int numCoords=7;
+			const int numCoords=6;
 			float coords[numCoords];
-			getLineData(lines[i],coords,numCoords);
+			getLineData(lines[i],coords,numCoords,1);
 				Light *light=new Light(Light::DIRECTIONAL);
-				Vector3 dir=Vector3(coords[1],coords[2],coords[3]).norm();
+				Vector3 dir=Vector3(coords[0],coords[1],coords[2]).norm();
 				//Vector3 color=Vector3(1,1,1);
-				Vector3 color=Vector3(coords[4],coords[5],coords[6]);
+				Vector3 color=Vector3(coords[3],coords[4],coords[5]);
 				light->setDirection(dir);
 				light->setPosition(Vector3(0,25,0));
 				light->setAttenuationValues(.0001,.00001,1);
@@ -86,15 +92,28 @@ namespace fsim{
 
 		if(saveId==-1){
 			for(int i=structuresLine+1;i<objectivesLine;i++){
-				const int numCoords=9;
+				const int numCoords=8;
 				float coords[numCoords];
-				getLineData(lines[i],coords,numCoords);
-				int structureId=coords[0],faction=coords[1];
-				Vector3 pos=Vector3(coords[2],coords[3],coords[4]);
-				Quaternion rot=Quaternion(coords[5],coords[6],coords[7],coords[8]);
+				getLineData(lines[i],coords,numCoords,1);
+				int structureId,faction=coords[0];
+				Vector3 pos=Vector3(coords[1],coords[2],coords[3]);
+				Quaternion rot=Quaternion(coords[4],coords[5],coords[6],coords[7]);
+
+				string structureName;
+				bool endOfStructureName=false;
+				for(int j=0;j<lines[i].length()&&!endOfStructureName;j++){
+					char ch=lines[i].c_str()[j];
+					if(ch=='.'||ch==','){
+						endOfStructureName=true;
+						structureName=lines[i].substr(0,j);
+					}
+				}
+				for(int j=0;j<numStructures;j++)
+					if(structureName==structureData::name[j])
+						structureId=j;
 				createStructure(inGameState,structureId,faction,pos,rot,nullptr,true);
 			}
-			for(int i=objectivesLine+1;i<lines.size();i++){
+			for(int i=objectivesLine+1;i<spawnLine-1;i++){
 				int coords[2];
 				getLineData(lines[i],coords,2);
 				bool failureCondition=coords[0];
@@ -127,6 +146,37 @@ namespace fsim{
 				o.success=success;
 				o.failure=failure;
 				objectives.push_back(o);
+			}
+			int airbaseData[2];
+			getLineData(lines[spawnLine],airbaseData,2);
+			if(airbaseData[0]==-1&&airbaseData[1]==-1){
+				int aircraftId[1];
+				getLineData(lines[spawnLine],aircraftId,1,2);
+				this->aircraftId=aircraftId[0];
+				float spawn[7];
+				getLineData(lines[spawnLine],spawn,7,3);
+				spawnPos=Vector3(spawn[0],spawn[1],spawn[2]);
+				spawnRot=Quaternion(spawn[3],spawn[4],spawn[5],spawn[6]);
+			}
+			else{
+				int faction=inGameState->getFaction();
+				vector<Runway*> runways;
+				vector<Helipad*> helipads;
+
+				for(Structure *s : inGameState->getStructures())
+					if(s->getFaction()==faction&&s->getId()==structureData::RUNWAY)
+						runways.push_back((Runway*)s);
+				for(Structure *s : inGameState->getStructures())
+					if(s->getFaction()==faction&&s->getId()==structureData::HELIPAD)
+						helipads.push_back((Helipad*)s);
+				if(airbaseData[0]!=-1)
+					for(int i=0;i<runways.size();i++)
+						if(i==airbaseData[0])
+							homeRunway=runways[i];
+				if(airbaseData[1]!=-1)
+					for(int i=0;i<helipads.size();i++)
+						if(i==airbaseData[1])
+							homeHelipad=helipads[i];
 			}
 		}
 		else{

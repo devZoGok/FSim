@@ -42,7 +42,7 @@ namespace fsim{
 		protected:
 			int playerId;
 			bool forwPitch=false,backPitch=false,leftRoll=false,rightRoll=false,leftYaw=false,rightYaw=false;
-			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.001,minimapRadius=200,lineOfSight=100,iconSize=20;
+			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.001,minimapRadius=200,lineOfSight=200,iconSize=20;
 			vb01::Vector3 minimapPos=vb01::Vector3(100,400,-.8);
 			vb01::Node *guiNode,*minimapNode,*ammoTextNode;
 			std::vector<Structure*> targets;

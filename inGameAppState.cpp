@@ -5,6 +5,8 @@
 #include"inGameAppState.h"
 #include"jetAppState.h"
 #include"helicopterAppState.h"
+#include"helicopter.h"
+#include"jet.h"
 #include"guiAppState.h"
 #include"gameManager.h"
 #include"stateManager.h"
@@ -18,6 +20,9 @@
 #include"mainMenuButton.h"
 #include"textbox.h"
 #include"projectile.h"
+#include"runway.h"
+#include"helipad.h"
+#include"structureData.h"
 #include<text.h>
 #include<root.h>
 #include<quad.h>
@@ -239,8 +244,43 @@ namespace fsim{
 		map=new Map(gm,mapPath,this,-1,level,objective,pilotId);
 		playerId=structures.size();
 		guiState->removeAllButtons(nullptr);
-		for(int i=0;i<3;i++)
-			guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),aircraftTypes[i],(int)faction*3+i,(int)faction,Mapping::Bind(Mapping::FIGHTER+i)));
+
+		StateManager *stateManager=gm->getStateManager();
+		Runway *runway=map->getHomeRunway();
+		Helipad *helipad=map->getHomeHelipad();
+		AircraftSelectionButton *selectionButtons[3];
+		string aircraft[]={"Fighter","Fighter-bomber","Helicopter"};
+		if(runway){
+			Vector3 runwayPos=runway->getPos();
+			Quaternion runwayRot=runway->getRot();
+			for(int i=0;i<2;i++){
+				selectionButtons[i]=new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),
+						aircraft[i],faction*3+i,faction,Mapping::Bind(Mapping::FIGHTER+i),
+						runwayPos,runwayRot);
+				guiState->addButton(selectionButtons[i]);
+			}
+		}
+		if(helipad){
+			Vector3 helipadPos=helipad->getPos()+Vector3(0,50,0);
+			Quaternion helipadRot=helipad->getRot();
+			selectionButtons[2]=new AircraftSelectionButton(gm,Vector2(100+(width+10)*2,100),Vector2(width,100),
+					aircraft[2],faction*3+2,faction,Mapping::Bind(Mapping::FIGHTER+2),
+					helipadPos,helipadRot);
+			guiState->addButton(selectionButtons[2]);
+		}
+		if(!runway&&!helipad){
+			int aircraftId=map->getAircraftId();
+			Vector3 spawnPos=map->getSpawnPos();
+			Quaternion spawnRot=map->getSpawnRot();
+			bool helicopter=(aircraftId==structureData::CHINESE_HELICOPTER||aircraftId==structureData::JAPANESE_HELICOPTER||aircraftId==structureData::KOREAN_HELICOPTER);
+			Aircraft *aircraft=helicopter?(Aircraft*)new Helicopter(gm,aircraftId,faction,spawnPos,spawnRot,false):
+			(Aircraft*)new Jet(gm,aircraftId,faction,spawnPos,spawnRot,false);
+			addStructure(aircraft);
+			setSelectingAircraft(false);
+			ActiveGameAppState *activeState=helicopter?(ActiveGameAppState*)new HelicopterAppState(gm,playerId):(ActiveGameAppState*)new JetAppState(gm,playerId);
+			stateManager->attachState((AbstractAppState*)activeState);
+			this->activeState=activeState;
+		}
 	}
 
 	void InGameAppState::save(string name){

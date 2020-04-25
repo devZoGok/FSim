@@ -17,6 +17,8 @@ namespace fsim{
 	class GameManager;
 	class InGameAppState;
 	class Structure;
+	class Runway;
+	class Helipad;
 
 	class Map{
 		public:
@@ -25,8 +27,13 @@ namespace fsim{
 			void update();
 			inline int getObjective(){return objective;}
 			inline int getLevel(){return level;}
+			inline int getAircraftId(){return aircraftId;}
 			inline vb01::Model* getMapModel(){return mapModel;}
+			inline vb01::Vector3 getSpawnPos(){return spawnPos;}
+			inline vb01::Quaternion getSpawnRot(){return spawnRot;}
 			inline std::string getPath(){return path;}
+			inline Runway* getHomeRunway(){return homeRunway;}
+			inline Helipad* getHomeHelipad(){return homeHelipad;}
 		private:
 			struct Objective{
 				enum Status{SUCCESS,FAILURE,PENDING};
@@ -48,7 +55,11 @@ namespace fsim{
 			void createObjective(InGameAppState*,Objective::Condition*,std::string,int);
 			void foo(int);
 
-			int objective,level;
+			Runway *homeRunway=nullptr;
+			Helipad *homeHelipad=nullptr;
+			int objective,level,aircraftId;
+			vb01::Vector3 spawnPos;
+			vb01::Quaternion spawnRot;
 			GameManager *gm;
 			std::string path;
 			vb01::Model* mapModel;

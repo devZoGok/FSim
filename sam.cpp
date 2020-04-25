@@ -61,7 +61,7 @@ namespace fsim{
 	void SAM::update(){
 		Building::update();
 		InGameAppState *inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
-		float maxDist=500;
+		float maxDist=50;
 		Vector3 tPos=target?target->getPos():Vector3::VEC_ZERO;
 		if(!target){
 			vector<Aircraft*> hostileAircraft;

@@ -63,6 +63,8 @@ namespace fsim{
 		muzzleFlash->setEndSize(Vector2(.9,.9));
 		muzzleFlash->setStartColor(Vector4(1,1,1,1));
 		muzzleFlash->setEndColor(Vector4(1,1,0,1));
+		/*
+		*/
 
 		engineSmoke=new ParticleEmitter(50);
 		Node *engineSmokeNode=new Node(Vector3(0,0,2));
@@ -155,7 +157,7 @@ namespace fsim{
 			muzzleFlash->getNode()->setVisible(false);
 		}
 		lockedOnto=!getHomingMissiles().empty();
-		muzzleFlash->setDirection(dir*-.1);
+		//muzzleFlash->setDirection(dir*-.1);
 		/*
 		for(int i=0;i<fx.size();i++){
 			if(getTime()-fx[i].initTime>fx[i].timeToLive){
