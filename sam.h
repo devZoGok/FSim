@@ -30,7 +30,7 @@ namespace fsim{
 			sf::SoundBuffer *sfxBuffer;
 			sf::Sound *sfx;
 			vb01::Model *parts[3];
-			vb01::s64 rateOfFire=3000,lastFire=0;
+			vb01::s64 rateOfFire=5000,lastFire=0;
 			vb01::Vector3 horDir,vertDir;
 			float horAngle=0,vertAngle=0;
 			int minVertAngle=-60,maxVertAngle=66;

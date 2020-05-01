@@ -220,33 +220,33 @@ namespace fsim{
 		Aircraft *playerAircraft=nullptr;
 		if(playerId!=-1)
 			playerAircraft=(Aircraft*)inGameState->getStructure(playerId);
-		Objective::Condition c=*(i==0?objectives[0].failure:objectives[0].success);
-		switch(c.type){
+		Objective::Condition *c=(i==0?objectives[0].failure:objectives[0].success);
+		switch(c->type){
 			case Objective::DESTROY:
 				{
-					for(int j=0;j<c.targets.size();j++){
-						int targId=-1;
+					for(int j=0;j<c->targets.size();j++){
+						bool destroyed=true;
 						for(Structure *s : inGameState->getStructures()){
-							if(s==c.targets[j])
-								targId=j;
+							if(s==c->targets[j])
+								destroyed=false;
 						}
-						if(targId==-1)
-							c.targets.erase(c.targets.begin()+j);
+						if(destroyed)
+							c->targets.erase(c->targets.begin()+j);
 					}
-					if(c.targets.empty())
+					if(c->targets.empty())
 						objectives[0].status=(i==0?Objective::FAILURE:Objective::SUCCESS);
 					break;
 				}
 			case Objective::MOVE_TO:
 				if(playerAircraft){
 					float maxDist=3;
-					Vector3 pos=playerAircraft->getPos(),destPos=c.pos;
+					Vector3 pos=playerAircraft->getPos(),destPos=c->pos;
 					if(Vector2(pos.x,pos.z).getDistanceFrom(Vector2(destPos.x,destPos.z))<=maxDist)
 						objectives[0].status=(i==0?Objective::FAILURE:Objective::SUCCESS);
 				}
 				break;
 			case Objective::WAIT:
-				if(getTime()-c.initTime>c.time)
+				if(getTime()-c->initTime>c->time)
 					objectives[0].status=(i==0?Objective::FAILURE:Objective::SUCCESS);
 				break;
 		}
