@@ -1,4 +1,5 @@
 #include"abstractRunway.h"
+#include"abstractHelipad.h"
 #include"gameManager.h"
 #include"stateManager.h"
 #include"guiAppState.h"
@@ -34,34 +35,29 @@ namespace fsim{
 			int width=60;
 			if(!landed&&aircraft->getFaction()==faction){
 				float minJetDist=4,minJetHeight=3,minDirAngle=.17,minPosAngle=.5;
-				Vector3 runwayDir=rot*Vector3(0,0,1);
+				Vector3 runwayDir=startRot*Vector3(0,0,1);
 				Vector3 jetPos=aircraft->getPos(),jetDir=aircraft->getDir();
-				Vector3 rp=pos;
+				Vector3 rp=startPos;
 				if(fabs(jetPos.y-rp.y)<=minJetHeight&&
 					(rp-jetPos).getLength()<=minJetDist&&
 					(-runwayDir).getAngleBetween(Vector3(jetDir.x,0,jetDir.z).norm())<=minDirAngle&&
 					runwayDir.getAngleBetween((jetPos-rp).norm())<=minPosAngle){
 					string aircraftTypes[]={"Fighter","Fighter-bomber","Helicopter"};
-					Helipad *helipad=nullptr;
-					float maxDistance=10;
 					landed=true;
 
 					inGameState->setSelectingAircraft(true);
 					inGameState->setActiveState(nullptr);
 					stateManager->dettachState(AbstractAppState::JET_STATE);
-					for(Structure *s : inGameState->getStructures())
-						if(s->getId()==HELIPAD&&s->getPos().getDistanceFrom(pos)<maxDistance)
-							helipad=(Helipad*)s;
 
 					Vector3 aircraftPos[3]{
-						pos,
-						pos,
-						helipad?helipad->getPos()+Vector3(0,50,0):Vector3(0,0,0)
+						startPos,
+						startPos,
+						helipad?helipad->getStartPos()+Vector3(0,50,0):Vector3(0,0,0)
 					};
 					Quaternion aircraftRot[3]{
-						rot,
-						rot,
-						helipad?helipad->getRot():Quaternion(1,0,0,0)
+						startRot,
+						startRot,
+						helipad?helipad->getStartRot():Quaternion(1,0,0,0)
 					};
 					for(int i=0;i<(helipad?3:2);i++)
 						guiState->addButton(new AircraftSelectionButton(gm,Vector2(100+(width+10)*i,100),Vector2(width,100),

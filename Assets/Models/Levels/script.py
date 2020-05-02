@@ -12,5 +12,5 @@ for i in bpy.data.objects["JapaneseStructures"].children:
 for i in bpy.data.objects["KoreanStructures"].children:
 	file.write(i.name+",2,"+str(i.location.x)+","+str(i.location.z)+","+str(-i.location.y)+","+str(i.rotation_quaternion.w)+","+str(i.rotation_quaternion.x)+","+str(i.rotation_quaternion.y)+","+str(i.rotation_quaternion.z)+",\n")
 spawn=bpy.data.objects["Spawn"]
-file.write("Objectives:\nSpawn:\n-1,-1,-1,"+str(spawn.location.x)+","+str(spawn.location.z)+","+str(-spawn.location.y)+","+str(spawn.rotation_quaternion.w)+","+str(spawn.rotation_quaternion.x)+","+str(spawn.rotation_quaternion.y)+","+str(spawn.rotation_quaternion.z)+",")
+file.write("Objectives:\nSpawn:\n-1,-1,-1,-1,"+str(spawn.location.x)+","+str(spawn.location.z)+","+str(-spawn.location.y)+","+str(spawn.rotation_quaternion.w)+","+str(spawn.rotation_quaternion.x)+","+str(spawn.rotation_quaternion.y)+","+str(spawn.rotation_quaternion.z)+",")
 file.close()

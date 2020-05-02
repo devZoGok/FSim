@@ -6,15 +6,24 @@
 #include"gameManager.h"
 
 namespace fsim{
+	class AbstractRunway;
+
 	class AbstractHelipad{
-		protected:
+		public:
 			AbstractHelipad(GameManager*,int,int);
 			void update();
-			vb01::Vector3 pos;
-			vb01::Quaternion rot;
+			inline int getId(){return id;}
+			inline vb01::Vector3 getStartPos(){return startPos;}
+			inline vb01::Quaternion getStartRot(){return startRot;}
+			inline void setStartPos(vb01::Vector3 sp){this->startPos=sp;}
+			inline void setStartRot(vb01::Quaternion sr){this->startRot=sr;}
+			inline void setAbstractRunway(AbstractRunway *ar){this->runway=ar;}
 		private:
 			GameManager *gm;
 			int id,faction;
+			vb01::Vector3 startPos;
+			vb01::Quaternion startRot;
+			AbstractRunway *runway=nullptr;
 	};
 }
 

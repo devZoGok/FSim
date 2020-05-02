@@ -15,6 +15,7 @@
 #include"structureData.h"
 #include"runway.h"
 #include"helipad.h"
+#include"aircraftCarrier.h"
 #include<model.h>
 #include<root.h>
 #include<node.h>
@@ -147,14 +148,14 @@ namespace fsim{
 				o.failure=failure;
 				objectives.push_back(o);
 			}
-			int airbaseData[2];
-			getLineData(lines[spawnLine],airbaseData,2);
-			if(airbaseData[0]==-1&&airbaseData[1]==-1){
+			int airbaseData[3];
+			getLineData(lines[spawnLine],airbaseData,3);
+			if(airbaseData[0]==-1&&airbaseData[1]==-1&&airbaseData[2]==-1){
 				int aircraftId[1];
-				getLineData(lines[spawnLine],aircraftId,1,2);
+				getLineData(lines[spawnLine],aircraftId,1,3);
 				this->aircraftId=aircraftId[0];
 				float spawn[7];
-				getLineData(lines[spawnLine],spawn,7,3);
+				getLineData(lines[spawnLine],spawn,7,4);
 				spawnPos=Vector3(spawn[0],spawn[1],spawn[2]);
 				spawnRot=Quaternion(spawn[3],spawn[4],spawn[5],spawn[6]);
 			}
@@ -162,6 +163,7 @@ namespace fsim{
 				int faction=inGameState->getFaction();
 				vector<Runway*> runways;
 				vector<Helipad*> helipads;
+				vector<AircraftCarrier*> carriers;
 
 				for(Structure *s : inGameState->getStructures())
 					if(s->getFaction()==faction&&s->getId()==structureData::RUNWAY)
@@ -169,14 +171,19 @@ namespace fsim{
 				for(Structure *s : inGameState->getStructures())
 					if(s->getFaction()==faction&&s->getId()==structureData::HELIPAD)
 						helipads.push_back((Helipad*)s);
+				for(Structure *s : inGameState->getStructures()){
+					if(s->getFaction()==faction){
+						int id=s->getId();
+						if(id>=structureData::CHINESE_CARRIER&&id<=structureData::KOREAN_CARRIER)
+							carriers.push_back((AircraftCarrier*)s);
+					}
+				}
 				if(airbaseData[0]!=-1)
-					for(int i=0;i<runways.size();i++)
-						if(i==airbaseData[0])
-							homeRunway=runways[i];
+					homeRunway=runways[airbaseData[0]];
 				if(airbaseData[1]!=-1)
-					for(int i=0;i<helipads.size();i++)
-						if(i==airbaseData[1])
-							homeHelipad=helipads[i];
+					homeHelipad=helipads[airbaseData[1]];
+				if(airbaseData[2]!=-1)
+					homeCarrier=carriers[airbaseData[2]];
 			}
 		}
 		else{
@@ -314,6 +321,11 @@ namespace fsim{
 			case Type::JAPANESE_FIGHTER_BOMBER:
 			case Type::KOREAN_FIGHTER_BOMBER:
 				s=new Jet(gm,id,faction,pos,rot,ai,upgrades);
+				break;
+			case Type::CHINESE_CARRIER:
+			case Type::JAPANESE_CARRIER:
+			case Type::KOREAN_CARRIER:
+				s=new AircraftCarrier(gm,id,faction,pos,rot);
 				break;
 			case Type::RUNWAY:
 				s=new Runway(gm,faction,pos,rot);
