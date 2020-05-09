@@ -1,5 +1,5 @@
 Paruošimas:
-Įsirašyti „mysql++“ ir „boost“
+Įsirašyti „mysql++“ ir „sfml“
 Sukurti MariaDB/MySQL vartotoją su visomis privilegijomis.
 Slaptažodis turi būti tuščias.
 Sukurti duomenų bazę „fsim“.

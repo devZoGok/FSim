@@ -2,6 +2,7 @@
 #define AIRCRAFT_DATA_H
 
 #include"structureData.h"
+#include"projectileData.h"
 
 using namespace fsim::structureData;
 
@@ -15,6 +16,18 @@ namespace fsim{
 		static const int chaff[numStructures]{10,10,10,10,10,10,10,10,10};
 
 		static const int fuelCapacity[numStructures]{100,100,100,100,100,100,100,100,100};
+
+		static const int projectileId[numStructures]{
+			projectileData::CHINESE_FIGHTER_AAM,
+			projectileData::BOMB,
+			projectileData::CHINESE_HELICOPTER_ASM,
+			projectileData::JAPANESE_FIGHTER_AAM,
+			projectileData::BOMB,
+			projectileData::JAPANESE_HELICOPTER_ASM,
+			projectileData::KOREAN_FIGHTER_AAM,
+			projectileData::GPS_BOMB,
+			projectileData::KOREAN_HELICOPTER_ASM
+		};
 	}
 }
 

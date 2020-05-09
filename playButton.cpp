@@ -31,9 +31,9 @@ namespace fsim{
 					for(int i=0;i<3;i++){
 						Button *b=guiState->getButton(to_string(i));
 						if(i==faction)
-							b->setImage(PATH+"Textures/"+flags[i]+".jpg");
+							b->setImage(PATH+"Textures/Insignia/"+flags[i]+".jpg");
 						else
-							b->setImage(PATH+"Textures/"+flags[i]+"Gray.jpg");
+							b->setImage(PATH+"Textures/Insignia/"+flags[i]+"Gray.jpg");
 					}
 					okButton->setFaction(faction);
 				}

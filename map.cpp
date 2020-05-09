@@ -69,26 +69,37 @@ namespace fsim{
 				spawnLine=i+1;
 
 		for(int i=lightsLine+1;i<structuresLine;i++){
-			const int numCoords=6;
+			string lightName;
+			bool endOfLightName=false;
+			for(int j=0;j<lines[i].length()&&!endOfLightName;j++){
+				char ch=lines[i].c_str()[j];
+				if(ch=='.'||ch==','){
+					endOfLightName=true;
+					lightName=lines[i].substr(0,j);
+				}
+			}
+
+			Light::Type t=Light::DIRECTIONAL;
+			if(lightName=="point"){
+				t=Light::POINT;
+			}
+			else if(lightName=="spot"){
+				t=Light::SPOT;
+			}
+
+			const int numCoords=10;
 			float coords[numCoords];
 			getLineData(lines[i],coords,numCoords,1);
-				Light *light=new Light(Light::DIRECTIONAL);
-				Vector3 dir=Vector3(coords[0],coords[1],coords[2]).norm();
-				//Vector3 color=Vector3(1,1,1);
-				Vector3 color=Vector3(coords[3],coords[4],coords[5]);
-				light->setDirection(dir);
-				light->setPosition(Vector3(0,25,0));
-				light->setAttenuationValues(.0001,.00001,1);
-				light->setColor(color);
-				lights.push_back(light);
-				rootNode->addLight(light);
-				/*
-			if(type=="directional"){
-			}
-			else if(type=="point"){
-				//t=Light::POINT;
-			}
-			*/
+			Light *light=new Light(t);
+			Vector3 pos=Vector3(coords[0],coords[1],coords[2]).norm();
+			Vector3 dir=Vector3(0,-1,0).norm();
+			Vector3 color=Vector3(coords[7],coords[8],coords[9]);
+			light->setDirection(dir);
+			light->setPosition(pos);
+			light->setAttenuationValues(.0001,.00001,1);
+			light->setColor(color);
+			lights.push_back(light);
+			rootNode->addLight(light);
 		}
 
 		if(saveId==-1){

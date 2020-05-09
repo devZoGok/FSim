@@ -219,7 +219,7 @@ namespace fsim{
 							hostileTargets.push_back((Aircraft*)s);
 					}
 				Structure *target=hostileTargets.size()>0?hostileTargets[0]:nullptr;
-				projectile=new Missile(gm,type==FIGHTER?projectileData::AAM:projectileData::ASM,this,pos-up*1,rot,target);
+				projectile=new Missile(gm,aircraftData::projectileId[id],this,pos-up*1,rot,target);
 			}
 			else{
 				if(id==Type::KOREAN_FIGHTER_BOMBER){
@@ -233,7 +233,7 @@ namespace fsim{
 					projectile=new GPSBomb(gm,this,targetPos,pos-up*.25,rot,.1);
 				}
 				else
-					projectile=new Bomb(gm,projectileData::BOMB,this,pos-up*.25,rot,.1);
+					projectile=new Bomb(gm,aircraftData::projectileId[id],this,pos-up*.25,rot,.1);
 			}
 			if(secondaryFireSfx)
 				secondaryFireSfx->play();
@@ -326,7 +326,7 @@ namespace fsim{
 		vector<Missile*> homingMissiles;
 		for(Projectile *p : inGameState->getProjectiles()){
 			int id=p->getId();
-			if(id==projectileData::SAM||id==projectileData::AAM){
+			if(id==projectileData::SAM||id<=projectileData::KOREAN_FIGHTER_AAM){
 				Missile *m=(Missile*)p;
 				if(m->getTarget()==this&&m->getPos().getDistanceFrom(pos)<=10)
 					homingMissiles.push_back(m);
