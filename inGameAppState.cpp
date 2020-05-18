@@ -99,10 +99,12 @@ namespace fsim{
 
 	void InGameAppState::onAttached(){
 		AbstractAppState::onAttached();
+		gm->getMusic()->stop();
 	}
 
 	void InGameAppState::onDettached(){
 		AbstractAppState::onDettached();
+		gm->getMusic()->play();
 	}
 
 	void InGameAppState::update(){

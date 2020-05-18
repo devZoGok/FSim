@@ -40,11 +40,11 @@ namespace fsim{
 			vb01::s64 lastAlarmTime=0,rateOfAlarm=100;
 			vb01::Node *dangerNode;
 		protected:
-			int playerId;
+			int playerId,numHudElements=5;
 			bool forwPitch=false,backPitch=false,leftRoll=false,rightRoll=false,leftYaw=false,rightYaw=false;
-			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.001,minimapRadius=200,lineOfSight=200,iconSize=20;
-			vb01::Vector3 minimapPos=vb01::Vector3(100,400,-.8);
-			vb01::Node *guiNode,*minimapNode,*ammoTextNode;
+			float accIncrement=.01,deccIncrement=.01,yawIncrement=.01,rollIncrement=.01,pitchIncrement=.001,minimapRadius=125,lineOfSight=300,iconSize=30;
+			vb01::Vector3 minimapPos;
+			vb01::Node *guiNode,*minimapNode,**hudText,**hudIcons;
 			std::vector<Structure*> targets;
 			std::vector<vb01::Node*> structureIconNodes,hitmarkerNodes;
 	};

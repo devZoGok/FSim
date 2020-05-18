@@ -26,7 +26,8 @@ namespace fsim{
 		for(Structure *s : structures)
 			addStructureIcon(s->getId());
 
-		Quad *quad=new Quad(Vector3(minimapRadius,minimapRadius,0),false);
+		minimapPos=Vector3(0,gm->getHeight()-minimapRadius*2,-.8);
+		Quad *quad=new Quad(Vector3(minimapRadius,minimapRadius,0)*2,false);
 		minimapNode=new Node(minimapPos);
 		Material *mat=new Material(Material::MATERIAL_GUI);
 		mat->addDiffuseMap(PATH+"Icons/Minimap/minimap.png");
@@ -37,20 +38,50 @@ namespace fsim{
 		Quad *dangerQuad=new Quad(Vector3(50,50,0),false);
 		dangerNode=new Node(Vector3(700,400,0));
 		Material *dangerMat=new Material(Material::MATERIAL_GUI);
-		dangerMat->addDiffuseMap(PATH+"Icons/Danger/danger.png");
+		dangerMat->addDiffuseMap(PATH+"Icons/HUD/danger.png");
 		dangerMat->setLightingEnabled(false);
 		dangerQuad->setMaterial(dangerMat);
 		dangerNode->attachMesh(dangerQuad);
 
-		Text *ammoText=new Text(PATH+"Fonts/batang.ttf","");
-		ammoText->setScale(.3);
-		ammoTextNode=new Node(Vector3(550,500,-.95));
-		ammoTextNode->addText(ammoText);
+		string icons[]{
+			"hp.png",
+			"bullet.png",
+			aircraft->getType()==AircraftType::FIGHTER_BOMBER?"bomb.png":"missile.png",
+			"fuel.png",
+			"chaff.png"
+		};
+		hudText=new Node*[numHudElements];
+		hudIcons=new Node*[numHudElements];
+		Vector3 startPos=Vector3(550,500,.0);
+		float offset=50,iconSize=50;
+		for(int i=0;i<numHudElements;i++){
+			Quad *iconQuad=new Quad(Vector3(iconSize,iconSize,0),false);
+			Node *iconNode=new Node(startPos+Vector3(offset*i,0,0));
+			Material *mat=new Material(Material::MATERIAL_GUI);
+			mat->addDiffuseMap(PATH+"Icons/HUD/"+icons[i],true);
+			mat->setLightingEnabled(false);
+			mat->setDiffuseColorEnabled(true);
+			mat->setDiffuseColor(Vector4(0,0,0,1));
+			iconQuad->setMaterial(mat);
+			iconNode->attachMesh(iconQuad);
+			hudIcons[i]=iconNode;
+
+			Text *text=new Text(PATH+"Fonts/batang.ttf","100");
+			text->setScale(.3);
+			text->setColor(Vector4(0,0,0,1));
+			Node *textNode=new Node(startPos+Vector3(offset*i,-20,0));
+			textNode->addText(text);
+			hudText[i]=textNode;
+			/*
+			*/
+		}
 
 		alarmSfxBuffer=new sf::SoundBuffer();
 		alarmSfxBuffer->loadFromFile(PATH+"Sounds/alarm.ogg");
 		alarmSfx=new sf::Sound();
 		alarmSfx->setBuffer(*alarmSfxBuffer);
+		alarmSfx->setRelativeToListener(true);
+		alarmSfx->setVolume(gm->getOptions().sfxVolume);
 
 		/*
 		for(Structure *s : inGameState->getStructures())
@@ -77,6 +108,12 @@ namespace fsim{
 			structures.erase(structures.begin()+playerId);	
 		}
 		inGameState->setPlayerId(structures.size());
+		for(int i=0;i<numHudElements;i++){
+			delete hudText[i];
+			delete hudIcons[i];
+		}
+		delete[] hudText;
+		delete[] hudIcons;
 		for(Node *s : structureIconNodes)
 			delete s;
 		delete minimapNode;
@@ -86,8 +123,11 @@ namespace fsim{
 	void ActiveGameAppState::onAttached(){
 		AbstractAppState::onAttached();
 		guiNode->attachChild(minimapNode);
-		guiNode->attachChild(ammoTextNode);
 		guiNode->attachChild(dangerNode);
+		for(int i=0;i<numHudElements;i++){
+			guiNode->attachChild(hudIcons[i]);
+			guiNode->attachChild(hudText[i]);
+		}
 		for(Node *i : structureIconNodes)
 			if(!i->getParent())
 				guiNode->attachChild(i);
@@ -96,8 +136,11 @@ namespace fsim{
 	void ActiveGameAppState::onDettached(){
 		AbstractAppState::onDettached();
 		guiNode->dettachChild(minimapNode);
-		guiNode->dettachChild(ammoTextNode);
 		guiNode->dettachChild(dangerNode);
+		for(int i=0;i<numHudElements;i++){
+			guiNode->dettachChild(hudIcons[i]);
+			guiNode->dettachChild(hudText[i]);
+		}
 		for(Node *i : structureIconNodes)
 			guiNode->dettachChild(i);
 	}
@@ -105,7 +148,11 @@ namespace fsim{
 	void ActiveGameAppState::update(){
 		if(!inGameState)
 			inGameState=(InGameAppState*)gm->getStateManager()->getState(AbstractAppState::IN_GAME_STATE);
-		ammoTextNode->getText(0)->setText(to_string(aircraft->getFuel())+"|"+to_string(aircraft->getPrimaryAmmo())+"|"+to_string(aircraft->getSecondaryAmmo())+"|"+to_string(aircraft->getChaff()));
+		hudText[0]->getText(0)->setText(to_string(aircraft->getHp()));
+		hudText[1]->getText(0)->setText(to_string(aircraft->getPrimaryAmmo()));
+		hudText[2]->getText(0)->setText(to_string(aircraft->getSecondaryAmmo()));
+		hudText[3]->getText(0)->setText(to_string(aircraft->getFuel()));
+		hudText[4]->getText(0)->setText(to_string(aircraft->getChaff()));
 
 		/*
 		Camera *cam=gm->getRoot()->getCamera();
@@ -142,7 +189,9 @@ namespace fsim{
 				bool friendly=structures[i]->getFaction()==aircraft->getFaction();
 				angle*=(left?-1:1);
 				structureIconNodes[i]->setVisible(i!=playerId&&dist<lineOfSight);
-				structureIconNodes[i]->setPosition(Vector3(cos(angle+PI/2),-sin(angle+PI/2),0)*(dist/lineOfSight*minimapRadius)+Vector3(minimapPos.x+minimapRadius/2-iconSize/2,minimapPos.y+minimapRadius/2-iconSize/2,-.8-i*.01));
+				structureIconNodes[i]->setPosition(
+							Vector3(cos(angle+PI/2),-sin(angle+PI/2),0)*(dist/lineOfSight*minimapRadius)+Vector3(minimapPos.x+minimapRadius-iconSize/2,minimapPos.y+minimapRadius-iconSize/2,-(.8+i*.01))
+						);
 				structureIconNodes[i]->getMesh(0)->getMaterial()->setDiffuseColor(Vector4(!friendly,friendly,0,1));
 			}
 		}
@@ -160,3 +209,4 @@ namespace fsim{
 		structureIconNodes.push_back(iconNode);
 	}
 }
+

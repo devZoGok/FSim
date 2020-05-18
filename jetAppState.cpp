@@ -113,7 +113,7 @@ namespace fsim{
 				break;
 			case Mapping::ROLL_LEFT:
 			case Mapping::ROLL_RIGHT:
-				playerJet->setRoll(-playerJet->getRollSpeed()*str);
+				playerJet->setRoll(playerJet->getRollSpeed()*str);
 				break;
 		}
 		/*

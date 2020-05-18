@@ -39,9 +39,9 @@ namespace fsim{
 			aiPilot=new AIPilot(gm,this);
 
 		cam=gm->getRoot()->getCamera();
-		this->rollSpeed=.05;
-		this->yawSpeed=.05;
-		this->pitchSpeed=.05;
+		this->rollSpeed=aircraftData::rollSpeed[id];
+		this->yawSpeed=aircraftData::yawSpeed[id];
+		this->pitchSpeed=aircraftData::pitchSpeed[id];
 		this->weight=.1;
 		this->rateOfPrimaryFire=aircraftData::rateOfPrimaryFire[id];
 		this->rateOfSecondaryFire=aircraftData::rateOfSecondaryFire[id];

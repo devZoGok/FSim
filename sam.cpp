@@ -21,36 +21,14 @@ namespace fsim{
 		horDir=left;
 		vertDir=dir;
 
-		string files[3]{"base.obj","stem.obj","top.obj"};
-		for(int i=0;i<3;i++){
-			Model *model=new Model(PATH+"Models/Buildings/SAMSite/"+files[i]);
-			Material* mat=new Material();
-			mat->addDiffuseMap(defaultTexture);
-			mat->setLightingEnabled(true);
-			model->setMaterial(mat);
-			model->setPosition(i==0?pos:Vector3::VEC_ZERO);
-			model->setOrientation(i==0?rot:Quaternion(0,0,0,1));
-			model->setCastShadow(false);
-			(i==0?rootNode:parts[i-1])->attachChild(model);
-			parts[i]=model;
-		}
-		this->model=parts[0];
-
-		hitbox=new Model(PATH+hitboxPath[id]+".obj");
-		hitbox->setWireframe(true);
-		Material *mat=new Material();
-		mat->setTexturingEnabled(false);
-		mat->setDiffuseColor(Vector4(0,0,1,1));
-		hitbox->setMaterial(mat);
-		hitbox->setVisible(false);
-		model->attachChild(hitbox);
-
 		sfxBuffer=new sf::SoundBuffer();
 		sfxBuffer->loadFromFile(PATH+"Sounds/missile.ogg");
 		sfx=new sf::Sound();
 		sfx->setBuffer(*sfxBuffer);
+		sfx->setPosition(pos.x,pos.y,pos.z);
 		sfx->setMinDistance(5);
 		sfx->setAttenuation(5);
+		sfx->setVolume(gm->getOptions().sfxVolume);
 	}
 
 	SAM::~SAM(){
@@ -105,10 +83,8 @@ namespace fsim{
 			else
 				target=nullptr;
 		}
-		parts[1]->setOrientation(Quaternion(horAngle,Vector3(0,-1,0))*Quaternion(0,0,0,1));
-		parts[2]->setOrientation(Quaternion(vertAngle,horDir)*Quaternion(0,0,0,1));
-		/*
-		*/
+		model->getChild(1)->setOrientation(Quaternion(horAngle,Vector3(0,-1,0))*Quaternion(1,0,0,0));
+		model->getChild(2)->setOrientation(Quaternion(vertAngle,horDir)*model->getChild(1)->getOrientation());
 	}
 
 	void SAM::turnHorizontally(float angle){

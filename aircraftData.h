@@ -17,6 +17,40 @@ namespace fsim{
 
 		static const int fuelCapacity[numStructures]{100,100,100,100,100,100,100,100,100};
 
+		static const float pitchSpeed[numStructures]{
+			.02,
+			.01,
+			.05,
+			.02,
+			.01,
+			.05,
+			.02,
+			.01,
+			.05,
+		};
+		static const float yawSpeed[numStructures]{
+			.01,
+			.01,
+			.05,
+			.05,
+			.01,
+			.01,
+			.05,
+			.01,
+			.01,
+		};
+		static const float rollSpeed[numStructures]{
+			.04,
+			.03,
+			.05,
+			.04,
+			.03,
+			.05,
+			.04,
+			.03,
+			.05,
+		};
+
 		static const int projectileId[numStructures]{
 			projectileData::CHINESE_FIGHTER_AAM,
 			projectileData::BOMB,

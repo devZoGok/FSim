@@ -26,38 +26,34 @@ namespace fsim{
 		left=rot*left;
 		up=rot*up;
 
-		if(singleModel[id]){
-			string diffusePath=structureData::diffusePath[id];
-			if(diffusePath=="")
-				diffusePath=defaultTexture;
-			else
-				diffusePath=PATH+structureData::diffusePath[id]+"Diffuse.jpg";
-			model=new Model(PATH+path[id]+".obj");
-			mat=new Material();
-			mat->addDiffuseMap(diffusePath);
-			mat->setLightingEnabled(true);
-			model->setMaterial(mat);
-			model->setPosition(pos);
-			model->setOrientation(rot);
-			model->setCastShadow(false);
-			rootNode->attachChild(model);
+		string diffusePath=structureData::diffuseMap[id];
+		if(diffusePath=="")
+			diffusePath=defaultTexture;
+		else
+			diffusePath=PATH+basePath[id]+diffuseMap[id]+"Diffuse.jpg";
+		model=new Model(PATH+basePath[id]+parts[id]+".obj");
+		mat=new Material();
+		mat->addDiffuseMap(diffusePath);
+		mat->setLightingEnabled(true);
+		model->setMaterial(mat);
+		model->setPosition(pos);
+		model->setOrientation(rot);
+		model->setCastShadow(false);
+		rootNode->attachChild(model);
 
-			hitbox=new Model(PATH+hitboxPath[id]+".obj");
-			hitbox->setWireframe(true);
-			Material *mat=new Material();
-			mat->setTexturingEnabled(false);
-			mat->setDiffuseColor(Vector4(0,0,1,1));
-			hitbox->setMaterial(mat);
-			hitbox->setVisible(false);
-			model->attachChild(hitbox);
-		}
+		hitbox=new Model(PATH+basePath[id]+hitboxPath[id]+".obj");
+		hitbox->setWireframe(true);
+		Material *mat=new Material();
+		mat->setTexturingEnabled(false);
+		mat->setDiffuseColor(Vector4(0,0,1,1));
+		hitbox->setMaterial(mat);
+		hitbox->setVisible(false);
+		model->attachChild(hitbox);
 	}
 
 	Structure::~Structure(){
-		if(singleModel[id]){
-			rootNode->dettachChild(model);
-			delete model;
-		}
+		rootNode->dettachChild(model);
+		delete model;
 	}
 
 	void Structure::update(){

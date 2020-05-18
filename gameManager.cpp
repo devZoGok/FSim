@@ -6,6 +6,7 @@
 #include"util.h"
 #include<root.h>
 #include<mysql++.h>
+#include<SFML/Audio/Music.hpp>
 
 using namespace vb01;
 using namespace std;
@@ -51,6 +52,15 @@ namespace fsim{
 		root->setBloom(false);
 		root->setBlurLevel(10);
 		root->getCamera()->setFarPlane(200);
+
+		music = new sf::Music();
+		music->openFromFile(PATH+"Sounds/Music/intro.ogg");
+		music->setRelativeToListener(true);
+		music->setVolume(options.musicVolume);
+		music->setMinDistance(5);
+		music->setAttenuation(5);
+		music->setLoop(true);
+		music->play();
 	}
 
 	GameManager::~GameManager(){}
@@ -80,6 +90,8 @@ namespace fsim{
 		options.width=width;
 		options.height=height;
 		options.textureLevel=atoi(lines[2].substr(colonIds[2]+1,string::npos).c_str());
+		options.sfxVolume=atoi(lines[3].substr(colonIds[3]+1,string::npos).c_str());
+		options.musicVolume=atoi(lines[4].substr(colonIds[4]+1,string::npos).c_str());
 		options.databaseUser=lines[numOptions-1].substr(colonIds[numOptions-1]+1,string::npos);
 	}
 }

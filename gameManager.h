@@ -7,6 +7,10 @@ namespace vb01{
 	class Root;
 }
 
+namespace sf{
+	class Music;
+}
+
 namespace fsim{
 	class InputManager;
 	class StateManager;
@@ -15,6 +19,7 @@ namespace fsim{
 		public:
 			struct Options{
 				int width,height,textureLevel;
+				float sfxVolume,musicVolume;
 				std::string databaseUser;
 			};
 
@@ -29,7 +34,9 @@ namespace fsim{
 			inline int getHeight(){return height;}
 			inline StateManager* getStateManager(){return stateManager;}
 			inline Options& getOptions(){return options;}
+			inline sf::Music* getMusic(){return music;}
 		private:
+			sf::Music *music;
 			Options options;
 			bool running=false;
 			int width,height;
